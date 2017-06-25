@@ -10,7 +10,6 @@ router.use(function (req, res, next) {
   if (token) {
     jwt.verify(token, jwtkey.pub,{ algorithms: ['RS256'] }, function (err, decoded) {
       if(err) console.log("Err", err)
-      console.log("decoded:", decoded) // bar
       req.jwt = decoded;
       next()
     });

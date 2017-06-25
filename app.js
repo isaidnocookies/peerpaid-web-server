@@ -26,11 +26,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Display Expiring notice for 30 second mark on JWT expiration
+app.use(function (req, res, next){
+  res.callJson = res.json;
+  res.json = function (obj){
+    if (req.jwt && req.jwt.exp){
+      var expTime = Math.floor(Date.now() / 1000);
+      var expLeft = req.jwt.exp - expTime
+      if (expLeft < 30){
+        obj.tokenExpiring = true;
+      }
+    }
+
+    res.callJson(obj);
+  }
+  next(); 
+});
+
 app.use(jwtverify); // Execute JWT middleware before any routes.
+
+
+
 
 app.use('/', routes);
 
-console.log("Running to here")
 app.use('/api', apiRoutes);
 
 app.use('/secure', jwtverify.checkAuth, secureRoute);
