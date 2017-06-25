@@ -8,6 +8,10 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var apiRoutes = require('./routes/api');
 
+var secureRoute = require('./routes/secure');
+
+var jwtverify = require('./routes/jwtverify');// Middleware for jwt
+
 var app = express();
 
 // view engine setup
@@ -22,8 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(jwtverify); // Execute JWT middleware before any routes.
+
 app.use('/', routes);
 app.use('/api', apiRoutes);
+
+app.use('/secure', jwtverify.checkAuth, secureRoute);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

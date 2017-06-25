@@ -1,4 +1,8 @@
 {
-    "dataServer": "http://localhost:3002",
-    "secret": "I @m the voic3 of my own god"
+  "jwt": {
+    "key": "/data/jwt.key",
+    "pub": "/data/jwt.pub"
+  },
+  "dataServer": "http://localhost:3002",
+  "secret": "I @m the voic3 of my own god"
 }
