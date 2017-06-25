@@ -1,8 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const request = require('request')
 const config = require('config')
-const jwt = require('express-jwt')
 
 /* GET users listing. */
 router.post('/token', function(req, res, next) {
