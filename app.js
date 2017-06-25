@@ -29,6 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(jwtverify); // Execute JWT middleware before any routes.
 
 app.use('/', routes);
+
+console.log("Running to here")
 app.use('/api', apiRoutes);
 
 app.use('/secure', jwtverify.checkAuth, secureRoute);

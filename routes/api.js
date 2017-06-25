@@ -20,15 +20,7 @@ router.post('/token', function(req, res, next) {
                     success: false
                 })
             } else {
-                if (body.success) {
-                    res.json({
-                        success: true
-                    })
-                } else {
-                    res.json({
-                        success: false
-                    })
-                }
+                res.json(body);
             }
         })
     }
