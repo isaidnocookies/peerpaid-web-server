@@ -24,9 +24,11 @@ router.post('/login', function (req, res, next) {
 })
 
 router.post('/register', function (req, res, next) {
+  console.log("Register");
+  console.log("server", config.get('dataServer') + "/users/register")
   const options = {
     method: 'post',
-    body: body,
+    body: req.body,
     json: true,
     url: config.get('dataServer') + '/users/register'
   }

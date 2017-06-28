@@ -17,8 +17,13 @@ router.use(function (req, res, next) {
     }
 
     jwt.verify(token, jwtkey.pub, { algorithms: ['RS256'] }, function (err, decoded) {
-      if (err) console.log("Err", err)
-      req.jwt = decoded;
+      if (err) {
+        console.log("Err", err)
+        req.jwt = void 0;
+      }
+      else {
+        req.jwt = decoded;
+      }
       next()
     });
   }
