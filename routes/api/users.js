@@ -7,15 +7,16 @@ const config = require('config')
 router.post('/login', function (req, res, next) {
   const options = {
     method: 'post',
-    body: body,
+    body: req.body,
     json: true,
     url: config.get('dataServer') + '/users/login'
   }
   request(options, function (error, response, body) {
-    console.log(body)
+    console.log("Body:", options.url, body)
     if (error) {
       res.json({
-        success: false
+        success: false,
+        error: error
       })
     } else {
       res.json(body);
