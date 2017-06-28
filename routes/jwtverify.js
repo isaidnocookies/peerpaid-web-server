@@ -6,10 +6,18 @@ var jwtkey = require('../lib/jwtkey')
 
 // Verify the JWT and load into req.jwt
 router.use(function (req, res, next) {
-  var token = req.body.token;
+
+  var token = req.body.token || req.query.token || req.headers['authorization'] || req.cookies.token;
+
+  // decode token
+
   if (token) {
-    jwt.verify(token, jwtkey.pub,{ algorithms: ['RS256'] }, function (err, decoded) {
-      if(err) console.log("Err", err)
+    if (/^Bearer /.test(token)) {
+      token = token.substr(7);
+    }
+
+    jwt.verify(token, jwtkey.pub, { algorithms: ['RS256'] }, function (err, decoded) {
+      if (err) console.log("Err", err)
       req.jwt = decoded;
       next()
     });
@@ -19,9 +27,9 @@ router.use(function (req, res, next) {
   }
 })
 
-function hasPermission(jwtObject, permission){
-  
-  if (jwtObject[permission] || ( jwtObject.permissions && jwtObject.permissions[permission] ) ){
+function hasPermission(jwtObject, permission) {
+
+  if (jwtObject[permission] || (jwtObject.permissions && jwtObject.permissions[permission])) {
     return true;
   }
   return false;
@@ -35,8 +43,8 @@ function checkAuth(req, res, next) {
       checkAuthInternal.permission.push(req);
       return checkAuthInternal;
     }
-    if (Array.isArray(req)){
-      req.forEach(function (element, index, array){
+    if (Array.isArray(req)) {
+      req.forEach(function (element, index, array) {
         checkAuthInternal.permission.push(element);
       });
       return checkAuthInternal;
@@ -68,7 +76,7 @@ function checkAuth(req, res, next) {
 
   }
   checkAuthInternal.permission = [];
-  return checkAuthInternal(req,res,next);
+  return checkAuthInternal(req, res, next);
 }
 
 // router.get("/getkey/define", function (req, res, next) {
@@ -93,13 +101,13 @@ function checkAuth(req, res, next) {
 //   res.json(token);
 // });
 
-function clone(obj){
+function clone(obj) {
   return Object.assign({}, obj, {})
 }
 
-if(jwtkey.cert){
+if (jwtkey.cert) {
 
-  function getKey(req, body){
+  function getKey(req, body) {
     body.token = void 0;
     var expiresIn = body.expiresIn;
     body.expiresIn = void 0;
@@ -114,16 +122,16 @@ if(jwtkey.cert){
 
 module.exports = router;
 module.exports.checkAuth = checkAuth; //Authorization Middleware Function 
-              // usage
-              //  router.get("/path", checkAuth, successFunction );
-              //  router.get("/path", checkAuth("permissionRequired"), successFunction);
-              //  router.get("/path", checkAuth(["permission1","permission2","permission-n"]), successFunction)
+// usage
+//  router.get("/path", checkAuth, successFunction );
+//  router.get("/path", checkAuth("permissionRequired"), successFunction);
+//  router.get("/path", checkAuth(["permission1","permission2","permission-n"]), successFunction)
 
-if (jwtkey.cert){
+if (jwtkey.cert) {
 
   module.exports.getKey = getKey; // Token generation (Only available when private key is available)
-                // usage
-                //  getKey(req, {object:"containing values to key"});
+  // usage
+  //  getKey(req, {object:"containing values to key"});
 
 }
 
