@@ -18,7 +18,6 @@ router.use(function (req, res, next) {
 
     jwt.verify(token, jwtkey.pub, { algorithms: ['RS256'] }, function (err, decoded) {
       if (err) {
-        console.log("Err", err)
         req.jwt = void 0;
       }
       else {
@@ -101,7 +100,6 @@ function checkAuth(req, res, next) {
 
 
 // router.get("/getkey", function (req, res, next) {
-//   console.log("Body:??", req.body)
 //   var token = getKey(req, req.body);
 //   res.json(token);
 // });
