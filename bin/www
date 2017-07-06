@@ -15,19 +15,45 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
-console.log("listening on port", port)
-
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
+
+
+
+
+
+var server = http.createServer(app).listen(port, "localhost", function() {
+  console.log('Started Peerpaid-Server on: ' + port);
+});
+
+
+//var socketio = require('socket.io')(server,);
+
+var io = global.io = require('socket.io').listen(server
+//  ,{path:"/socket.io"}
+);
+
+
+global.io.use(function(socket, next){
+  next();
+
+});
+
+var socket = require('../routes/socket');
+global.io.sockets.on('connection', socket);
+
+
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+// server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -88,5 +114,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  debug('peerpaid-web-server Listening on ' + bind);
 }

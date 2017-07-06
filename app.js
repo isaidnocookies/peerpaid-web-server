@@ -52,7 +52,7 @@ app.use('/', routes);
 
 app.use('/api', apiRoutes);
 
-app.use('/secure', jwtverify.checkAuth, secureRoute);
+//app.use('/secure', jwtverify.checkAuth, secureRoute);
 
 
 // catch 404 and forward to error handler

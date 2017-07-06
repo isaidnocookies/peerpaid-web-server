@@ -9,7 +9,6 @@ const users = require('./api/users');
 /* GET users listing. */
 // router.post('/token', function(req, res, next) {
 //     if (req.body.username !== '' && req.body.password !== '') {
-//         console.log(req.body.username, req.body.password)
 //         const options = {
 //             method: 'post',
 //             body: {username: req.body.username, password: req.body.password},
@@ -17,7 +16,6 @@ const users = require('./api/users');
 //             url: config.get('dataServer') + '/login'
 //         }
 //         request(options, function(error, response, body) {
-//             console.log(body)
 //             if (error) {
 //                 res.json({
 //                     success: false
