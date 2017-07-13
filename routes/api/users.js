@@ -11,4 +11,8 @@ router.post('/login', dsController.relay())
 router.post('/register', dsController.relay())
 
 router.post('/token', dsController.relay())
+
+router.post('/getData', dsController.relay())
+
+
 module.exports = router;

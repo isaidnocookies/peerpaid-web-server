@@ -4,13 +4,7 @@ var router = express.Router()
 var jwt = require('jsonwebtoken')
 var jwtkey = require('../lib/jwtkey')
 
-// Verify the JWT and load into req.jwt
-router.use(function (req, res, next) {
-
-  var token = req.body.token || req.query.token || req.headers['authorization'] || req.cookies.token;
-
-  // decode token
-
+function verifyToken(jwtDest, token, next) {
   if (token) {
     if (/^Bearer /.test(token)) {
       token = token.substr(7);
@@ -18,10 +12,10 @@ router.use(function (req, res, next) {
 
     jwt.verify(token, jwtkey.pub, { algorithms: ['RS256'] }, function (err, decoded) {
       if (err) {
-        req.jwt = void 0;
+        jwtDest.jwt = void 0;
       }
       else {
-        req.jwt = decoded;
+        jwtDest.jwt = decoded;
       }
       next()
     });
@@ -29,7 +23,24 @@ router.use(function (req, res, next) {
   else {
     next();
   }
+}
+
+// Verify the JWT and load into req.jwt
+router.use(function (req, res, next) {
+  var token = req.body.token || req.query.token || req.headers['authorization'] || req.cookies.token;
+  verifyToken(req, token, next)
 })
+
+function socketIO(socket) {
+  socket.use((packet, next) => {
+    if (packet.length > 1) {
+      verifyToken(packet, packet[1].token, next)
+    }
+    else {
+      next()
+    }
+  });
+}
 
 function hasPermission(jwtObject, permission) {
 
@@ -83,6 +94,58 @@ function checkAuth(req, res, next) {
   return checkAuthInternal(req, res, next);
 }
 
+function socketAuth(packet, success, fail) {
+  function socketAuthInternal(packet, success, fail) {
+
+    if (typeof packet === "string") {
+      socketAuthInternal.permission.push(packet);
+      return socketAuthInternal;
+    }
+    else if (Array.isArray(packet) && (packet.length < 2 || typeof packet[1] !== 'object')) {
+
+      packet.forEach(function (element, index, array) {
+        socketAuthInternal.permission.push(element);
+      });
+      return socketAuthInternal;
+    }
+    else {
+      var errorMessage = void 0;
+
+      if (packet.jwt === undefined) {
+        errorMessage = "Invalid Authorization";
+      }
+      else {
+        socketAuthInternal.permission.forEach(function (elemeent, index, array) {
+          if (!errorMessage && element != null && hasPermission(packet.jwt, element) == false) {
+            errorMessage = "Permission Denied";
+          }
+        });
+      }
+      if (errorMessage != void 0) {
+        // res.status(403).json({
+        //   success: false,
+        //   message: errorMessage,
+        // });
+        packet.error = errorMessage
+        if (fail) {
+          fail()
+        }
+        if (packet.length > 2 && typeof packet[2] === 'function') {
+          packet[2]({error:{message:errorMessage}})
+        }
+      }
+      else {
+        success();
+      }
+    }
+
+  }
+  socketAuthInternal.permission = [];
+  return socketAuthInternal(packet, success, fail);
+
+}
+
+
 // router.get("/getkey/define", function (req, res, next) {
 //   res.json({
 //     method:"GET",
@@ -124,12 +187,25 @@ if (jwtkey.cert) {
 }
 
 module.exports = router;
-module.exports.checkAuth = checkAuth; //Authorization Middleware Function 
+
+module.exports.checkAuth = checkAuth //Authorization Middleware Function 
 // usage
 //  router.get("/path", checkAuth, successFunction );
 //  router.get("/path", checkAuth("permissionRequired"), successFunction);
 //  router.get("/path", checkAuth(["permission1","permission2","permission-n"]), successFunction)
 
+module.exports.socketAuth = socketAuth //Authorization Middleware function for socket.io
+// usage
+//  socketAuth(packet, success, fail);
+//      success function should call next
+//      fail function should respond with an error or handle failure accordingly
+//        if callback was provided by client, it will be called with {error:{message:"authoriation failed"}}
+//  socket.use(function (packet, next){
+//    socketAuth(packet, () => {next()}, () => { /* handle failure */}) ;
+//    socketAuth("permissionRequired")(packet, () => { next() }, () => { /* handle failure */ });
+//    socketAuth(["permission1","permission-n"])(packet, () => { next() }, () => { /* handle failure */ });
+//  })
+//  
 if (jwtkey.cert) {
 
   module.exports.getKey = getKey; // Token generation (Only available when private key is available)
@@ -139,9 +215,11 @@ if (jwtkey.cert) {
 }
 
 module.exports.clone = clone; // Clone an object so editing can commence
-                              // Useful for token object creation from other objects
-              // usage
-              //  clone(req.body); 
+// Useful for token object creation from other objects
+// usage
+//  clone(req.body); 
 
 
-
+module.exports.socketIO = socketIO // call auth on incoming socket
+    // socketIO(socket)
+    // Similar to express using this module as a route.

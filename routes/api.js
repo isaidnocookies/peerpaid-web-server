@@ -6,6 +6,10 @@ const config = require('config')
 const users = require('./api/users');
 
 
+
+router.use("/users", users);
+
+module.exports = router;
 /* GET users listing. */
 // router.post('/token', function(req, res, next) {
 //     if (req.body.username !== '' && req.body.password !== '') {
@@ -26,7 +30,3 @@ const users = require('./api/users');
 //         })
 //     }
 // });
-
-router.use("/users", users);
-
-module.exports = router;

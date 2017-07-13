@@ -45,6 +45,10 @@ global.io.use(function(socket, next){
 var socket = require('../routes/socket');
 global.io.sockets.on('connection', socket);
 
+global.io.set('authorization', function (handshake, callback) {
+  //console.log("Authorization:", handshake)
+  callback(null, true);
+});
 
 
 

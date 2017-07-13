@@ -3,5 +3,8 @@
     "key": "/data/jwt.key",
     "pub": "/data/jwt.pub"
   },
-  "dataServer": "http://localhost:3002"
+  "dataServer": "http://localhost:3002",
+  "clientConfig": {
+    "supportEmail":"support@peerpaid.com"
+  }
 }
