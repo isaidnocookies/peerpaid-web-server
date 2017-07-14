@@ -34,7 +34,7 @@ router.use(function (req, res, next) {
 function socketIO(socket) {
   socket.use((packet, next) => {
     if (packet.length > 1) {
-      verifyToken(packet, packet[1].token, next)
+      verifyToken(packet[1], packet[1].token, next)
     }
     else {
       next()
@@ -101,22 +101,22 @@ function socketAuth(packet, success, fail) {
       socketAuthInternal.permission.push(packet);
       return socketAuthInternal;
     }
-    else if (Array.isArray(packet) && (packet.length < 2 || typeof packet[1] !== 'object')) {
+    else if (Array.isArray(packet) && (packet.length > 1 && typeof packet[1] !== 'object')) {
 
       packet.forEach(function (element, index, array) {
         socketAuthInternal.permission.push(element);
       });
       return socketAuthInternal;
     }
-    else {
+    else if (packet.length > 1) {
       var errorMessage = void 0;
 
-      if (packet.jwt === undefined) {
+      if (packet.length > 1 && packet[1].jwt === undefined) {
         errorMessage = "Invalid Authorization";
       }
       else {
         socketAuthInternal.permission.forEach(function (elemeent, index, array) {
-          if (!errorMessage && element != null && hasPermission(packet.jwt, element) == false) {
+          if (!errorMessage && element != null && hasPermission(packet[1].jwt, element) == false) {
             errorMessage = "Permission Denied";
           }
         });
@@ -126,17 +126,21 @@ function socketAuth(packet, success, fail) {
         //   success: false,
         //   message: errorMessage,
         // });
-        packet.error = errorMessage
-        if (fail) {
-          fail()
+        if (packet.length > 1) {
+          packet[1].error = errorMessage
         }
-        if (packet.length > 2 && typeof packet[2] === 'function') {
-          packet[2]({error:{message:errorMessage}})
-        }
+        if (fail) fail()
+
+        // if (packet.length > 2 && typeof packet[2] === 'function') {
+        //   packet[2]({ error: { message: errorMessage } })
+        // }
       }
       else {
-        success();
+        if (success) success();
       }
+    }
+    else {
+      if (fail) fail();
     }
 
   }

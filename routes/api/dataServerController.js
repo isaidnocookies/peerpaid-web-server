@@ -29,7 +29,7 @@ controller.relay = (options, successCallback, errorCallback) => {
           console.log("Error:", error);
           res.status(500).json({
             success: false,
-            error:error
+            error: error
           })
         }
         else {
@@ -41,6 +41,29 @@ controller.relay = (options, successCallback, errorCallback) => {
       } else {
         res.status(response.statusCode).json(body);
       }
+    })
+  }
+}
+
+controller.socketRelay = (options) => {
+
+  return (packet, callback) => {
+
+    if (options === void 0) options = {}
+    var requestOptions = {
+      method: options.method || req.method,
+      url: config.get('dataServer') + options.url,
+      json: (options.json === void 0 ? true : options.json),
+      body: options.body,
+      headers: {
+        authorization: options.authorization
+      }
+    }
+
+    request(requestOptions, function (error, response, body) {
+
+      var result = body;
+      callback( error, result );
     })
   }
 }
