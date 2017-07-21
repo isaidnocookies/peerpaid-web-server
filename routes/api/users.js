@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 const request = require('request')
 const config = require('config')
-const dsController = require("./dataServerController")
+const dsController = require("../../lib/dataServerController")
 
 
 

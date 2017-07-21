@@ -43,7 +43,7 @@ global.io.use(function(socket, next){
 });
 
 var socket = require('../routes/socket');
-global.io.sockets.on('connection', socket);
+global.io.sockets.on('connection', socket.connection);
 
 global.io.set('authorization', function (handshake, callback) {
   //console.log("Authorization:", handshake)
@@ -86,6 +86,7 @@ function normalizePort(val) {
  */
 
 function onError(error) {
+  console.log("!!!!!!! ERROR !!!!!!!!!\n", error)
   if (error.syscall !== 'listen') {
     throw error;
   }

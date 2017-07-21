@@ -5,6 +5,28 @@
   },
   "dataServer": "http://localhost:3002",
   "clientConfig": {
-    "supportEmail":"support@peerpaid.com"
+    "supportEmail": "support@peerpaid.com"
+  },
+  "errors": {
+    "invalidAuth": {
+      "error": {
+        "message": "Invalid Authorization"
+      }
+    },
+    "invalidLogin": {
+      "error": {
+        "message":"Invalid Login"
+      }
+    },
+    "unknownError":{
+      "error":{
+        "message":"Unknown Error"
+      }
+    },
+    "permissionDenied":{
+      "error":{
+        "message":"Permission Denied"
+      }
+    }
   }
 }

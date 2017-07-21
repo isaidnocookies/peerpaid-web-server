@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var apiRoutes = require('./routes/api');
 
 var secureRoute = require('./routes/secure');
+var socket = require('./routes/socket');
 
 var jwtverify = require('./routes/jwtverify');// Middleware for jwt
 
@@ -46,7 +47,7 @@ app.use(function (req, res, next){
 app.use(jwtverify); // Execute JWT middleware before any routes.
 
 
-
+app.use('/socket', socket);
 
 app.use('/', routes);
 

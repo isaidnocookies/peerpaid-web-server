@@ -4,41 +4,77 @@ var router = express.Router()
 var jwt = require('jsonwebtoken')
 var jwtkey = require('../lib/jwtkey')
 
-function verifyToken(jwtDest, token, next) {
+var deasync = require('deasync')
+var config = require('config')
+
+// Token Verification method that add jwt and token to destination object
+function verifyToken(pubKey, jwtDest, token, next) {
   if (token) {
     if (/^Bearer /.test(token)) {
       token = token.substr(7);
     }
 
-    jwt.verify(token, jwtkey.pub, { algorithms: ['RS256'] }, function (err, decoded) {
+    var done = false;
+    jwt.verify(token, pubKey, { algorithms: ['RS256'] }, function (err, decoded) {
       if (err) {
         jwtDest.jwt = void 0;
+        jwtDest.token = void 0;
       }
       else {
         jwtDest.jwt = decoded;
+        jwtDest.token = token;
       }
-      next()
+      if (next) next()
+      done = true;
     });
+
+    if (next === void 0) {
+      var count = 0;
+      while (!done) {
+        deasync.sleep(100)
+        if (count > 20) break
+        count++;
+      }
+    }
   }
   else {
-    next();
+    if (next) next();
+  }
+  return jwtDest;
+}
+
+function altCheckToken(pubkey) {
+  return function (dest, token, next) {
+    verifyToken(pubkey, dest, token, next)
+  }
+}
+
+function checkToken(dest, token, next) {
+  return altCheckToken(jwtkey.pub)(dest, token, next)
+}
+
+function altTokenVerify(pubKey) {
+  return function (req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['authorization'] || req.cookies.token;
+    verifyToken(pubKey, req, token, next)
   }
 }
 
 // Verify the JWT and load into req.jwt
-router.use(function (req, res, next) {
-  var token = req.body.token || req.query.token || req.headers['authorization'] || req.cookies.token;
-  verifyToken(req, token, next)
-})
+router.use(altTokenVerify(jwtkey.pub))
+
 
 function socketIO(socket) {
   socket.use((packet, next) => {
+    var token = void 0;
     if (packet.length > 1) {
-      verifyToken(packet[1], packet[1].token, next)
+      token = packet[1].token;
     }
-    else {
-      next()
-    }
+    // else {
+    //   next()
+    // }
+    verifyToken(jwtkey.pub, socket, token, next)
+
   });
 }
 
@@ -48,6 +84,39 @@ function hasPermission(jwtObject, permission) {
     return true;
   }
   return false;
+}
+
+function checkPermissions(jwtObject, permissionSet, booleanPermissions) {
+  if (permissionSet === void 0) return true;
+  if (Array.isArray(permissionSet)) {
+    if (booleanPermissions === void 0) {
+      if (permissionSet.length === 0) return true;
+      if (Array.isArray(permissionSet[0])) {
+        return checkPermissions(permissionSet, true)
+      }
+      else {
+        return checkPermissions(permissonSet, false)
+      }
+    }
+    else {
+      // Boolean permission starts false and finds any true
+      // Non boolean permission starts true, and ends when a false is encountered
+      var result = !booleanPermission;
+      permissionSet.forEach(function (element, index, array) {
+        if (booleanPermissions) {
+          if (result == false && element != null && hasPermission(jwtObject, element) == true) {
+            result == true
+          }
+        }
+        else {
+          if (result == true && element != null && hasPermission(jwtObject, element) == false) {
+            result = false
+          }
+        }
+      });
+      return result;
+    }
+  }
 }
 
 function checkAuth(req, res, next) {
@@ -68,14 +137,12 @@ function checkAuth(req, res, next) {
       var errorMessage = void 0;
 
       if (req.jwt === undefined) {
-        errorMessage = "Invalid Authorization";
+        errorMessage = config.get("errors.invalidAuth.error.message");
       }
       else {
-        checkAuthInternal.permission.forEach(function (element, index, array) {
-          if (!errorMessage && element != null && hasPermission(req.jwt, element) == false) {
-            errorMessage = "Permission Denied";
-          }
-        });
+        if (!checkPermissions(req.jwt, checkAuthInternal.permissions)) {
+          errorMessage = config.get("errors.permissionDenied.error.message")
+        }
       }
 
       if (errorMessage != void 0) {
@@ -112,14 +179,12 @@ function socketAuth(packet, success, fail) {
       var errorMessage = void 0;
 
       if (packet.length > 1 && packet[1].jwt === undefined) {
-        errorMessage = "Invalid Authorization";
+        errorMessage = config.get("errors.invalidAuth.error.message");
       }
       else {
-        socketAuthInternal.permission.forEach(function (elemeent, index, array) {
-          if (!errorMessage && element != null && hasPermission(packet[1].jwt, element) == false) {
-            errorMessage = "Permission Denied";
-          }
-        });
+        if (!checkPermissions(packet[1].jwt, checkAuthInternal.permissions)) {
+          errorMessage = config.get("errors.permissionDenied.error.message")
+        }
       }
       if (errorMessage != void 0) {
         // res.status(403).json({
@@ -149,7 +214,6 @@ function socketAuth(packet, success, fail) {
 
 }
 
-
 // router.get("/getkey/define", function (req, res, next) {
 //   res.json({
 //     method:"GET",
@@ -165,32 +229,48 @@ function socketAuth(packet, success, fail) {
 //   })
 // });
 
-
-// router.get("/getkey", function (req, res, next) {
-//   var token = getKey(req, req.body);
-//   res.json(token);
-// });
-
 function clone(obj) {
   return Object.assign({}, obj, {})
 }
 
 if (jwtkey.cert) {
-
-  function getKey(req, body) {
-    body.token = void 0;
-    var expiresIn = body.expiresIn;
-    body.expiresIn = void 0;
-
-    var token = jwt.sign(body, jwtkey.cert, {
-      algorithm: 'RS256',
-      expiresIn: expiresIn
-    });
-    return token;
+  function getKey(body, options) {
+    return getKeyFromCert(jwtkey.cert, body, options)
   }
 }
 
+
+function getKeyFromCert(cert, body, options) {
+  if (options !== void 0) {
+    if (options.expiresIn || options.expireSeconds) {
+      body.iat = void 0;
+      body.exp = void 0;
+      body.expiresIn = options.expiresIn || options.expireSeconds || 10;
+    }
+  }
+  // reject password
+  body.password = void 0;
+  // reject token
+  body.token = void 0;
+
+  var expiresIn = body.expiresIn;
+  body.expiresIn = void 0;
+
+  var token = jwt.sign(body, cert, {
+    algorithm: 'RS256',
+    expiresIn: expiresIn
+  });
+  return token;
+}
+
 module.exports = router;
+
+module.exports.altCheckToken = altCheckToken
+
+module.exports.checkToken = checkToken
+
+module.exports.altTokenVerify = altTokenVerify
+// Method on top of checkAuth to change the token verification to another pub key
 
 module.exports.checkAuth = checkAuth //Authorization Middleware Function 
 // usage
@@ -212,11 +292,13 @@ module.exports.socketAuth = socketAuth //Authorization Middleware function for s
 //  
 if (jwtkey.cert) {
 
-  module.exports.getKey = getKey; // Token generation (Only available when private key is available)
+  module.exports.getKey = getKey // Token generation (Only available when private key is available)
   // usage
   //  getKey(req, {object:"containing values to key"});
 
 }
+
+module.exports.getKeyFromCert = getKeyFromCert
 
 module.exports.clone = clone; // Clone an object so editing can commence
 // Useful for token object creation from other objects
