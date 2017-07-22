@@ -24,12 +24,7 @@ module.exports = function (socket) {
       var postData = { data: "" }
 
       var apiResponse = dsController.callApi(method, url, postData, token, (err, res) => {
-        if (err) {
-          console.log("socket.initMethods.getFreshtoken:Error", err)
-        }
-        else {
-          console.log("TODO: !!!!!token = ", res)
-        }
+        if (err) console.log("socket.initMethods.getFreshtoken:Error", err)
 
         callback({ error: err, response: res })
 

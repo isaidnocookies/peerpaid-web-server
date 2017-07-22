@@ -30,12 +30,11 @@ module.exports = function (socket) {
     }
   })
 
-  socket.on("getBitcoinTransaction", (payload) => {
-    console.log("GetBitcoin Transaction", payload)
-    if (typeof payload === 'function') {
-      callback = payload;
-      payload = void 0;
-    } 
+  socket.on("getBitcoinTransaction", (payload, callback) => {
+    // if (typeof payload === 'function') {
+    //   callback = payload;
+    //   payload = void 0;
+    // }
 
     if (socket.jwt && payload.txid) {
       var options = {
@@ -50,12 +49,12 @@ module.exports = function (socket) {
         }
       }
       dsController.socketRelay(options)({}, (error, result) => {
-        if (error) console.log("webServer socket/bitcoin:error", error)
-          
+        if (callback) callback({ error:error || (result && result.error), response: { transaction: (result && result.response) } })
+
       })
     }
     else {
-      console.log("getBitcoinTransaction: no txid")
+      console.log("getBitcoinTransaction: no jwt or txid")
       // callback(config.get("errors.invalidAuth"));
     }
   })
