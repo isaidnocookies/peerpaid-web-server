@@ -10,6 +10,8 @@ var initMethods = require('./socket/initMethods')
 var config = require('config')
 // export function for listening to the socket
 
+var validate = require('../lib/validate')
+
 var express = require('express');
 var router = express.Router();
 
@@ -27,14 +29,14 @@ router.use(function (req, res, next) {
 router.post('/confirmation', jwtverify.checkAuth, function (req, res, next) {
 
   var sent = false;
-  var canSend = () => {
+  var canjson = () => {
     if (sent) return false;
     return sent = true;
 
   }
-  var send = (data) => {
-    if (canSend()) {
-      res.send(data)
+  var json = (data) => {
+    if (canjson()) {
+      res.json(data)
     }
   }
   if (req.jwt) {
@@ -56,7 +58,7 @@ router.post('/confirmation', jwtverify.checkAuth, function (req, res, next) {
     Object.keys(sockets.sockets).forEach((roomSocketId) => {
       var roomSocket = sockets.sockets[roomSocketId]
       roomSocket.on(guid, (payload) => {
-        send(payload)
+        json(payload)
         removeSocketListeners()
         roomSocket.broadcast.emit('removeConfirmation', { guid: payload.guid });
       })
@@ -68,7 +70,7 @@ router.post('/confirmation', jwtverify.checkAuth, function (req, res, next) {
     }
     var timeoutInt = setTimeout(function () {
       removeSocketListeners();
-      send({ error: { message: "No Reply" } })
+      json({ error: { message: "No Reply" } })
     }, 1000 * timeout);
 
     getio().in(req.jwt.username).emit("getConfirmation", {
@@ -89,10 +91,11 @@ module.exports = router;
 
 
 
-
 module.exports.connection = function (socket) {
-
+  validate.socket(socket);
+  
   jwtverify.socketIO(socket)
+
 
   socket.use(function (packet, next) {
     if (socket.jwt) {

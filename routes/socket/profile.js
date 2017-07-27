@@ -25,7 +25,7 @@ module.exports = function (socket) {
         }
       }
       dsController.socketRelay(options)(payload, (error, result) => {
-        callback({ error, response: { user: result } })
+        callback({ error, result: { user: result } })
       })
     }
     else {

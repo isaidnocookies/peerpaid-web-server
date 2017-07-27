@@ -36,6 +36,7 @@ module.exports = function (socket) {
     //   payload = void 0;
     // }
 
+
     if (socket.jwt && payload.txid) {
       var options = {
         method: "get",
@@ -49,7 +50,7 @@ module.exports = function (socket) {
         }
       }
       dsController.socketRelay(options)({}, (error, result) => {
-        if (callback) callback({ error:error || (result && result.error), response: { transaction: (result && result.response) } })
+        if (callback) callback({ error: error || (result && result.error), result: { transaction: result } })
 
       })
     }

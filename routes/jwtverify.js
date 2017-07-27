@@ -134,21 +134,20 @@ function checkAuth(req, res, next) {
       return checkAuthInternal;
     }
     else {
-      var errorMessage = void 0;
+      var error = void 0;
 
       if (req.jwt === undefined) {
-        errorMessage = config.get("errors.invalidAuth.error.message");
+        error = config.get("errors.invalidAuth.error");
       }
       else {
         if (!checkPermissions(req.jwt, checkAuthInternal.permissions)) {
-          errorMessage = config.get("errors.permissionDenied.error.message")
+          error = config.get("errors.permissionDenied.error")
         }
       }
 
-      if (errorMessage != void 0) {
+      if (error != void 0) {
         res.status(403).json({
-          success: false,
-          message: errorMessage,
+          error,
         });
       }
       else {
@@ -176,23 +175,23 @@ function socketAuth(packet, success, fail) {
       return socketAuthInternal;
     }
     else if (packet.length > 1) {
-      var errorMessage = void 0;
+      var error = void 0;
 
       if (packet.length > 1 && packet[1].jwt === undefined) {
-        errorMessage = config.get("errors.invalidAuth.error.message");
+        error = config.get("errors.invalidAuth.error");
       }
       else {
         if (!checkPermissions(packet[1].jwt, checkAuthInternal.permissions)) {
-          errorMessage = config.get("errors.permissionDenied.error.message")
+          error = config.get("errors.permissionDenied.error")
         }
       }
-      if (errorMessage != void 0) {
+      if (error != void 0) {
         // res.status(403).json({
         //   success: false,
         //   message: errorMessage,
         // });
         if (packet.length > 1) {
-          packet[1].error = errorMessage
+          packet[1].error = error
         }
         if (fail) fail()
 

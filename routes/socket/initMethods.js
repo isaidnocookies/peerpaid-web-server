@@ -4,15 +4,13 @@ var jwtverify = require('../jwtverify');
 var dsController = require('../../lib/dataServerController')
 
 module.exports = function (socket) {
-  if (!socket.hasSentClientConfig) {
-    socket.hasSentClientConfig = true;
+  
+  socket.on('getClientConfig', (payload, callback) => {
     if (config.has("clientConfig")) {
-      socket.emit('clientConfig', config.get("clientConfig"))
+      callback({ result: { clientConfig: config.get("clientConfig") } });
     }
-  }
-  socket.on('getConfig', (payload, callback) => {
-    if (config.has("clientConfig")) {
-      socket.emit('clientConfig', config.get("clientConfig"))
+    else {
+      callback({ error: { message: "no client config" } })
     }
   })
   socket.on('getFreshToken', (payload, callback) => {

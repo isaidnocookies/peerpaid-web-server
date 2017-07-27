@@ -3,6 +3,9 @@
     "key": "/data/jwt.key",
     "pub": "/data/jwt.pub"
   },
+  "server": {
+    "port": 3001
+  },
   "dataServer": "http://localhost:3002",
   "clientConfig": {
     "supportEmail": "support@peerpaid.com"
@@ -15,17 +18,17 @@
     },
     "invalidLogin": {
       "error": {
-        "message":"Invalid Login"
+        "message": "Invalid Login"
       }
     },
-    "unknownError":{
-      "error":{
-        "message":"Unknown Error"
+    "unknownError": {
+      "error": {
+        "message": "Unknown Error"
       }
     },
-    "permissionDenied":{
-      "error":{
-        "message":"Permission Denied"
+    "permissionDenied": {
+      "error": {
+        "message": "Permission Denied"
       }
     }
   }
