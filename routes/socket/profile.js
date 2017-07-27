@@ -4,7 +4,7 @@ var config = require("config")
 module.exports = function (socket) {
   socket.on('getUserData', (payload, callback) => {
     if (socket.jwt) {
-      callback({ response: { success: true } })
+      callback({ result: {} })
     }
     else {
       callback(config.get("errors.invalidAuth"))

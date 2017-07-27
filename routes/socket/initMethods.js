@@ -4,7 +4,7 @@ var jwtverify = require('../jwtverify');
 var dsController = require('../../lib/dataServerController')
 
 module.exports = function (socket) {
-  
+
   socket.on('getClientConfig', (payload, callback) => {
     if (config.has("clientConfig")) {
       callback({ result: { clientConfig: config.get("clientConfig") } });
@@ -24,7 +24,7 @@ module.exports = function (socket) {
       var apiResponse = dsController.callApi(method, url, postData, token, (err, res) => {
         if (err) console.log("socket.initMethods.getFreshtoken:Error", err)
 
-        callback({ error: err, response: res })
+        callback({ error: err, result: res })
 
       })
       //TODO: get key from data server
