@@ -58,7 +58,7 @@ router.post('/confirmation', jwtverify.checkAuth, function (req, res, next) {
     Object.keys(sockets.sockets).forEach((roomSocketId) => {
       var roomSocket = sockets.sockets[roomSocketId]
       roomSocket.on(guid, (payload) => {
-        json(payload)
+        json({ result: payload })
         removeSocketListeners()
         roomSocket.broadcast.emit('removeConfirmation', { guid: payload.guid });
       })
@@ -93,7 +93,7 @@ module.exports = router;
 
 module.exports.connection = function (socket) {
   validate.socket(socket);
-  
+
   jwtverify.socketIO(socket)
 
 
@@ -133,7 +133,7 @@ module.exports.connection = function (socket) {
     connected: true,
     success: true
   });
-  socket.on('error', function (err){
+  socket.on('error', function (err) {
     console.log("TODO: emit error ??", err)
   })
   socket.on('disconnect', function () {
