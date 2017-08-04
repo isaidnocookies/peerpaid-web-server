@@ -50,6 +50,7 @@ function altCheckToken(pubkey) {
 }
 
 function checkToken(dest, token, next) {
+  console.log("Token", token)
   return altCheckToken(jwtkey.pub)(dest, token, next)
 }
 
