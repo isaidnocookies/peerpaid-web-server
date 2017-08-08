@@ -1,43 +1,61 @@
 {
-  "name": "peerpaid-server",
+  "name": "peerpaid-web-server",
+  "description": "",
   "version": "0.0.0",
-  "private": true,
+  "homepage": "",
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Jason McKinley",
+    "email": "jmckinley@sporaga.com"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "yarn": ">= 0.18.0"
+  },
   "scripts": {
-    "start": "nodemon --exec babel-node --presets=es2015 ./index.js"
+    "test": "npm run eslint && npm run mocha",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "start": "babel-watch src",
+    "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
-    "async": "^2.5.0",
-    "babel-cli": "^6.24.1",
-    "body-parser": "~1.13.2",
+    "body-parser": "^1.17.2",
     "compression": "^1.7.0",
     "config": "^1.26.1",
-    "cookie-parser": "~1.3.5",
     "cors": "^2.8.4",
-    "deasync": "^0.1.10",
-    "debug": "~2.2.0",
-    "express": "~4.13.1",
     "feathers": "^2.1.7",
     "feathers-authentication": "^1.2.7",
+    "feathers-authentication-hooks": "^0.1.4",
     "feathers-authentication-jwt": "^0.3.2",
+    "feathers-authentication-local": "^0.4.3",
+    "feathers-client": "^2.3.0",
     "feathers-configuration": "^0.4.1",
     "feathers-errors": "^2.9.1",
     "feathers-hooks": "^2.0.2",
-    "feathers-memory": "^1.1.0",
+    "feathers-hooks-common": "^3.7.1",
     "feathers-rest": "^1.8.0",
     "feathers-socketio": "^2.0.0",
     "helmet": "^3.8.1",
-    "jade": "~1.11.0",
-    "jsonwebtoken": "^7.4.1",
-    "morgan": "~1.6.1",
-    "nodemon": "^1.11.0",
+    "localstorage-memory": "^1.0.2",
     "passport-custom": "^1.0.5",
-    "password-sheriff": "^1.1.0",
-    "request": "^2.81.0",
-    "serve-favicon": "~2.3.0",
-    "sleep": "^5.1.1",
-    "socket.io": "^2.0.3",
-    "socket.io-client": "^2.0.3",
-    "uuid": "^3.1.0",
+    "password-hash": "^1.2.2",
+    "serve-favicon": "^2.4.3",
+    "superagent": "^3.5.2",
     "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.4.1",
+    "mocha": "^3.5.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   }
 }
