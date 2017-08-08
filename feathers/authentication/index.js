@@ -20,8 +20,8 @@ module.exports = function () {
   const config = {
     secret: jwtkey.pub,
     strategies: [
-      "other",
-      "jwt"
+      "jwt",
+      "other"
     ],
     path: "/authentication",
     cookie: {
@@ -69,7 +69,7 @@ module.exports = function () {
           hook.params.secret = "blah";
           hook.params.jwt = {}
           hook.params.jwt.algorithm = "HS256";
-          return authentication.hooks.authenticate(config.strategies)(hook)
+          return authentication.hooks.authenticate(config.strategies)(hook);
         },
 
       ],

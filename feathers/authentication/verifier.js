@@ -16,6 +16,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var dsController = require('../../lib/dataServerController');
 
+var jwtverify = require('../../routes/jwtverify');
 
 var debug = (0, _debug2.default)('feathers-authentication-personal:verify');
 
@@ -35,23 +36,27 @@ var CustomVerifier = function () {
     key: 'verify',
     value: function verify(req, done) {
       // no further validation, Custom Account is valid
-      
-      var method ='post';
+
+      var method = 'post';
       var url = '/users/login';
-      
+
       req.body.username = req.body.username || req.body.email || req.body.emailAddress;
+
 
       dsController.callApi(method, url, req.body, null, (error, result) => {
         console.log('Error:', error || result.error);
 
-        
-
         result = (result && result.result) || result;
 
-        console.log('Result:', result);
+        var error = error || (result && result.error);
 
-        done(error || (result && result.error), result, result)
-        
+        jwtverify.checkToken(result, result.token, () => {
+          console.log("TODO:DATA", result)
+          done(error, result, result);
+        })
+
+
+
       });
 
     }

@@ -21,33 +21,33 @@ const authentication = require('./authentication');
 
 
 
-module.exports = function (app){
+module.exports = function (app) {
 
-// Load app configuration
-app.configure(configuration(path.join(__dirname, '..')));
-// Enable CORS, security, compression, favicon and body parsing
+  // Load app configuration
+  app.configure(configuration(path.join(__dirname, '..')));
+  // Enable CORS, security, compression, favicon and body parsing
 
-app.use(cors());
-app.use(helmet());
-app.use(compress());
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(favicon('public/favicon.ico'));
-// Host the public folder
-// app.use('/', feathers.static(app.get('public')));
+  app.use(cors());
+  app.use(helmet());
+  app.use(compress());
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ extended: true }));
+  // app.use(favicon('public/favicon.ico'));
+  // Host the public folder
+  // app.use('/', feathers.static(app.get('public')));
 
 
-// Set up Plugins and providers
-app.configure(hooks());
-app.configure(rest());
-app.configure(socketio());
+  // Set up Plugins and providers
+  app.configure(hooks());
+  app.configure(rest());
+  app.configure(socketio());
 
-app.configure(authentication);
+  app.configure(authentication);
 
-// Set up our services (see `services/index.js`)
-app.configure(services);
-// Configure middleware (see `middleware/index.js`) - always has to be last
-app.configure(middleware);
-app.hooks(appHooks);
+  // Set up our services (see `services/index.js`)
+  app.configure(services);
+  // Configure middleware (see `middleware/index.js`) - always has to be last
+  app.configure(middleware);
+  app.hooks(appHooks);
 
 }
