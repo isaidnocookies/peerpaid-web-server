@@ -65,7 +65,8 @@ module.exports = function () {
       create: [
 
         hook => {
-          hook.result.accessToken = {accessToken:hook.params.payload.accessToken};
+          hook.result = {accessToken:hook.params.payload.accessToken};
+
         }
       ]
     }
