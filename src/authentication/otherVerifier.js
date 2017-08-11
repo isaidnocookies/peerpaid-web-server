@@ -39,6 +39,7 @@ var CustomVerifier = function () {
     key: 'verify',
     value: function verify(req, done) {
       // no further validation, Custom Account is valid
+      var _this = this;
       var dataServer = featherClient(config.get('dataServer'), '');
 
       dataServer.authenticate(req.body).then((result) => {
