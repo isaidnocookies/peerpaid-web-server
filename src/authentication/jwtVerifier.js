@@ -71,7 +71,7 @@ var JWTVerifier = function () {
           //   debug('user', result);
           var entity = Object.assign({}, dest.jwt, {});
           dest.jwt.accessToken = token;
-          // console.log("JWTVerifier+", result)
+          dest.jwt[_this.options.entity + 'Id'] = dest.jwt._id;
 
           done(null, entity, dest.jwt);
           // }).catch((error) => {

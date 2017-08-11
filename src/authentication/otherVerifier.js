@@ -39,7 +39,6 @@ var CustomVerifier = function () {
     key: 'verify',
     value: function verify(req, done) {
       // no further validation, Custom Account is valid
-
       var dataServer = featherClient(config.get('dataServer'), '');
 
       dataServer.authenticate(req.body).then((result) => {
@@ -50,17 +49,19 @@ var CustomVerifier = function () {
           if (dest.jwt && dest.jwt._id) {
             dataServer.service('users').get(dest.jwt._id).then((result) => {
               dest.jwt.accessToken = dest.accessToken;
-              var entity = Object.assign({}, result, {});
-              done(null, entity, dest.jwt);
+              dest.jwt[_this.options.entity + 'Id'] = dest.jwt._id;
+              
+              done(null, result, dest.jwt);
             });
           }
           else {
+            console.log("Invalid Auth Token")
             done(new errors.NotAuthenticated('Invalid Auth Token'), null, null);
           }
         });
       }).catch((err) => {
+        console.log("Not Authenticated:", err)
         done(new errors.NotAuthenticated(err.message), null, null);
-
       });
 
 

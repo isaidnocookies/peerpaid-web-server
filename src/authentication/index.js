@@ -36,7 +36,7 @@ module.exports = function () {
       algorithm: 'RS256',
       expiresIn: '1d',
     },
-    local: {
+    other: {
       entity: 'user',
       service: 'users',
       usernameField: 'email',
@@ -65,8 +65,7 @@ module.exports = function () {
       create: [
 
         hook => {
-          hook.result = {accessToken:hook.params.payload.accessToken};
-
+          hook.result.accessToken = hook.params.payload.accessToken;
         }
       ]
     }
@@ -78,7 +77,6 @@ module.exports = function () {
 
   function verifyJWT(token) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
     // var VALID_KEYS = ['algorithms', 'audience', 'issuer', 'ignoreExpiration', 'ignoreNotBefore', 'subject', 'clockTolerance'];
     var settings = Object.assign({}, options.jwt);
     var secret = options.secret;
@@ -92,11 +90,11 @@ module.exports = function () {
 
     return new Promise(function (resolve, reject) {
       if (!token) {
-        return reject(new Error('token must provided'));
+        return reject(new Error('token must be provided'));
       }
 
       if (!secret) {
-        return reject(new Error('secret must provided'));
+        return reject(new Error('secret must be provided'));
       }
 
       var dest = {};
@@ -118,6 +116,10 @@ module.exports = function () {
     // var settings = Object.assign({}, options.jwt);
     var secret = options.secret;
 
+
+    if (payload && payload.accessToken ){
+      return Promise.resolve(payload.accessToken);
+    }
     return new Promise(function (resolve, reject) {
 
       if (!secret) {
@@ -134,6 +136,9 @@ module.exports = function () {
         }
       }
       else {
+        if (payload && payload.accessToken) {
+          return resolve(payload.accessToken);
+        }
         return resolve('Unable to generate token');
       }
     });

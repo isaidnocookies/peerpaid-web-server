@@ -101,7 +101,6 @@ function init() {
 // Exposed Modules
 Object.assign(init, {
   defaults: defaults,
-  ExtractJwt: _passportJwt.ExtractJwt,
   Verifier: _verifier2.default
 });
 module.exports = exports['default'];

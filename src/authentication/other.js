@@ -41,46 +41,6 @@ var defaults = {
 };
 
 
-
-var JWTVerifier = function () {
-  function JWTVerifier() {
-    _classCallCheck(this, JWTVerifier);
-  }
-
-  _createClass(JWTVerifier, [{
-    key: 'verify',
-
-    // JWT Verifier replacement
-    // to disable population from user service
-    value: function verify(req, payload, done) {
-
-      // var options = {
-      //   method: 'get',
-      //   url: '/users/login',
-      //   json: true,
-      //   body: req,
-      //   headers: {
-      //     //authorization: payload.token
-      //   }
-      // };
-      // dsController.socketRelay(options)({}, (error, result) => {
-      //   console.log('Error:', error);
-      //   console.log('Result:', result);
-      //   if (done) done(error || (result && result.error), { transaction: (result && result.response) } , result)
-        
-      // });
-
-      //done(null, { user: user }, user);
-
-    }
-  }]);
-
-  return JWTVerifier;
-}();
-
-// Export custom-auth init function
-
-
 function init() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -94,7 +54,7 @@ function init() {
 
     // Construct customSettings for passport custom strategy
     var name = options.name || defaults.name;
-    var authOptions = app.get('auth') || {};
+    var authOptions = app.get('authentication') || {};
     var customOptions = authOptions[name] || {};
     var customSettings = (0, _lodash2.default)({}, defaults, customOptions, (0, _lodash4.default)(options, ['Verifier']));
     var Verifier = _verifier2.default;
@@ -123,6 +83,5 @@ function init() {
 Object.assign(init, {
   defaults: defaults,
   Verifier: _verifier2.default,
-  JWTVerifier: JWTVerifier
 });
 module.exports = exports['default'];
