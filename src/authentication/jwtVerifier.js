@@ -213,14 +213,12 @@ module.exports = exports['default'];
 //       // var url = '/users/login';
 
 //       // dsController.callApi(method, url, req.body, null, (error, result) => {
-//       //   console.log('Error:', error || result.error);
 
 //       //   result = (result && result.result) || result;
 
 //       //   var error = error || (result && result.error);
 
 //       //   jwtverify.checkToken(result, result.token, () => {
-//       //     console.log("TODO:DATA", result)
 //       //     done(error, result, result);
 //       //   })
 
