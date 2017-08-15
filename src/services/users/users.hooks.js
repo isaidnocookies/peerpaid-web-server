@@ -25,7 +25,9 @@ module.exports = {
       ...restrict,
       attachDataServer
     ],
-    create: [],
+    create: [
+      attachDataServer,
+    ],
     update: [
       ...restrict,
       attachDataServer
@@ -69,28 +71,11 @@ module.exports = {
 
 function attachDataServer(hook) {
   // console.log("Token:", hook.params.accessToken)
-  new Promise((resolve, reject) => {
+    var payload = (hook.params && hook.params.payload) || hook.payload || {};
 
+    var accessToken = payload.accessToken;
 
-
-    var payload = hook.params.payload || hook.payload;
-
-    if (payload) {
-      if (payload.accessToken) {
-        console.log('Token for dataServer:', payload.accessToken);
-        hook.params.dataServer = featherClient(config.get('dataServer'), payload.accessToken);
-        resolve(hook);
-      }
-      else {
-        console.log('No Token ??', hook.method);
-        reject(hook)
-      }
-    }
-    else {
-      console.log("No Payload ??", hook)
-      reject()
-    }
-
-  });
+    hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
+    return hook;
 
 }

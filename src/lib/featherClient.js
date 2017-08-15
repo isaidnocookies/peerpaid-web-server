@@ -18,8 +18,12 @@ function createClient(host, token) {
 
   localStorage.setItem('feathers-jwt', token);
 
+
+  var headers = void 0;
+  if (token) headers = { 'authorization': localStorage.getItem('feathers-jwt') };
+
   client.configure(hooks())
-    .configure(rest(host).superagent(superagent, { 'headers': { 'authorization': localStorage.getItem('feathers-jwt') } }))
+    .configure(rest(host).superagent(superagent, { 'headers': headers }))
     .configure(auth({ storage: localStorage }));
 
   // client.service('users').get('5987943b2d071018cad6971b')
