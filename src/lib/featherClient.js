@@ -1,42 +1,72 @@
 // This is an example of using the client on the server with Node.js.
-// Most of the code is the same for the browser with the exception
-// of how modules are imported and configured. It depends on how you choose
-// to load them. Refer to the client section of docs.feathersjs.com for more detail.
-//
+// Rest default, and socketio optional function.
+// Terminate will close the socket if you do use socketio
+// Garbage collection tested with this method.
 
 const feathers = require('feathers/client');
 const rest = require('feathers-rest/client');
 const superagent = require('superagent');
 const hooks = require('feathers-hooks');
-const localStorage = require('localstorage-memory');
 const auth = require('feathers-authentication-client');
 
+const io = require('socket.io-client');
+const socketio = require('feathers-socketio/client');
 
-function createClient(host, token) {
+
+class simpleStorage {
+  constructor() {
+    this.items = {}
+  }
+  length() { return this.items.length };
+  getItem(key) { return this.items[key] };
+  setItem(key, value) { this.items[key] = value };
+  removeItem(key) { delete this.items[key] };
+  key(index) { return Object.keys(this.items)[index] }
+  clear() { Object.keys(this.items).forEach((key) => { delete this.items[key] }) }
+}
+
+function createClient(transport, host, token) {
 
   var client = feathers();
 
-  localStorage.setItem('feathers-jwt', token);
-
-
-  var headers = void 0;
-  if (token) headers = { 'authorization': localStorage.getItem('feathers-jwt') };
+  client.storage = new simpleStorage();
+  client.storage.setItem('feathers-jwt', token);
 
   client.configure(hooks())
-    .configure(rest(host).superagent(superagent, { 'headers': headers }))
-    .configure(auth({ storage: localStorage }));
+    .configure(transport)
+    .configure(auth({ storage: client.storage }))
 
-  // client.service('users').get('5987943b2d071018cad6971b')
-  //   .then(user => {
-  //     client.set('user', user);
-  //     console.log('User', client.get('user'));
-  //   })
-  //   .catch(function (error) {
-  //     console.error('Error authenticating!', error);
-  //   });
-
+  client.terminate = function () {
+    this.removeAllListeners()
+    this.disable();
+    this.storage.clear();
+    this.storage = void 0;
+  }
   return client;
-
 }
 
-module.exports = createClient;
+function createRestClient(host, token) {
+  var headers = { 'authorization': 'Bearer ' + token }
+  var client = createClient(rest(host).superagent(superagent, { 'headers': headers }), host, token)
+
+  return client;
+}
+
+function createSocketIoClient(host, token) {
+  var socket = io.connect(host);
+  var client = createClient(socketio(socket), host, token)
+
+  var clientTerminate = client.terminate;
+  client.terminate = () => {
+    socket.close();
+    clientTerminate.bind(client)();
+    socket = null;
+  }
+
+  return client
+}
+
+
+module.exports = createRestClient;
+module.exports.rest = createRestClient;
+module.exports.socketio = createSocketIoClient;
