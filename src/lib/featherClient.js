@@ -30,11 +30,15 @@ function createClient(transport, host, token) {
   var client = feathers();
 
   client.storage = new simpleStorage();
-  client.storage.setItem('feathers-jwt', token);
+  // client.storage.setItem('feathers-jwt', token);
+
+
 
   client.configure(hooks())
     .configure(transport)
-    .configure(auth({ storage: client.storage }))
+    .configure(auth(
+      { storage: client.storage }
+    ))
 
   client.terminate = function () {
     this.removeAllListeners()
@@ -46,7 +50,9 @@ function createClient(transport, host, token) {
 }
 
 function createRestClient(host, token) {
-  var headers = { 'authorization': 'Bearer ' + token }
+
+  var headers = void 0;
+  if (token ) headers = { 'authorization': 'Bearer ' + token }
   var client = createClient(rest(host).superagent(superagent, { 'headers': headers }), host, token)
 
   return client;

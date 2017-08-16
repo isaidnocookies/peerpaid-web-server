@@ -7,24 +7,24 @@ class Service {
   }
 
   find(params) {
-    return params.dataServer.service('users').find(params);
+    return params.dataServer.service('users').find(params.query);
   }
 
   get(id, params) {
-    return params.dataServer.service('users').get(id, params);
+    return params.dataServer.service('users').get(id); //, params);
   }
 
   create(data, params) {
-    console.log("Params:", params)
-    return params.dataServer.service('users').create(data, params);
+    console.log("We Got Here")
+    return params.dataServer.service('users').create(data);//, params);
   }
 
   update(id, data, params) {
-    return params.dataServer.service('users').update(id, data, params);
+    return params.dataServer.service('users').update(id, data);//, params);
   }
 
   patch(id, data, params) {
-    return params.dataServer.service('users').patch(id, data, params);
+    return params.dataServer.service('users').patch(id, data);//, params);
   }
 
   remove(id, params) {
