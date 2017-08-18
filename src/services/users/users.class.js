@@ -15,7 +15,6 @@ class Service {
   }
 
   create(data, params) {
-    console.log("We Got Here")
     return params.dataServer.service('users').create(data);//, params);
   }
 

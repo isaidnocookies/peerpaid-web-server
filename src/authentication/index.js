@@ -65,7 +65,10 @@ module.exports = function () {
       create: [
 
         hook => {
-          hook.result.accessToken = hook.params.payload.accessToken;
+          if (hook.params.payload && hook.params.payload.accessToken) {
+            console.log("AccessToken:", hook.params.payload.accessToken)
+            hook.result.accessToken = hook.params.payload.accessToken;
+          }
         }
       ]
     }
@@ -117,7 +120,7 @@ module.exports = function () {
     var secret = options.secret;
 
 
-    if (payload && payload.accessToken ){
+    if (payload && payload.accessToken) {
       return Promise.resolve(payload.accessToken);
     }
     return new Promise(function (resolve, reject) {
@@ -127,6 +130,7 @@ module.exports = function () {
       }
 
       if (jwtverify.getKey) {
+        console.log("Payload:", payload)
         var token = jwtverify.getKey(payload);
         if (token) {
           return resolve(token);
