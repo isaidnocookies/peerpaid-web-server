@@ -16,7 +16,7 @@ dataServer.authenticate({
 .then(payload => {
   console.log('JWT Payload', payload);
   return dataServer.service('users').get(payload._id);
-})
+}) 
 .then(user => {
   console.log("User!", user)
   dataServer.set('user', user);
