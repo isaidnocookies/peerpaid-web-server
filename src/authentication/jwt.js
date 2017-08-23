@@ -89,7 +89,7 @@ function init() {
       }
 
       // Register 'jwt' strategy with passport
-      debug('Registering jwt authentication strategy with options:', strategyOptions);
+      // debug('Registering jwt authentication strategy with options:', strategyOptions);
       app.passport.use(jwtSettings.name, new _passportCustom.Strategy(verifier.verify.bind(verifier)));
       app.passport.options(jwtSettings.name, jwtSettings);
 

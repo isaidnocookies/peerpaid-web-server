@@ -70,7 +70,7 @@ function init() {
       }
 
       // Register 'custom' strategy with passport
-      debug('Registering custom authentication strategy with options:', customSettings);
+      // debug('Registering custom authentication strategy with options:', customSettings);
       app.passport.use(customSettings.name, new _passportCustom.Strategy(verifier.verify.bind(verifier)));
       app.passport.options(customSettings.name, customSettings); // do we need this ??
 

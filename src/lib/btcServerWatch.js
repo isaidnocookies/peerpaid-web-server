@@ -3,39 +3,39 @@ var featherClient = require('./featherClient');
 
 var jwtdecode = require('jwt-decode');
 
-var dataServer = featherClient.socketio(config.get('dataServer'));
+var btcServer = featherClient.socketio(config.get('btcServer'));
 
-dataServer.authenticate({
-  strategy: "other",
-  username: "volure",
-  password: "MyPassword"
-}).then(response => {
-  console.log('Authenticated!', response);
-  return dataServer.passport.verifyJWT(response.accessToken);
-})
-.then(payload => {
-  console.log('JWT Payload', payload);
-  return dataServer.service('users').get(payload._id);
-})
-.then(user => {
-  console.log("User!", user)
-  dataServer.set('user', user);
-  console.log('User', dataServer.get('user'));
-})
-.catch(function(error){
-  console.error('Error authenticating!', error);
-});
+// btcServer.authenticate({
+//   strategy: "other",
+//   username: "volure",
+//   password: "MyPassword"
+// }).then(response => {
+//   console.log('Authenticated! btcServer', response);
+//   return btcServer.passport.verifyJWT(response.accessToken);
+// })
+// .then(payload => {
+//   console.log('JWT Payload btcServer', payload);
+//   return btcServer.service('bitcoin-transactions').get();
+// })
+// .then(bitcoin => {
+//   console.log("Bitcoin! btcServer", bitcoin)
+//   btcServer.set('bitcoin', bitcoin);
+//   console.log('Bitcoin', btcServer.get('bitcoin-transactions'));
+// })
+// .catch(function(error){
+//   console.error('Error authenticating! btcServer', error);
+// });
 
-dataServer.on("connected", (socket) => {
+btcServer.on("connected", (socket) => {
   console.log("Connected:", socket);
 })
-dataServer.on("disconnected", (socket) => {
+btcServer.on("disconnected", (socket) => {
   console.log("Disconnected:", socket)
 })
-dataServer.service("users").on("created", (user) => {
+btcServer.service("bitcoin-transactions").on("created", (bitcoin) => {
   console.log("###################################")
-  console.log("############## users ##############")
+  console.log("############## bitcoin ##############")
   console.log("###################################")
-  console.log("User:", user);
+  console.log("Bitcoin:", bitcoin);
 })
-console.log("Watcher Listening")
+console.log("Watcher Listening bitcoin-transactions")

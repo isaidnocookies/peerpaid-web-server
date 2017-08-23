@@ -5,8 +5,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 
-const serverWatcher = require('./lib/dataServerWatch')
-
 const feathers = require('feathers');
 const configuration = require('feathers-configuration');
 const hooks = require('feathers-hooks');
@@ -21,6 +19,8 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 
 const authentication = require('./authentication');
+
+const mongoose = require('./mongoose');
 
 const app = feathers();
 
@@ -37,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set up Plugins and providers
 app.configure(hooks());
+app.configure(mongoose);
 app.configure(rest());
 app.configure(socketio());
 

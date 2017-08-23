@@ -15,8 +15,7 @@ const restrict = [
 
 module.exports = {
   before: {
-    all: [
-    ],
+    all: [],
     find: [
       authenticate('jwt'),
       attachDataServer
@@ -70,7 +69,6 @@ module.exports = {
 
 
 function attachDataServer(hook) {
-  // console.log("Token:", hook.params.accessToken)
     var payload = (hook.params && hook.params.payload) || hook.payload || {};
 
     var accessToken = payload.accessToken;

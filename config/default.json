@@ -6,17 +6,17 @@
     "default": 10,
     "max": 50
   },
-  "apiServer":"http://localhost:3008",
-  "btcServer":"http://localhost:3009",
-  "dataServer":"http://localhost:3002",
-  "webServer":"http://localhost:3001",
-  "webClient":"http://localhost:3000",
-  "ports":{
-    "apiClient":3008,
-    "btcServer":3009,
-    "dataServer":3002,
-    "webServer":3001,
-    "webClient":3000
+  "apiServer": "http://localhost:3008",
+  "btcServer": "http://localhost:3009",
+  "dataServer": "http://localhost:3002",
+  "webServer": "http://localhost:3001",
+  "webClient": "http://localhost:3000",
+  "ports": {
+    "apiClient": 3008,
+    "btcServer": 3009,
+    "dataServer": 3002,
+    "webServer": 3001,
+    "webClient": 3000
   },
   "jwt": {
     "pub": "/data/jwt.pub"
@@ -44,5 +44,6 @@
       "usernameField": "email",
       "passwordField": "password"
     }
-  }
+  },
+  "mongodb": "mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server"
 }
