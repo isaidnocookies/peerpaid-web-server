@@ -90,7 +90,7 @@ module.exports = function (app) {
 
       module.exports.dsWalletService.on('updated', (wallet) => {
         console.log("About to create wallet")
-        module.exports.walletService.update(wallet).then(wallet => {
+        module.exports.walletService.update(wallet._id, wallet).then(wallet => {
           console.log("About to create wallet on DS")
         }).catch(error => {
           console.log('unable to create wallet on Ds', error)
