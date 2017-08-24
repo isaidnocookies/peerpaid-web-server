@@ -62,6 +62,7 @@ module.exports = function (app) {
 
   function init(app) {
 
+    module.exports.walletService = app.service('wallets');
     module.exports.transactionService = app.service('bitcoin-transactions');
     module.exports.pendingTransactionService = app.service('bitcoin-pending-transactions');
 
@@ -74,9 +75,28 @@ module.exports = function (app) {
 
       module.exports.dataServer = dataServer;
 
+      module.exports.dsWalletService = module.exports.dataServer.service('wallets');
       module.exports.dsTransactionService = module.exports.dataServer.service("bitcoin-transactions")
       module.exports.dsPendingTransactionService = module.exports.dataServer.service("bitcoin-pending-transactions")
       
+      module.exports.dsWalletService.on('created', (wallet) => {
+        console.log("About to create wallet")
+        module.exports.walletService.create(wallet).then(wallet => {
+          console.log("About to create wallet on DS")
+        }).catch(error => {
+          console.log('unable to create wallet on Ds', error)
+        })
+      })
+
+      module.exports.dsWalletService.on('updated', (wallet) => {
+        console.log("About to create wallet")
+        module.exports.walletService.update(wallet).then(wallet => {
+          console.log("About to create wallet on DS")
+        }).catch(error => {
+          console.log('unable to create wallet on Ds', error)
+        })
+      })
+
       module.exports.dsTransactionService.on("created", (transaction) => {
         module.exports.transactionService.create(transaction).then((transaction) => {
           console.log('Created transaction', transaction)
