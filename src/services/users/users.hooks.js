@@ -3,6 +3,8 @@ const commonHooks = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const config = require('config');
+
+var app;
 const featherClient = require('../../lib/featherClient');
 
 const restrict = [
@@ -13,9 +15,21 @@ const restrict = [
   })
 ];
 
+setTimeout(() => {
+  app = require('../../app');
+},100)
+
 module.exports = {
   before: {
-    all: [],
+    all: [
+      hook => {
+        if (hook.params.provider === 'relay'){
+          hook.result = hook.params.relayData;
+          return hook;
+        }
+        return hook;
+      }
+    ],
     find: [
       authenticate('jwt'),
       attachDataServer

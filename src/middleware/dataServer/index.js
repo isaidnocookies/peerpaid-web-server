@@ -61,7 +61,7 @@ console.log("Transactions Watcher")
 module.exports = function (app) {
 
   function init(app) {
-
+    module.exports.requestService = app.service('requests');
     module.exports.walletService = app.service('wallets');
     module.exports.transactionService = app.service('bitcoin-transactions');
     module.exports.pendingTransactionService = app.service('bitcoin-pending-transactions');
@@ -74,11 +74,48 @@ module.exports = function (app) {
     else {
 
       module.exports.dataServer = dataServer;
-
+      
+      module.exports.dsRequestService = module.exports.dataServer.service('requests');
       module.exports.dsWalletService = module.exports.dataServer.service('wallets');
       module.exports.dsTransactionService = module.exports.dataServer.service("bitcoin-transactions")
       module.exports.dsPendingTransactionService = module.exports.dataServer.service("bitcoin-pending-transactions")
       
+      module.exports.dsRequestService.on('created', (request) => {
+        console.log('About to create request')
+        module.exports.requestService.create(request).then(request => {
+          console.log('About to create request on DS')
+        }).catch(error => {
+          console.log('unable to create request on DS', error)
+        })
+      })
+
+      module.exports.requestService.on('created', (request) => {
+        console.log('About to create request')
+        module.exports.dsRequestService.create(request).then(request => {
+          console.log('About to create request on WS')
+        }).catch(error => {
+          console.log('unable to create request on WS', error)
+        })
+      })
+
+      // module.exports.dsRequestService.on('updated', (request) => {
+      //   console.log('About to create request')
+      //   module.exports.requestService.update(request).then(request => {
+      //     console.log('About to create request on DS')
+      //   }).catch(error => {
+      //     console.log('unable to create request on DS')
+      //   })
+      // })
+
+      // module.exports.requestService.on('updated', (request) => {
+      //   console.log('About to create request')
+      //   module.exports.dsRequestService.updated(request).then(request => {
+      //     console.log('About to create request on WS')
+      //   }).catch(error => {
+      //     console.log('unable to create request on WS')
+      //   })
+      // })
+
       module.exports.dsWalletService.on('created', (wallet) => {
         console.log("About to create wallet")
         module.exports.walletService.create(wallet).then(wallet => {
