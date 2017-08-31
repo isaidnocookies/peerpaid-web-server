@@ -9,7 +9,8 @@ module.exports = function (app) {
     request: {
       type: String, 
       enum: [
-        'GET_BITCOIN_WALLET'
+        'GET_BITCOIN_WALLET',
+        'REQUEST_BITCOIN_WALLET'
       ], required: true
     },
     webServerCantResolve: { type: Boolean },
