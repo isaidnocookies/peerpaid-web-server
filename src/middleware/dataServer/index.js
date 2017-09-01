@@ -169,7 +169,7 @@ module.exports = function (app) {
               }
             }).then((check) => {
               console.log('check for added fields',check)
-            })
+            }).catch(error => console.log('serverUpdate error', error))
             break;
         }
       }
@@ -189,21 +189,20 @@ module.exports = function (app) {
       })
 
       module.exports.requestService.on('created', (request) => {
-        console.log('About to create request: webserver-requestService')
+        console.log('About to create request: webserver-requestService', request)
         module.exports.dsRequestService.create(request).then(request => {
           console.log('About to create request on WS', request)
+          serverUpdate(request)
         }).catch(error => {
           console.log('unable to create request on WS', error)
         })
-
-        serverUpdate(request)
       })
 
       module.exports.dsRequestService.on('updated', (request) => {
         updateQueue[`updated:serverRequest:${request._id}`] = (resolve, reject) => {
-            console.log('About to update request - dsRequestService', request)
-            module.exports.requestService.update(request._id, {$set:request} ).then(request => {
-              console.log('About to update request on WS')
+          console.log('About to update request - dsRequestService', request)
+            module.exports.requestService.update(request._id, {$set:request} ).then((request) => {
+              console.log('About to update request on WS', request)
               resolve();
             }).catch(error => {
               console.log('unable to update request on WS', error)
@@ -216,15 +215,14 @@ module.exports = function (app) {
         console.log('About to update request - requestService', request)
         updateQueue[`updated:dataServerRequest:${request._id}`] = (resolve, reject) => {
             console.log('About to update request - requestService')
-            module.exports.dsRequestService.update(request._id, {$set:request} ).then(request => {
-              console.log('About to update request on DS')
+            module.exports.dsRequestService.update(request._id, {$set:request} ).then((request) => {
+              console.log('About to update request on DS', request)
               resolve();
             }).catch(error => {
               console.log('unable to update request on DS', error)
               reject();
             })
         }
-        serverUpdate(request)
       })
 
       module.exports.dsWalletService.on('created', (wallet) => {
