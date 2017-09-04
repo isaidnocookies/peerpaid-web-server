@@ -21,7 +21,10 @@ module.exports = function (app) {
     btcServerDidResolve: { type: Boolean },
     owner: { type: Schema.ObjectId, required: true },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+
+
+    address: { type: String }
   });
 
   return mongooseClient.model('requests', requests);

@@ -1,5 +1,4 @@
 {
-  "extends": "airbnb",
   "parser": "babel-eslint",
   "plugins": [
     "react",
@@ -18,6 +17,16 @@
   },
   "rules": {
     "react/jsx-filename-extension": 0,
-    "jsx-a11y/label-has-for": 0
+    "jsx-a11y/label-has-for": 0,
+    "no-const-assign": "warn",
+    "no-this-before-super": "warn",
+    "no-undef": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "constructor-super": "warn",
+    "valid-typeof": "warn",
+    "quotes": ["error", "single"],
+    "semi": "error",
+    "no-console":"error"
   }
 }
