@@ -37,29 +37,31 @@ var serviceName;
 module.exports = function (app, localService, remoteService, updateCallback) {
 
 
-  if (typeof remoteService === 'function'){
+  if (typeof remoteService === 'function') {
     updateCallback = remoteService;
     remoteService = void 0;
   }
 
-  if (remoteService){
+  if (remoteService) {
     serviceName = remoteService.path;
   }
- 
-  if(!serviceName){
+
+  if (!serviceName) {
     serviceName = localService.path;
   }
 
-  if (typeof updateCallback !== 'function'){
+  if (typeof updateCallback !== 'function') {
     throw new Error('Update callback must be a function');
   }
 
 
   localService.on('created', (result) => {
-    remoteService.create(result).then(result => {
-      return result;
-    }).catch(error => {
-      debug(`Unable to create ${serviceName} on Remote`, error);
+    queue.set(`created:${serviceName}:${result._id}`, (resolve, reject) => {
+      remoteService.create(result).then(result => {
+        return result;
+      }).catch(error => {
+        debug(`Unable to create ${serviceName} on Remote`, error);
+      });
     });
     updateCallback(result);
   });
@@ -73,13 +75,12 @@ module.exports = function (app, localService, remoteService, updateCallback) {
           debug(`unable to create ${serviceName} on Remote`, error);
         });
       }
-    }).catch(err => 
-      {
-        debug(`Unable to get local ${serviceName} created remotely`);
-        localService.create(result).then(lresult => {
-          debug(`Created new ${serviceName} from remote create`);
-        });
+    }).catch(err => {
+      debug(`Unable to get local ${serviceName} created remotely`);
+      localService.create(result).then(lresult => {
+        debug(`Created new ${serviceName} from remote create`);
       });
+    });
   });
 
   localService.on('updated', (result) => {
@@ -100,9 +101,9 @@ module.exports = function (app, localService, remoteService, updateCallback) {
       if (!isEqual(result, lresult)) {
         debug(`About to update ${serviceName}`);
         localService.update(result._id, { $set: result }).then((result) => {
-          debug(`Updated ${serviceName} on Remote`, result);
+          debug(`Updated ${serviceName} on Local`, result);
         }).catch(error => {
-          debug(`Unable to update ${serviceName} on Remote`, error);
+          debug(`Unable to update ${serviceName} on Local`, error);
         });
       }
     }).catch(error => {
@@ -110,5 +111,21 @@ module.exports = function (app, localService, remoteService, updateCallback) {
     });
   });
 
+  localService.on('removed', (result) => {
+    queue.set(`removed:${serviceName}:${result._id}`, (resolve, reject) => {
+      remoteService.remove(result._id).then((result) => {
+        debug(`Removed ${serviceName} from Remote`);
+      }).catch(error => {
+        debug(`Unable to remove ${serviceName} from Remote`);
+      });
+    });
+  });
 
+  remoteService.on('removed', (result) => {
+    localService.remove(result._id).then((result) => {
+      debug(`Removed ${serviceName} from Local`);
+    }).catch(error => {
+      debug(`Unable to remove ${serviceName} from Local`);
+    });
+  });
 };
