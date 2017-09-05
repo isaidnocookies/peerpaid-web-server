@@ -1,10 +1,10 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
+const { populate } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const config = require('config');
 
-var app;
 const featherClient = require('../../lib/featherClient');
 
 const restrict = [
@@ -15,9 +15,15 @@ const restrict = [
   })
 ];
 
-setTimeout(() => {
-  app = require('../../app');
-},100)
+const walletSchema = {
+  include: {
+    service: 'wallets',
+    nameAs: 'bitcoinWallets',
+    parentField: 'bitcoinWallets',
+    childField: '_id',
+    asArray: true,
+  }
+};
 
 module.exports = {
   before: {
@@ -36,7 +42,7 @@ module.exports = {
     ],
     get: [
       ...restrict,
-      attachDataServer
+      attachDataServer,
     ],
     create: [
       attachDataServer,
@@ -59,8 +65,9 @@ module.exports = {
     all: [
       commonHooks.when(
         hook => hook.params.provider,
-        commonHooks.discard('password')
-      )
+        commonHooks.discard('password'),
+        populate({ schema: walletSchema }),
+      ),
     ],
     find: [],
     get: [],
