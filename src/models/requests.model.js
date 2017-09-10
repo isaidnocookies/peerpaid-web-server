@@ -7,7 +7,7 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const requests = new Schema({
     request: {
-      type: String, 
+      type: String,
       enum: [
         'GET_BITCOIN_WALLET',
         'REQUEST_BITCOIN_WALLET'

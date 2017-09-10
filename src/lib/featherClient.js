@@ -15,14 +15,14 @@ const socketio = require('feathers-socketio/client');
 
 class simpleStorage {
   constructor() {
-    this.items = {}
+    this.items = {};
   }
-  length() { return this.items.length };
-  getItem(key) { return this.items[key] };
-  setItem(key, value) { this.items[key] = value };
-  removeItem(key) { delete this.items[key] };
-  key(index) { return Object.keys(this.items)[index] }
-  clear() { Object.keys(this.items).forEach((key) => { delete this.items[key] }) }
+  length() { return this.items.length; }
+  getItem(key) { return this.items[key]; }
+  setItem(key, value) { this.items[key] = value; }
+  removeItem(key) { delete this.items[key]; }
+  key(index) { return Object.keys(this.items)[index]; }
+  clear() { Object.keys(this.items).forEach((key) => { delete this.items[key]; }); }
 }
 
 function createClient(transport, host, token) {
@@ -38,38 +38,38 @@ function createClient(transport, host, token) {
     .configure(transport)
     .configure(auth(
       { storage: client.storage }
-    ))
+    ));
 
   client.terminate = function () {
-    this.removeAllListeners()
+    this.removeAllListeners();
     this.disable();
     this.storage.clear();
     this.storage = void 0;
-  }
+  };
   return client;
 }
 
 function createRestClient(host, token) {
 
   var headers = void 0;
-  if (token ) headers = { 'authorization': 'Bearer ' + token }
-  var client = createClient(rest(host).superagent(superagent, { 'headers': headers }), host, token)
+  if (token ) headers = { 'authorization': 'Bearer ' + token };
+  var client = createClient(rest(host).superagent(superagent, { 'headers': headers }), host, token);
 
   return client;
 }
 
 function createSocketIoClient(host, token) {
   var socket = io.connect(host);
-  var client = createClient(socketio(socket), host, token)
+  var client = createClient(socketio(socket), host, token);
 
   var clientTerminate = client.terminate;
   client.terminate = () => {
     socket.close();
     clientTerminate.bind(client)();
     socket = null;
-  }
+  };
 
-  return client
+  return client;
 }
 
 
