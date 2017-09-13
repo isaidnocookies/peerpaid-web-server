@@ -16,11 +16,9 @@ function isEqual(newObject, oldObject) {
           debug(`${key} does not equal, obj`);
           equals = false;
         }
-      }
-      else if (oldVar instanceof Date || newVar instanceof Date) {
+      } else if (oldVar instanceof Date || newVar instanceof Date) {
         //Skip Date
-      }
-      else {
+      } else {
         var ov = oldVar && oldVar.toString();
         var nv = newVar && newVar.toString();
         equals = nv === ov;
@@ -33,9 +31,10 @@ function isEqual(newObject, oldObject) {
   return equals;
 }
 
-var serviceName;
+
 module.exports = function (app, localService, remoteService, updateCallback) {
 
+  var serviceName;
 
   if (typeof remoteService === 'function') {
     updateCallback = remoteService;
@@ -58,34 +57,30 @@ module.exports = function (app, localService, remoteService, updateCallback) {
   localService.on('created', (result) => {
     queue.set(`created:${serviceName}:${result._id}`, (resolve, reject) => {
       remoteService.create(result).then(result => {
+        resolve();
         return result;
       }).catch(error => {
         debug(`Unable to create ${serviceName} on Remote`, error);
+        reject();
       });
     });
     updateCallback(result);
   });
 
   remoteService.on('created', (result) => {
-    localService.get(result._id).then(lresult => {
-      if (!lresult || !lresult._id) {
-        localService.create(result).then(result => {
-          debug(`Created ${serviceName} on Remote`, result);
-        }).catch(error => {
-          debug(`unable to create ${serviceName} on Remote`, error);
-        });
-      }
-    }).catch(err => {
-      debug(`Unable to get local ${serviceName} created remotely`);
-      localService.create(result).then(lresult => {
-        debug(`Created new ${serviceName} from remote create`);
-      });
+    localService.create(result).then(result => {
+      debug(`Created ${serviceName} on Local`, result);
+    }).catch(error => {
+      debug(`unable to create ${serviceName} on Local`, error);
     });
+
   });
 
   localService.on('updated', (result) => {
     queue.set(`updated:${serviceName}:${result._id}`, (resolve, reject) => {
-      remoteService.update(result._id, { $set: result }).then((result) => {
+      remoteService.update(result._id, {
+        $set: result
+      }).then((result) => {
         debug(`Updated ${serviceName} on Remote`, result);
         resolve();
       }).catch(error => {
@@ -97,18 +92,33 @@ module.exports = function (app, localService, remoteService, updateCallback) {
   });
 
   remoteService.on('updated', (result) => {
-    localService.get(result._id).then(lresult => {
-      if (!isEqual(result, lresult)) {
-        debug(`About to update ${serviceName}`);
-        localService.update(result._id, { $set: result }).then((result) => {
-          debug(`Updated ${serviceName} on Local`, result);
-        }).catch(error => {
-          debug(`Unable to update ${serviceName} on Local`, error);
-        });
-      }
-    }).catch(error => {
-      debug(`Unable to get local ${serviceName} updated remotely`, error);
-    });
+    var runCount = 0;
+
+    function runGetLocal() {
+      localService.get(result._id).then(lresult => {
+        if (!isEqual(result, lresult)) {
+          debug('equal!!', result, '\n===\n', lresult);
+          debug(`About to update ${serviceName}`);
+          localService.update(result._id, {
+            $set: result
+          }).then((result) => {
+            debug(`Updated ${serviceName} on Local`, result);
+          }).catch(error => {
+
+            debug(`Unable to update ${serviceName} on Local`, error);
+          });
+        } else {
+          debug('equal??', result, '\n===\n', lresult);
+
+        }
+      }).catch(error => {
+        if (runCount < 5){
+          runCount++;
+          setTimeout(runGetLocal, 1);
+        }
+      });
+    }
+    runGetLocal();
   });
 
   localService.on('removed', (result) => {

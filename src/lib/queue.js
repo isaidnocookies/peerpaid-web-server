@@ -12,7 +12,8 @@ function syncServer() {
 
   function performSync(syncQueue) {
 
-    var promises = Object.keys(uQueue).map((key) => {
+
+    function makePromise(key) {
       debug('Enqueue:', key);
       uQueue[key].attempts = 0;
       return new Promise(uQueue[key]).then(result => {
@@ -20,34 +21,59 @@ function syncServer() {
         return result;
       }).catch(err => {
         uQueue[key].attempts++;
-        if (uQueue[key].attempts >= 5){
+        if (uQueue[key].attempts >= 5) {
           debug('Trouble executing updateQueue item:', key, uQueue[key].toString());
           delete uQueue[key];
         }
         return err;
       });
+    }
+
+    var createPromises = [];
+    Object.keys(uQueue).forEach((key) => {
+      if (key.match(/create.*/g)) {
+        createPromises.push(makePromise(key));
+      }
     });
 
-    var timeout = new Promise((resolve, reject) => {
-      var timeoutInt = setInterval(() => {
-        if (Object.keys(uQueue).length === 0) {
+    function createTimeout() {
+      return new Promise((resolve, reject) => {
+        var done = false;
+        var timeoutInt = setInterval(() => {
+          if (Object.keys(uQueue).length === 0) {
+            clearInterval(timeoutInt);
+            resolve();
+            done = true;
+          }
+        }, 100);
+
+        setTimeout(() => {
           clearInterval(timeoutInt);
-          resolve();
-        }
-      }, 100);
+          if (!done) debug('Sync Timeout', Object.keys(syncQueue));
+          reject('Sync Taking Too Long.');
+          updateQueue = Object.assign({}, syncQueue, updateQueue);
+        }, 10000);
+      });
+    }
 
-      setTimeout(() => {
-        clearInterval(timeoutInt);
-        reject('Sync Taking Too Long.');
-      }, 10000);
-    });
+    function processUpdates() {
+      var updatePromises = [];
+      Object.keys(uQueue).forEach((key) => {
+        updatePromises.push(makePromise(key));
+      });
+      Promise.all(updatePromises).then(result => {
+        syncBusy = false;
+      }).catch(err => {
+        syncBusy = false;
+        debug('Update Sync failed:', err);
+      });
+    }
 
-    promises.push(timeout);
-    Promise.all(promises).then(result => {
-      syncBusy = false;
+    Promise.all(createPromises).then(result => {
+      processUpdates();
     }).catch(err => {
-      syncBusy = false;
-      debug('Sync failed:', err);
+      processUpdates();
+      debug('Create Sync failed:', err);
     });
 
   }
@@ -60,6 +86,7 @@ setInterval(() => {
 
 
 module.exports.set = (key, promiseFunc) => {
+  debug('SetQueue:',key);
   updateQueue[key] = promiseFunc;
 };
 

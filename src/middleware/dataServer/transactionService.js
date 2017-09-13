@@ -1,19 +1,15 @@
 const debug = require('../../lib/debug');
 const queue = require('../../lib/queue');
 
+const serviceRelayCap = require('../../lib/serviceRelayCap');
+
 module.exports = (app, localService, remoteService) => {
+  function serverUpdate(element){
 
-  remoteService.on('created', (transaction) => {
-    localService.create(transaction).then((transaction) => {
-      debug('Created transaction', transaction);
-    }).catch(err => debug('web-server add transaction', err));
+  }
+
+  serviceRelayCap(app, localService, remoteService, (element) => {
+    serverUpdate(element);
   });
-
-  remoteService.on('removed', (transaction) => {
-    localService.remove(transaction).then((transaction) => {
-      debug('Removed transaction', transaction);
-    }).catch(err => debug('web-server remove transaction', err));
-  });
-
 
 };

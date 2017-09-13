@@ -1,23 +1,15 @@
 const debug = require('../../lib/debug');
 const queue = require('../../lib/queue');
 
+const serviceRelayCap = require('../../lib/serviceRelayCap');
+
 module.exports = (app, localService, remoteService) => {
+  function serverUpdate(element){
 
-  remoteService.on('created', (wallet) => {
-    debug('About to create wallet');
-    localService.create(wallet).then(wallet => {
-      debug('About to create wallet on DS');
-    }).catch(error => {
-      debug('unable to create wallet on Ds', error);
-    });
+  }
+
+  serviceRelayCap(app, localService, remoteService, (element) => {
+    serverUpdate(element);
   });
 
-  remoteService.on('updated', (wallet) => {
-    debug('About to create wallet');
-    localService.update(wallet._id, wallet).then(wallet => {
-      debug('About to create wallet on DS');
-    }).catch(error => {
-      debug('unable to create wallet on Ds', error);
-    });
-  });
 };
