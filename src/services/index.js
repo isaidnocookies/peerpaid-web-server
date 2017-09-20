@@ -5,6 +5,7 @@ const wallets = require('./wallets/wallets.service.js');
 const requests = require('./requests/requests.service.js');
 const currencyAccounts = require('./currency-accounts/currency-accounts.service.js');
 const bitcoinTransactionsProccessed = require('./bitcoin-transactions-proccessed/bitcoin-transactions-proccessed.service.js');
+const queueBank = require('./queue-bank/queue-bank.service.js');
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -14,4 +15,5 @@ module.exports = function () {
   app.configure(requests);
   app.configure(currencyAccounts);
   app.configure(bitcoinTransactionsProccessed);
+  app.configure(queueBank);
 };
