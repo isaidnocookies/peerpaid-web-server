@@ -1,6 +1,6 @@
 // Application hooks that run for every service
 const logger = require('./hooks/logger');
-
+const hooks = require('feathers-hooks-common');
 module.exports = {
   before: {
     all: [],
@@ -13,7 +13,11 @@ module.exports = {
   },
 
   after: {
-    all: [ logger() ],
+    all: [
+      hooks.iff(hook => { hook.path !== 'queue-bank'; },
+        logger()
+      )
+    ],
     find: [],
     get: [],
     create: [
@@ -24,7 +28,7 @@ module.exports = {
   },
 
   error: {
-    all: [ logger() ],
+    all: [logger()],
     find: [],
     get: [],
     create: [],
