@@ -16,7 +16,6 @@ module.exports = (app, queueBank) => {
   var guid = uuid();
   var queueBatch = dataServerClient.service('queue-batch');
 
-
   return new Promise((rootResolve, rootReject) => {
 
     var rootPromise = new Promise((resolve, reject) => {
@@ -183,31 +182,23 @@ module.exports = (app, queueBank) => {
                 service.push(queueItem.id);
               });
               promises = Object.keys(queueBuffer).map((serviceName) => {
-                var lQuery = {
-                  _id: {
-                    $in: queueBuffer[serviceName]
-                  }
-                };
-                return app.service(serviceName).find({ query: lQuery, paginate: false }).then(serviceCreateObjects => {
-                  return queueBatch.create({
-                    method: REMOVE,
-                    serviceName,
-                    payload: serviceCreateObjects
-                  }).then(result => {
-                    delete queueBuffer[serviceName];
-                    completedServices.push(serviceName);
-                  }).catch(err => {
-                    debug('Unable to create elements:', serviceName, err);
-                  });
-                  // return dataServerClient.service(serviceName).update(null, serviceCreateObjects).then(result => {
-                  //   delete queueBuffer[serviceName];
-                  //   created.push(serviceName);
-                  // }).catch(err => {
-                  //   debug('Unable to create elements:', serviceName, err);
-                  // });
+                return queueBatch.create({
+                  method: REMOVE,
+                  serviceName,
+                  payload: queueBuffer[serviceName]
+                }).then(result => {
+                  delete queueBuffer[serviceName];
+                  completedServices.push(serviceName);
                 }).catch(err => {
-                  debug('Unable to find elements:', serviceName, err);
+                  debug('Unable to create elements:', serviceName, err);
                 });
+                // return dataServerClient.service(serviceName).update(null, serviceCreateObjects).then(result => {
+                //   delete queueBuffer[serviceName];
+                //   created.push(serviceName);
+                // }).catch(err => {
+                //   debug('Unable to create elements:', serviceName, err);
+                // });
+
               });
 
               promises.push(new Promise((resolve, reject) => {
