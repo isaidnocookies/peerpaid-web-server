@@ -39,11 +39,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.configure(hooks());
 app.configure(mongoose);
 app.configure(rest());
-app.configure(socketio());
+app.configure(socketio(function (io){
+  io.on('connection', function (socket){
+    socket.on('set-currencyAccounts', function (currencyAccounts, callback){
+      console.log('we got it', currencyAccounts);
+      socket.feathers.currencyAccounts = currencyAccounts;
+    });
+  });
+}));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(authentication);
+
 // Set up our services (see `services/index.js`)
 app.configure(services);
 
