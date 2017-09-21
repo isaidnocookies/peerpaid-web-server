@@ -1,6 +1,6 @@
 const debug = require('./debug');
 const queue = require('./queue');
-
+const queueMiddleware = require('../middleware/queue');
 
 function isEqual(newObject, oldObject) {
   var keys = Object.assign([], Object.keys(newObject), Object.keys(oldObject));
@@ -55,15 +55,17 @@ module.exports = function (app, localService, remoteService, updateCallback) {
 
 
   localService.on('created', (result) => {
-    queue.set(`created:${serviceName}:${result._id}`, (resolve, reject) => {
-      remoteService.create(result).then(result => {
-        resolve();
-        return result;
-      }).catch(error => {
-        debug(`Unable to create ${serviceName} on Remote`, error);
-        reject();
-      });
-    });
+    queueMiddleware.createData(serviceName, result, result._id);
+
+    // queue.set(`created:${serviceName}:${result._id}`, (resolve, reject) => {
+    //   remoteService.create(result).then(result => {
+    //     resolve();
+    //     return result;
+    //   }).catch(error => {
+    //     debug(`Unable to create ${serviceName} on Remote`, error);
+    //     reject();
+    //   });
+    // });
     updateCallback(result);
   });
 
@@ -77,17 +79,18 @@ module.exports = function (app, localService, remoteService, updateCallback) {
   });
 
   localService.on('updated', (result) => {
-    queue.set(`updated:${serviceName}:${result._id}`, (resolve, reject) => {
-      remoteService.update(result._id, {
-        $set: result
-      }).then((result) => {
-        debug(`Updated ${serviceName} on Remote`, result);
-        resolve();
-      }).catch(error => {
-        debug(`Unable to update ${serviceName} on Remote`, error);
-        reject();
-      });
-    });
+    queueMiddleware.updateData(serviceName, result, result._id);
+    // queue.set(`updated:${serviceName}:${result._id}`, (resolve, reject) => {
+    //   remoteService.update(result._id, {
+    //     $set: result
+    //   }).then((result) => {
+    //     debug(`Updated ${serviceName} on Remote`, result);
+    //     resolve();
+    //   }).catch(error => {
+    //     debug(`Unable to update ${serviceName} on Remote`, error);
+    //     reject();
+    //   });
+    // });
     updateCallback(result);
   });
 
@@ -97,7 +100,7 @@ module.exports = function (app, localService, remoteService, updateCallback) {
     function runGetLocal() {
       localService.get(result._id).then(lresult => {
         if (!isEqual(result, lresult)) {
-          debug('equal!!', result, '\n===\n', lresult);
+          // debug('equal!!', result, '\n===\n', lresult);
           debug(`About to update ${serviceName}`);
           localService.update(result._id, {
             $set: result
@@ -108,7 +111,7 @@ module.exports = function (app, localService, remoteService, updateCallback) {
             debug(`Unable to update ${serviceName} on Local`, error);
           });
         } else {
-          debug('equal??', result, '\n===\n', lresult);
+          // debug('equal??', result, '\n===\n', lresult);
 
         }
       }).catch(error => {
@@ -122,13 +125,14 @@ module.exports = function (app, localService, remoteService, updateCallback) {
   });
 
   localService.on('removed', (result) => {
-    queue.set(`removed:${serviceName}:${result._id}`, (resolve, reject) => {
-      remoteService.remove(result._id).then((result) => {
-        debug(`Removed ${serviceName} from Remote`);
-      }).catch(error => {
-        debug(`Unable to remove ${serviceName} from Remote`);
-      });
-    });
+    queueMiddleware.removeData(serviceName, result._id);
+    // queue.set(`removed:${serviceName}:${result._id}`, (resolve, reject) => {
+    //   remoteService.remove(result._id).then((result) => {
+    //     debug(`Removed ${serviceName} from Remote`);
+    //   }).catch(error => {
+    //     debug(`Unable to remove ${serviceName} from Remote`);
+    //   });
+    // });
   });
 
   remoteService.on('removed', (result) => {
