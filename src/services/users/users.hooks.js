@@ -25,17 +25,6 @@ const walletSchema = {
   }
 };
 
-// const currencyAccountSchema = {
-//   include: {
-//     asArray: true,
-//     childField: 'accountId',
-//     nameAs: 'currencyAccounts',
-//     parentField: 'bitcoinWallets',
-//     select: (_, parent) => parent.bitcoinWallet ? ({ accountId: { $in: parent.bitcoinWallets.map(bitcoinWallet => bitcoinWallet.address) } }) : {},
-//     service: 'currency-accounts',
-// }
-// };
-
 module.exports = {
   before: {
     all: [
@@ -79,10 +68,6 @@ module.exports = {
         commonHooks.discard('password'),
       ),      
       populate({ schema: walletSchema }),
-      // populate({ schema: currencyAccountSchema }),
-      // hook => {
-      //   console.log('finished hook', hook.result);
-      // }
     ],
     find: [],
     get: [],

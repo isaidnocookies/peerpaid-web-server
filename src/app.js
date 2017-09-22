@@ -42,7 +42,6 @@ app.configure(rest());
 app.configure(socketio(function (io){
   io.on('connection', function (socket){
     socket.on('set-currencyAccounts', function (currencyAccounts, callback){
-      console.log('we got it', currencyAccounts);
       socket.feathers.currencyAccounts = currencyAccounts;
     });
   });
