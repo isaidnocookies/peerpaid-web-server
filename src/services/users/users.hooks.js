@@ -66,7 +66,7 @@ module.exports = {
       commonHooks.when(
         hook => hook.params.provider,
         commonHooks.discard('password'),
-      ),
+      ),      
       populate({ schema: walletSchema }),
     ],
     find: [],

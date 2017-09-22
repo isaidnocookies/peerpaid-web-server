@@ -8,10 +8,7 @@ module.exports = function (app) {
   const currencyAccounts = new Schema({
     amount: { type: String, required: true},
     accountId: { type: String, required: true },
-    txids: [{
-      type: Schema.ObjectId,
-      ref: 'bitconTransactionsProcessed'
-    }],
+    txids: [{ type: String }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });

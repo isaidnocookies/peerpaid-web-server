@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 module.exports = function () {
   const app = this;
   const mongoUrl = app.get('mongodb');
+  mongoose.Promise = global.Promise;
   var promise = mongoose.connect(mongoUrl, {
     reconnectTries: 120,
     reconnectInterval: 1000,
