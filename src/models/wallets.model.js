@@ -11,8 +11,6 @@ module.exports = function (app) {
     amount:{type: Number, required: true},
     label: { type: String },
     txids: [{ type: String }],
-    transactions: [ {type: Schema.ObjectId, ref:"bitcoinTransactions"}],
-    pendingTransactions: [ {type: Schema.ObjectId, ref:"bitcoinPendingTransactions"}],
     created_at: { type: Date },
   });
 

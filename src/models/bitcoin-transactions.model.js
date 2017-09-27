@@ -42,6 +42,10 @@ module.exports = function (app) {
     vsize: { type: Number, required: true },
     version: { type: Number, required: true },
     locktime: { type: Number, required: true },
+    isQueue: { type: Boolean, index: true },
+    isPending: { type: Boolean, index: true },
+    isTentativeProcessed: { type: Boolean, index: true },
+    isProcessed: { type: Boolean, index: true },
     vin: [
       {
         coinbase: { type: String, required: false },
@@ -90,12 +94,12 @@ module.exports = function (app) {
         }
       }
     ],
-    blockhash: { type: String, required: true },
+    blockhash: { type: String },
     confirmations: { type: Number, required: true },
     time: { type: String, required: true },
     timeDate: { type: Date, required: true },
-    blocktime: { type: String, required: true },
-    blocktimeDate: { type: Date, required: true },
+    blocktime: { type: String },
+    blocktimeDate: { type: Date },
     timereceived: { type: String },
     timereceivedDate: { type: Date },
     address: { type: String, required: true, index: true },

@@ -6,8 +6,9 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const currencyAccounts = new Schema({
-    amount: { type: String, required: true},
-    accountId: { type: String, required: true },
+    amount: { type: String},
+    tentativeAmount: { type: String},
+    accountId: { type: String, required: true, unique: true },
     txids: [{ type: String }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
