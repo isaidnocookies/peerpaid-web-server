@@ -6,6 +6,14 @@ function isEqual(newObject, oldObject) {
   var keys = Object.assign([], Object.keys(newObject), Object.keys(oldObject));
   keys = Array.from(new Set(keys));
   var equals = true;
+  if (
+    newObject._id && oldObject._id &&
+    newObject._id === oldObject._id &&
+    newObject.updatedAt && oldObject.updatedAt &&
+    newObject.updatedAt.getTime() === oldObject.updatedAt.getTime()
+  ) {
+    return true;
+  }
   keys.forEach((key) => {
     if (equals) {
       var newVar = newObject[key];
@@ -115,7 +123,7 @@ module.exports = function (app, localService, remoteService, updateCallback) {
 
         }
       }).catch(error => {
-        if (runCount < 5){
+        if (runCount < 5) {
           runCount++;
           setTimeout(runGetLocal, 1);
         }
