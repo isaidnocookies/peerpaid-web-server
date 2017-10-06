@@ -11,6 +11,8 @@ module.exports = (app, localService, remoteService) => {
           localService.update(request._id, {
             $set: {
               webServerCantResolve: true,
+              webServerDidResolve: false,
+              updatedAt: Date.now()
             }
           }).then((request) => {
           }).catch(error => debug('Error updating request', error));
