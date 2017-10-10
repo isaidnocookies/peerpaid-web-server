@@ -6,10 +6,20 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const currencyAccounts = new Schema({
-    amount: { type: String},
-    tentativeAmount: { type: String},
     accountId: { type: String, required: true, unique: true },
+    currencyType: {
+      type: String,
+      enum: [
+        'BTC',
+        'USD',
+        'EUR',
+        'GBP'
+      ], required: true
+    },
+    amount: { type: String, default: '0'},
+    tentativeAmount: { type: String, default: '0'},
     txids: [{ type: String }],
+    txidsTentative: [{ type: String }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });
