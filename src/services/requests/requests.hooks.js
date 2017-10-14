@@ -15,7 +15,7 @@ const attachMe = [
     idField:'_id',
     as:'owner'
   })
-]
+];
 
 module.exports = {
   before: {

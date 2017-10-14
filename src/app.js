@@ -61,6 +61,10 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', feathers.static(app.get('public')));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
+});
+
 // Configure a middleware for 404s and the error handler
 app.use(notFound());
 app.use(handler());
