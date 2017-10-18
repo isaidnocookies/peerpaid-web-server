@@ -29,7 +29,7 @@ module.exports = {
   before: {
     all: [
       hook => {
-        if (hook.params.provider === 'relay'){
+        if (hook.params.provider === 'relay') {
           hook.result = hook.params.relayData;
           return hook;
         }
@@ -66,8 +66,14 @@ module.exports = {
       commonHooks.when(
         hook => hook.params.provider,
         commonHooks.discard('password'),
-      ),      
-      populate({ schema: walletSchema }),
+      ),
+      commonHooks.iff(
+        hook => {
+          return hook.method !== 'create';
+        },
+        populate({ schema: walletSchema })
+      )
+
     ],
     find: [],
     get: [],
@@ -90,11 +96,10 @@ module.exports = {
 
 
 function attachDataServer(hook) {
-    var payload = (hook.params && hook.params.payload) || hook.payload || {};
+  var payload = (hook.params && hook.params.payload) || hook.payload || {};
+  var accessToken = payload.accessToken;
 
-    var accessToken = payload.accessToken;
-
-    hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
-    return hook;
+  hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
+  return hook;
 
 }

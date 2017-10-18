@@ -62,7 +62,7 @@ var JWTVerifier = function () {
         if (dest.jwt === void 0) {
           console.log("JWTVerifier--")
 
-          done(new errors.NotAuthenticated('Invalid Auth Token'), null, {});
+          done(new errors.NotAuthenticated('Invalid Auth Token-ws'), null, {});
         }
         else {
           // var dataServer = featherClient(config.get('dataServer'), token);

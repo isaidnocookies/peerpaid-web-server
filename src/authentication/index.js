@@ -63,7 +63,6 @@ module.exports = function () {
     },
     after: {
       create: [
-
         hook => {
           if (hook.params.payload && hook.params.payload.accessToken) {
             hook.result.accessToken = hook.params.payload.accessToken;

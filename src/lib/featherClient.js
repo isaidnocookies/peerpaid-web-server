@@ -52,7 +52,7 @@ function createClient(transport, host, token) {
 function createRestClient(host, token) {
 
   var headers = void 0;
-  if (token ) headers = { 'authorization': 'Bearer ' + token };
+  if (token) headers = { 'authorization': 'Bearer ' + token };
   var client = createClient(rest(host).superagent(superagent, { 'headers': headers }), host, token);
 
   return client;

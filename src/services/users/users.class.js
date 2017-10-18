@@ -23,7 +23,6 @@ class Service {
   }
 
   patch(id, data, params) {
-    console.log("We Got Here")
     return params.dataServer.service('users').patch(id, data);//, params);
   }
 
