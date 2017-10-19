@@ -25,7 +25,6 @@ const mongoose = require('./mongoose');
 const app = feathers();
 
 const config = require('config');
-const portConfig = config.get('port');
 
 // Load app configuration
 app.configure(configuration());
