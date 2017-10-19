@@ -1,4 +1,9 @@
 {
   "host": "peerpaid-web-server-app.feathersjs.com",
-  "port": "PORT"
+  "port": "PORT",
+  "clientConfig": {
+    "blockchainWalletUrl":"https://live.blockcypher.com/btc/address/#wallet#",
+    "blockchainTransactionUrl":"https://live.blockcypher.com/btc/tx/#txid#",
+    "blockchainBlockhashUrl":"https://live.blockcypher.com/btc/block/#blockhash#"
+  }
 }

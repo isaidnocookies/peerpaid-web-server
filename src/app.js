@@ -24,6 +24,7 @@ const mongoose = require('./mongoose');
 
 const app = feathers();
 
+const config = require('config');
 
 // Load app configuration
 app.configure(configuration());
@@ -39,9 +40,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.configure(hooks());
 app.configure(mongoose);
 app.configure(rest());
-app.configure(socketio(function (io){
-  io.on('connection', function (socket){
-    socket.on('set-currencyAccounts', function (currencyAccounts, callback){
+app.configure(socketio(function (io) {
+  io.on('connection', function (socket) {
+    if (config.has('clientConfig')) {
+      setTimeout(() => { 
+      socket.emit('clientConfig', config.get('clientConfig'));
+      },10);
+    }
+    socket.on('set-currencyAccounts', function (currencyAccounts, callback) {
       socket.feathers.currencyAccounts = currencyAccounts;
     });
   });
