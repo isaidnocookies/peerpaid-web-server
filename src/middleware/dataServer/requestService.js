@@ -5,21 +5,26 @@ const serviceRelayCap = require('../../lib/serviceRelayCap');
 
 module.exports = (app, localService, remoteService) => {
   function serverUpdate(request) {
-    switch (request.request) {
-      case 'GET_BITCOIN_WALLET':
-        if (!request.webServerCantResolve) {
-          localService.update(request._id, {
-            $set: {
-              webServerCantResolve: true,
-              webServerDidResolve: false,
-              updatedAt: Date.now()
-            }
-          }).then((request) => {
-          }).catch(error => debug('Error updating request', error));
-        }
-        break;
-      default:
-        break;
+    if (request.token === 'WEB') {
+
+      switch (request.request) {
+        case 'REQUEST_BITCOIN_WALLET':
+        case 'GET_BITCOIN_WALLET':
+          if (!request.webServerCantResolve) {
+            localService.update(request._id, {
+              $set: {
+                webServerCantResolve: true,
+                webServerDidResolve: false,
+                token: 'DATA',
+                updatedAt: Date.now()
+              }
+            }).then((request) => {
+            }).catch(error => debug('Error updating request', error));
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
 

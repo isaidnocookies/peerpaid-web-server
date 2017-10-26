@@ -10,7 +10,8 @@ module.exports = function (app) {
       type: String,
       enum: [
         'GET_BITCOIN_WALLET',
-        'REQUEST_BITCOIN_WALLET'
+        'REQUEST_BITCOIN_WALLET',
+        'REQUEST_SEND_CURRENCY'
       ], required: true
     },
     webServerCantResolve: { type: Boolean },
@@ -19,11 +20,13 @@ module.exports = function (app) {
     dataServerDidResolve: { type: Boolean },
     btcServerCantResolve: { type: Boolean },
     btcServerDidResolve: { type: Boolean },
+    token: { type: String, default: 'WEB' },
     owner: { type: Schema.ObjectId, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 
-
+    
+    payload: { type: String },
     address: { type: String }
   });
 
