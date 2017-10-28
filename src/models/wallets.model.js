@@ -11,9 +11,9 @@ module.exports = function (app) {
     amount:{type: Number, required: true},
     label: { type: String },
     txids: [{ type: String }],
-    created_at: { type: Date },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
   });
 
   return mongooseClient.model('wallets', wallets);
 };
-

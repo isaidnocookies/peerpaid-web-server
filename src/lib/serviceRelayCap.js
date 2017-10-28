@@ -2,49 +2,13 @@ var debug = require('./debug');
 const queue = require('./queue');
 const queueMiddleware = require('../middleware/queue');
 
-debug = () => {};
-
-function isEqual(newObject, oldObject) {
-  var keys = Object.assign([], Object.keys(newObject), Object.keys(oldObject));
-  keys = Array.from(new Set(keys));
-  var equals = true;
-  if (
-    newObject._id && oldObject._id &&
-    newObject._id === oldObject._id &&
-    newObject.updatedAt && oldObject.updatedAt &&
-    newObject.updatedAt.getTime() === oldObject.updatedAt.getTime()
-  ) {
-    return true;
-  }
-  keys.forEach((key) => {
-    if (equals) {
-      var newVar = newObject[key];
-      var oldVar = oldObject[key];
-
-      if (typeof newVar === 'object') {
-        if (!isEqual(newVar, oldVar)) {
-          debug(`${key} does not equal, obj`);
-          equals = false;
-        }
-      } else if (oldVar instanceof Date || newVar instanceof Date) {
-        //Skip Date
-      } else {
-        var ov = oldVar && oldVar.toString();
-        var nv = newVar && newVar.toString();
-        equals = nv === ov;
-        if (!equals) {
-          debug(`${key} not equal ${ov} !== ${nv}`);
-        }
-      }
-    }
-  });
-  return equals;
-}
+const isEqual = require('./isEqual');
+// debug = () => { };
 
 
 module.exports = function (app, localService, remoteService, updateCallback, authority) {
 
-  if (typeof updateCallback !== 'function' && authority === void 0 ){
+  if (typeof updateCallback !== 'function' && authority === void 0) {
     authority = updateCallback;
   }
   var serviceName;
@@ -112,7 +76,7 @@ module.exports = function (app, localService, remoteService, updateCallback, aut
   if (remoteService && !authority) {
     remoteService.on('created', (result) => {
       localService.create(result).then(result => {
-        debug(`Created ${serviceName} on Local`, result);
+        debug(`Created ${serviceName} on Local`);
       }).catch(error => {
         debug(`unable to create ${serviceName} on Local`, error);
       });
@@ -130,7 +94,7 @@ module.exports = function (app, localService, remoteService, updateCallback, aut
             localService.update(result._id, {
               $set: result
             }).then((result) => {
-              debug(`Updated ${serviceName} on Local`, result);
+              debug(`Updated ${serviceName} on Local`);
             }).catch(error => {
 
               debug(`Unable to update ${serviceName} on Local`, error);
