@@ -16,12 +16,15 @@ module.exports = function (app) {
       ], required: true
     },
     account: { type: String, required: false },
+    username: { type: String, required: false },
+    user_uuid: { type: String, required: false },
     address: { type: String, required: false },
     paymentMethod: { type: String, required: true },
     currency: { type: String, required: true },
     margin: { type: String, required: true },
     minimumTransactionLimit: { type: Number, required: true },
     maximumTransactionLimit: { type: Number, required: true },
+    tradeLimit: { type: String, required: false },
     termsTrade: { type: String, required: false },
     status: {
       type: String,
