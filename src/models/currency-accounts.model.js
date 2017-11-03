@@ -7,6 +7,7 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const currencyAccounts = new Schema({
     accountId: { type: String, required: true, unique: true },
+    owner: { type: Schema.ObjectId},    
     currencyType: {
       type: String,
       enum: [
