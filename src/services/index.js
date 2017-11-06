@@ -8,6 +8,8 @@ const paymentMethods = require('./payment-methods/payment-methods.service.js');
 const enums = require('./enums/enums.service.js');
 const tradeOffers = require('./trade-offers/trade-offers.service.js');
 
+const commandProxy = require('./command-proxy/command-proxy.service.js');
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -19,4 +21,5 @@ module.exports = function () {
   app.configure(paymentMethods);
   app.configure(enums);
   app.configure(tradeOffers);
+  app.configure(commandProxy);
 };
