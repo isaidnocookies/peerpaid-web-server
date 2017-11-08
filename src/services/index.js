@@ -10,6 +10,8 @@ const tradeOffers = require('./trade-offers/trade-offers.service.js');
 
 const commandProxy = require('./command-proxy/command-proxy.service.js');
 
+const traderProfile = require('./trader-profile/trader-profile.service.js');
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -22,4 +24,5 @@ module.exports = function () {
   app.configure(enums);
   app.configure(tradeOffers);
   app.configure(commandProxy);
+  app.configure(traderProfile);
 };
