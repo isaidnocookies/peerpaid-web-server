@@ -60,7 +60,7 @@ app.configure(feathersSync({
   mubsub: {
     reconnectTries: 120,
     reconnectInterval: 1000,
-    authSource: 'admin'
+    // authSource: 'admin'
   },
   db: config.get("mongodb"),
   collection: '_events'
