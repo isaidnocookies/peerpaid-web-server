@@ -54,17 +54,7 @@ app.configure(socketio(function (io) {
     });
   });
 }));
-app.configure(feathersSync({
-  size: 40 * 1024 * 1024,
-  max: 50000,
-  mubsub: {
-    reconnectTries: 120,
-    reconnectInterval: 1000,
-    authSource: 'admin'
-  },
-  db: config.get("mongodb"),
-  collection: '_events'
-}));
+app.configure(feathersSync(config.get('feathersSync')));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);

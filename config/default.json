@@ -44,6 +44,18 @@
       "passwordField": "password"
     }
   },
+
+  "feathersSync": {
+    "size": 41943040, //40 * 1024 * 1024 = 40megs
+    "max": 50000,
+    "mubsub": {
+      "reconnectTries": 120,
+      "reconnectInterval": 1000,
+      "authSource": "admin"
+    },
+    "collection": "_events",
+    "db":"mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server"
+  },
   "mongodb": "mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server",
   "clientConfig": {
     "blockchainWalletUrl":"https://live.blockcypher.com/btc-testnet/address/#wallet#",
