@@ -42,7 +42,7 @@ const appA = feathers()
     mubsub: {
       reconnectTries: 120,
       reconnectInterval: 1000,
-      authSource: 'admin'
+      //authSource: 'admin'
     },
     db: mongodbA,
     collection: '_events'
