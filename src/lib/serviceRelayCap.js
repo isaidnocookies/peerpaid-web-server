@@ -7,7 +7,7 @@ const isEqual = require('./isEqual');
 
 
 module.exports = function (app, localService, remoteService, updateCallback, authority) {
-
+  return; // short this out to ensure its not used
   if (typeof updateCallback !== 'function' && authority === void 0) {
     authority = updateCallback;
   }

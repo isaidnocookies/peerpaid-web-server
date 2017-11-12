@@ -11,6 +11,8 @@ const hooks = require('feathers-hooks');
 const rest = require('feathers-rest');
 const socketio = require('feathers-socketio');
 
+const feathersSync = require('feathers-sync');
+
 const handler = require('feathers-errors/handler');
 const notFound = require('feathers-errors/not-found');
 
@@ -43,15 +45,16 @@ app.configure(rest());
 app.configure(socketio(function (io) {
   io.on('connection', function (socket) {
     if (config.has('clientConfig')) {
-      setTimeout(() => { 
-      socket.emit('clientConfig', config.get('clientConfig'));
-      },10);
+      setTimeout(() => {
+        socket.emit('clientConfig', config.get('clientConfig'));
+      }, 10);
     }
     socket.on('set-currencyAccounts', function (currencyAccounts, callback) {
       socket.feathers.currencyAccounts = currencyAccounts;
     });
   });
 }));
+app.configure(feathersSync(config.get('feathersSync')));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
