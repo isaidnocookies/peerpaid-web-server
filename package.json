@@ -36,6 +36,7 @@
     "compression": "^1.7.0",
     "config": "^1.26.1",
     "cors": "^2.8.4",
+    "decimal.js": "^7.3.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",

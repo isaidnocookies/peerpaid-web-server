@@ -11,22 +11,17 @@ module.exports = function (app) {
       enum: [
         'GET_BITCOIN_WALLET',
         'REQUEST_BITCOIN_WALLET',
-        'REQUEST_SEND_CURRENCY'
+        'REQUEST_SEND_CURRENCY',
+        'REQUEST_SEND_BITCOINS'
       ], required: true
     },
-    webServerCantResolve: { type: Boolean },
-    webServerDidResolve: { type: Boolean },
-    dataServerCantResolve: { type: Boolean },
-    dataServerDidResolve: { type: Boolean },
-    btcServerCantResolve: { type: Boolean },
-    btcServerDidResolve: { type: Boolean },
     token: { type: String, default: 'WEB' },
+    stage: { type: String, required: false },
     owner: { type: Schema.ObjectId, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 
-    
-    payload: { type: String },
+    payload: { type: Object },
     address: { type: String }
   });
 
