@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var jwt = require('jsonwebtoken');
-var jwtkey = require('../lib/jwtkey');
+var jwtkey = require('./jwtkey');
 
 //var deasync = require('deasync');
 var config = require('config');

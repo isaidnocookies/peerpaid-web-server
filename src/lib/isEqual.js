@@ -1,6 +1,6 @@
 var debug = require('./debug');
 
-module.exports = function(newObject, oldObject) {
+module.exports = function (newObject, oldObject) {
   var keys = Object.assign([], Object.keys(newObject), Object.keys(oldObject));
   keys = Array.from(new Set(keys));
   var equals = true;

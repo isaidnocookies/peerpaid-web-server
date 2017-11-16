@@ -4,6 +4,7 @@ const featherClient = require('../../lib/featherClient');
 class Service {
   constructor(options) {
     this.options = options || {};
+    this.id = '_id';
   }
 
   find(params) {
