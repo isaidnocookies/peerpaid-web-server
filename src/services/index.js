@@ -12,6 +12,10 @@ const commandProxy = require('./command-proxy/command-proxy.service.js');
 
 const traderProfile = require('./trader-profile/trader-profile.service.js');
 
+
+const upload = require('./upload/upload.service.js');
+
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -25,4 +29,5 @@ module.exports = function () {
   app.configure(tradeOffers);
   app.configure(commandProxy);
   app.configure(traderProfile);
+  app.configure(upload);
 };
