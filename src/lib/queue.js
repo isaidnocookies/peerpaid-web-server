@@ -5,6 +5,7 @@ var updateQueue = {};
 var syncBusy = false;
 
 function syncServer() {
+  return; //shorted out syncServer to ensure these changes never run.
   if (syncBusy) return;
   syncBusy = true;
   var uQueue = updateQueue;
@@ -12,7 +13,7 @@ function syncServer() {
 
   function performSync(syncQueue) {
 
-    return; // short this out to ensure its not used
+
     function makePromise(key) {
       debug('Enqueue:', key);
       uQueue[key].attempts = 0;
@@ -86,7 +87,7 @@ setInterval(() => {
 
 
 module.exports.set = (key, promiseFunc) => {
-  debug('SetQueue:', key);
+  debug('SetQueue:',key);
   updateQueue[key] = promiseFunc;
 };
 

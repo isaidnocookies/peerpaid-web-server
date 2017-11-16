@@ -16,36 +16,42 @@ module.exports = function (app) {
         if (request.token === 'WEB') {
 
           switch (request.request) {
+            case 'REQUEST_SEND_BITCOINS':
             case 'REQUEST_BITCOIN_WALLET':
             case 'GET_BITCOIN_WALLET':
-              if (!request.webServerCantResolve) {
-                requestService.update(request._id, {
-                  $set: {
-                    webServerCantResolve: true,
-                    webServerDidResolve: false,
-                    token: 'DATA',
-                    updatedAt: Date.now()
-                  }
-                }).then((request) => {
-                }).catch(error => debug('Error updating request', error));
+              switch (request.stage) {
+                case void 0: // Undefined (Start)
+                  requestService.update(request._id, {
+                    $set: {
+                      token: 'DATA',
+                      updatedAt: Date.now()
+                    }
+                  }).then((request) => {
+                  }).catch(error => debug('Error updating request', error));
+                  break; // case request.stage
+                default:
+                  console.log("Unhandled stage :", request.stage);
+                  // should not make it here
+                  break; // case request.stage
               }
               break;
             default:
-              break;
+              console.log("Unhandled request:", request.request);
+              break;// case request.request
           }
         }
       }
 
-      requestService.on("created",(request) => {
+      requestService.on("created", (request) => {
         requestUpdated(request);
       });
-      requestService.on("updated",(request) => {
+      requestService.on("updated", (request) => {
         requestUpdated(request);
       });
-      requestService.on("patched",(request) => {
+      requestService.on("patched", (request) => {
         requestUpdated(request);
       });
-      
+
     }
   }
   init(app);

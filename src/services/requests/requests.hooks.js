@@ -12,14 +12,21 @@ const restrict = [
 const attachMe = [
   authenticate('jwt'),
   associateCurrentUser({
-    idField:'_id',
-    as:'owner'
+    idField: '_id',
+    as: 'owner'
   })
 ];
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt'),
+      // hook => {
+      //   if (hook.data && hook.data.payload && typeof hook.data.payload !== 'function') {
+      //     hook.data.payload = JSON.stringify(hook.data.payload);
+      //   }
+      //   return Promise.resolve(hook);
+      // }
+    ],
     find: [],
     get: [
       ...restrict

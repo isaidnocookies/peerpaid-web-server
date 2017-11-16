@@ -1,0 +1,14 @@
+{
+  "feathersSync": {
+    "size": 41943040, //40 * 1024 * 1024 = 40megs
+    "max": 50000,
+    "mubsub": {
+      "reconnectTries": 120,
+      "reconnectInterval": 1000,
+      "authSource": null
+    },
+    "collection": "_events",
+    "db": "mongodb://localhost:27017/peerpaid_web"
+  },
+  "mongodb": "mongodb://localhost:27017/peerpaid_web"
+}

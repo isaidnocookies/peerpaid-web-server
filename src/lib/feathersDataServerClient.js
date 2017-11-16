@@ -1,6 +1,7 @@
 var config = require('config');
 var debug = require('./debug');
 var jwtverify = require('./jwtverify');
+var btckey = require('./btckey');
 
 var featherClient = require('./featherClient');
 
@@ -14,7 +15,7 @@ var userObject = {
   }
 };
 
-var expireSeconds = 60 * 3;
+var expireSeconds = 60 * 90;
 
 
 function login() {
@@ -26,6 +27,11 @@ function login() {
   
   dataServer.authenticate(loginData).then(result => { }).catch(error => {
     debug('Error Authorizing:', error);
+    
+    setTimeout(() => {
+      debug('Retry Login:');
+      login();
+    }, 1000);
   });
 }
 
