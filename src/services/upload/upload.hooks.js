@@ -35,8 +35,6 @@ module.exports = {
           return Promise.reject(new feathersError.MethodNotAllowed('Unable to delete all items'));
         }
 
-        console.log("About to delete Object:", hook.id)
-  
         return new Promise((resolve, reject) => {
           if (hook.id && hook.id.match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{8}/)) {
             var query = {
