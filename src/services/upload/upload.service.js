@@ -31,11 +31,11 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
     { name: 'qquuid', maxCount: 1 },
     { name: 'qqfilename', maxCount: 1 },
     { name: 'qqtotalfilesize', maxCount: 1 },
-    { name: 'qqfile', maxCount: 1 }
+    { name: 'qqfile', maxCount: 1 },
   ]);
 
 
-  app.post('/upload', multerMiddle, function (req, res, next) {
+  app.post('/upload',  multerMiddle, function (req, res, next) {
 
     var uploadService = app.service('upload');
     var userService = app.service('users');
@@ -48,7 +48,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
       var key = keys[0];
       var file = req.files[key];
       
-      upload.fileName = key;
+      upload.fileName = req.query.fieldId || key;
 
       upload.file = file.map((file, index) => {
         //encrypt file,
@@ -64,7 +64,8 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
 
 
       uploadService.create(upload, { provider: 'uploader', headers: req.headers }).then(function (result) {
-        res.json({ success: true });
+        result.success = true;
+        res.json(result);
 
         // userService.get(result.owner).then(owner => {
         //   owner.documents = {...owner.documents};
