@@ -12,7 +12,8 @@ module.exports = function (app) {
         'GET_BITCOIN_WALLET',
         'REQUEST_BITCOIN_WALLET',
         'REQUEST_SEND_CURRENCY',
-        'REQUEST_SEND_BITCOINS'
+        'REQUEST_SEND_BITCOINS',
+        'CREATE_DEPOSIT_ORDER'
       ], required: true
     },
     token: { type: String, default: 'WEB' },

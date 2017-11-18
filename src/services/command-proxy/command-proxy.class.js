@@ -15,19 +15,32 @@ class Service {
     if (data.action === 'verifySignupLong') {
       return dataServer.service('authManagement').create(data);
     }
-   
+
+    if (data.action === 'resetPwdLong') {
+      return dataServer.service('authManagement').create(data);
+    }
+
+    else if (data.action === 'sendResetPwd') {
+      data.notifierOptions = {
+        preferredComm: 'emailAddress'
+      };
+      console.log(data);
+      return dataServer.service('authManagement').create(data);
+    }
+
+
     else {
       return Promise.reject(new errors.BadRequest('Command cannot be performed'))
     }
   }
 
 
-  update(id,data,params) {
+  update(id, data, params) {
     console.log("Data:", data);
     console.log("params:", params);
-     if (data.action === 'sendResetPwd') {
-      return dataServer.service('authManagement').update(data);
-    }
+    // if (data.action === 'sendResetPwd') {
+    //   return dataServer.service('authManagement').update(data);
+    // }
   }
 }
 
