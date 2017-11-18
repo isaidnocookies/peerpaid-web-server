@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 var dataServer = require('../../lib/feathersDataServerClient');
 
-var errors = require('feathers-errors');
+var errors = require('@feathersjs/errors');
 
 class Service {
   constructor(options) {

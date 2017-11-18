@@ -1,7 +1,6 @@
 // Initializes the `commandProxy` service on path `/command-proxy`
 const createService = require('./command-proxy.class.js');
 const hooks = require('./command-proxy.hooks');
-const filters = require('./command-proxy.filters');
 
 module.exports = function () {
   const app = this;
@@ -19,8 +18,4 @@ module.exports = function () {
   const service = app.service('command-proxy');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };

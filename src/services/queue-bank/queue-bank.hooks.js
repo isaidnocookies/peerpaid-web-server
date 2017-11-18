@@ -1,6 +1,6 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const hooks = require('feathers-hooks-common');
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 const uuid = require('uuid');
 
 const updateGuid = () => {

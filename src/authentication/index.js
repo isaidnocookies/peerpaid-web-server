@@ -1,7 +1,7 @@
 'use strict';
 
 
-const authentication = require('feathers-authentication');
+const authentication = require('@feathersjs/authentication');
 
 const jwt = require('./jwt');
 

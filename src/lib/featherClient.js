@@ -3,14 +3,13 @@
 // Terminate will close the socket if you do use socketio
 // Garbage collection tested with this method.
 
-const feathers = require('feathers/client');
-const rest = require('feathers-rest/client');
+const feathers = require('@feathersjs/feathers');
+const rest = require('@feathersjs/rest-client');
 const superagent = require('superagent');
-const hooks = require('feathers-hooks');
-const auth = require('feathers-authentication-client');
+const auth = require('@feathersjs/authentication-client');
 
 const io = require('socket.io-client');
-const socketio = require('feathers-socketio/client');
+const socketio = require('@feathersjs/socketio-client');
 
 
 class simpleStorage {
@@ -34,8 +33,7 @@ function createClient(transport, host, token) {
 
 
 
-  client.configure(hooks())
-    .configure(transport)
+  client.configure(transport)
     .configure(auth(
       { storage: client.storage }
     ));

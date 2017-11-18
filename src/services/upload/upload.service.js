@@ -2,7 +2,6 @@
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/upload.model');
 const hooks = require('./upload.hooks');
-const filters = require('./upload.filters');
 var multer = require('multer');
 const upload = multer({ dest: '../uploads' });
 
@@ -84,8 +83,4 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
   const service = app.service('upload');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };

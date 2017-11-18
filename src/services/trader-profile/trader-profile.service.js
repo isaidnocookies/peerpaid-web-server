@@ -1,7 +1,6 @@
 // Initializes the `trader-profile` service on path `/trader-profile`
 const createService = require('./trader-profile.class.js');
 const hooks = require('./trader-profile.hooks');
-const filters = require('./trader-profile.filters');
 
 module.exports = function () {
   const app = this;
@@ -19,8 +18,4 @@ module.exports = function () {
   const service = app.service('trader-profile');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };
