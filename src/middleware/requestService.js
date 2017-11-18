@@ -19,6 +19,7 @@ module.exports = function (app) {
             case 'REQUEST_SEND_BITCOINS':
             case 'REQUEST_BITCOIN_WALLET':
             case 'GET_BITCOIN_WALLET':
+            case 'CREATE_DEPOSIT_ORDER':
               switch (request.stage) {
                 case void 0: // Undefined (Start)
                   requestService.update(request._id, {
