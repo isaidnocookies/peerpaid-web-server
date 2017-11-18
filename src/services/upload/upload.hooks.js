@@ -1,6 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { restrictToOwner, associateCurrentUser } = require('feathers-authentication-hooks');
 
+const feathersError = require('feathers-errors');
+
 const { getFirstItem } = require('../../lib/common');
 
 const restrict = [
@@ -29,6 +31,10 @@ module.exports = {
     patch: [...restrict],
     remove: [
       hook => {
+        if (!hook.id){
+          return Promise.reject(new feathersError.MethodNotAllowed('Unable to delete all items'));
+        }
+
         return new Promise((resolve, reject) => {
           if (hook.id && hook.id.match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{8}/)) {
             var query = {
