@@ -20,5 +20,5 @@ module.exports.stack = function () {
   }
   args.push(new Error().stack);
   // eslint-disable-next-line no-console
-  module.exports(args);
+  module.exports.apply(this, args);
 };
