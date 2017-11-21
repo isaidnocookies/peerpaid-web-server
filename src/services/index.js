@@ -15,10 +15,6 @@ const traderProfile = require('./trader-profile/trader-profile.service.js');
 
 const upload = require('./upload/upload.service.js');
 
-
-const threeds = require('./threeds/threeds.service.js');
-
-
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -33,5 +29,4 @@ module.exports = function () {
   app.configure(commandProxy);
   app.configure(traderProfile);
   app.configure(upload);
-  app.configure(threeds);
 };

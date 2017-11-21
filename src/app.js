@@ -70,24 +70,6 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
 
-app.post('/threeds', function (req, res) {
-
-  try {
-    requestService.create({
-      request: 'CREATE_DEPOSIT_ORDER',
-      token: 'DATA',
-      stage: '3DSLOCK_VERIFIED',
-      owner: null,
-      payload: {
-        MD: req.body.MD,
-        PaRes: req.body.PaRes
-      }
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
