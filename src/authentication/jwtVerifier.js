@@ -65,23 +65,26 @@ var JWTVerifier = function () {
           done(new errors.NotAuthenticated('Invalid Auth Token-ws'), null, {});
         }
         else {
-          // var dataServer = featherClient(config.get('dataServer'), token);
+          var dataServer = featherClient(config.get('dataServer'), token);
 
-          // dataServer.service('users').get(dest.jwt._id).then((result) => {
-          //   debug('user', result);
-          var entity = Object.assign({}, dest.jwt, {});
-          dest.jwt.accessToken = token;
-          dest.jwt[_this.options.entity + 'Id'] = dest.jwt._id;
 
-          done(null, entity, dest.jwt);
-          // }).catch((error) => {
-          //   error.other = 'fail';
-          //   console.log("JWTVerifier-", error)
+          // var entity = Object.assign({}, dest.jwt, {});
+          // dest.jwt.accessToken = token;
+          // dest.jwt[_this.options.entity + 'Id'] = dest.jwt._id;
 
-          //   debug('userFail', error);
+          // done(null, entity, dest.jwt);
 
-          //   done(error, null, dest.jwt);
-          // });
+          dataServer.service('users').get(dest.jwt._id).then((result) => {
+
+            done(null, result, Object.assign({}, result, { [`${this.options.entity}Id`]: dest.jwt._id, accessToken: token }));
+          }).catch((error) => {
+            error.other = 'fail';
+            console.log("JWTVerifier--XX", error);
+
+            debug('userFail', error);
+
+            done(error, null, dest.jwt);
+          });
         }
       });
 

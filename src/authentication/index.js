@@ -137,6 +137,7 @@ module.exports = function () {
         }
       }
       else {
+        return resolve(payload);
         if (payload && payload.accessToken) {
           return resolve(payload.accessToken);
         }
