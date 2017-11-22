@@ -8,6 +8,8 @@ module.exports = function (app) {
   var userService = app.service('users');
   var bitcoinTransactionService = app.service('bitcoin-transactions');
   var notificationService = app.service('notifications');
+  var requestsService = app.service('requests');
+  // var notificationService = app.service('notifications');
 
 
 
@@ -20,10 +22,11 @@ module.exports = function (app) {
 
   app.on('login', (user, payload) => {
     var { connection } = payload;
-    user = connection.user;
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
     if (connection) {
+      user = connection.user;
+      
       // The connection is no longer anonymous, remove it
       app.channel('anonymous').leave(connection);
 
@@ -127,6 +130,9 @@ module.exports = function (app) {
     return app.channel('admins');
   });
 
+  requestsService.publish((data, hook) => {
+    return app.channel(`users/${data.owner}`);
+  });
 
 
 };
