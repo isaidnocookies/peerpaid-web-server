@@ -1,4 +1,4 @@
-
+var crypt = require('../lib/crypt');
 
 
 module.exports = function (app) {
@@ -14,8 +14,8 @@ module.exports = function (app) {
       function requestUpdated(request) {
 
         if (request.token === 'WEB') {
-
           switch (request.request) {
+            case 'CREATE_ENCRYPTED_FIAT_PAYLOAD':
             case 'REQUEST_SEND_BITCOINS':
             case 'REQUEST_BITCOIN_WALLET':
             case 'GET_BITCOIN_WALLET':

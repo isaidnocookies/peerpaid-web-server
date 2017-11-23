@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { restrictToOwner, associateCurrentUser } = require('feathers-authentication-hooks');
+const crypt = require('../../lib/crypt');
 
 const restrict = [
   authenticate('jwt'),
@@ -17,6 +18,27 @@ const attachMe = [
   })
 ];
 
+const encryptPayloadForServers = (hook) => {
+  if (hook.data && hook.data.payload) {
+    if (hook.data.payload.fiat && !hook.data.payload.fiat.encrypted) {
+      hook.data.payload.fiat = {
+        encrypted: crypt.encryptForFiatServer(JSON.stringify(hook.data.payload.fiat))
+      };
+    }
+    if (hook.data.payload.btc && !hook.data.payload.btc.encrypted) {
+      hook.data.payload.btc = {
+        encrypted: crypt.encryptForBitcoinServer(JSON.stringify(hook.data.payload.btc))
+      };
+    }
+    if (hook.data.payload.data && !hook.data.payload.data.encrypted) {
+      hook.data.payload.data = {
+        encrypted: crypt.encryptForBitcoinServer(JSON.stringify(hook.data.payload.data))
+      };
+    }
+  }
+  return hook;
+}
+
 module.exports = {
   before: {
     all: [authenticate('jwt'),
@@ -32,7 +54,8 @@ module.exports = {
       ...restrict
     ],
     create: [
-      ...attachMe
+      ...attachMe,
+      encryptPayloadForServers
     ],
     update: [
       ...restrict

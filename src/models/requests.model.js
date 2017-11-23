@@ -13,7 +13,8 @@ module.exports = function (app) {
         'REQUEST_BITCOIN_WALLET',
         'REQUEST_SEND_CURRENCY',
         'REQUEST_SEND_BITCOINS',
-        'CREATE_DEPOSIT_ORDER'
+        'CREATE_DEPOSIT_ORDER',
+        'CREATE_ENCRYPTED_FIAT_PAYLOAD'
       ], required: true
     },
     token: { type: String, default: 'WEB' },

@@ -306,3 +306,6 @@ module.exports.clone = clone; // Clone an object so editing can commence
 module.exports.socketIO = socketIO; // call auth on incoming socket
 // socketIO(socket)
 // Similar to express using this module as a route.
+
+
+module.exports.checkPermissions = checkPermissions;

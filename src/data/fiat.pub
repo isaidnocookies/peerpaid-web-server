@@ -1,0 +1,138 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 18 (0x12)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=US, ST=NV, L=Las Vegas, O=The Lazy Coder, OU=LazyCoder, CN=*.thelazycoder.com/name=LazyCoder/emailAddress=thelazycoder@thelazycoder.com
+        Validity
+            Not Before: Nov 10 19:59:40 2017 GMT
+            Not After : Nov  8 19:59:40 2027 GMT
+        Subject: C=US, ST=NV, L=Las Vegas, O=The Lazy Coder, OU=LazyCoder, CN=fiat/name=LazyCoder/emailAddress=thelazycoder@thelazycoder.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (4096 bit)
+                Modulus:
+                    00:ed:0d:89:f8:b4:ca:58:88:d6:6f:c3:4f:a6:a6:
+                    3d:b4:ed:fb:e8:ab:7a:7d:33:ee:d8:6d:0e:6b:2f:
+                    8b:0a:57:70:84:28:58:f3:a0:14:85:83:6e:9c:c1:
+                    9b:dc:40:9e:b7:14:a5:d2:6d:95:2f:88:c9:8e:0b:
+                    b5:cb:b4:60:2a:de:4f:95:55:b9:21:d1:cb:37:71:
+                    2a:d0:5d:79:9c:7a:26:1a:8b:fb:b6:a4:98:8d:79:
+                    68:3d:b7:36:ce:6c:32:b2:0d:43:bd:b0:5a:bd:e4:
+                    17:8e:05:16:5b:ff:5a:24:67:94:3e:b4:36:42:5a:
+                    8f:aa:fd:ca:1e:d0:9a:c0:7a:00:3d:a1:77:6d:e6:
+                    cf:0a:85:90:77:7e:0b:d2:96:b5:ca:cb:58:01:71:
+                    e5:80:6d:5a:80:f2:66:4a:3a:e0:e5:fa:d3:67:fa:
+                    35:35:e6:a4:aa:49:2a:1e:ae:bb:bb:89:fc:ca:35:
+                    5e:0a:8b:10:87:41:47:1d:e5:7e:c9:c4:48:50:82:
+                    22:c9:14:15:ea:c2:35:c9:41:d1:52:43:3f:92:a8:
+                    c2:fe:c8:6b:98:49:2d:05:7a:cc:a0:ec:75:79:7b:
+                    e3:2d:4f:8b:ba:9a:8a:c3:e1:af:42:25:19:d4:19:
+                    dc:25:0d:b3:e1:44:4b:1f:c5:6a:08:bf:ec:2c:b0:
+                    88:3b:4f:71:0d:10:2b:17:a4:4c:40:e6:9a:9b:f6:
+                    ff:d5:aa:0f:4b:a1:dd:a5:c8:d1:ba:e6:88:65:96:
+                    0d:fe:e7:af:ca:19:b5:22:0b:92:0e:a7:2b:12:00:
+                    57:c9:f4:51:88:0e:1f:75:24:ee:af:9c:3d:a8:f6:
+                    ac:df:49:75:23:fd:21:f5:c8:96:ba:1d:e0:49:06:
+                    09:c9:de:1f:08:99:f7:ab:a7:98:00:3b:fe:20:7c:
+                    df:8b:2b:f0:7d:db:1c:eb:f2:e8:7d:6a:0f:f8:3a:
+                    0f:d8:93:26:46:d4:65:f8:d6:d4:6e:50:af:83:88:
+                    ea:d8:cb:7e:7d:40:7d:c1:da:f0:ad:f5:36:9c:59:
+                    e8:66:47:56:ff:ee:78:38:a3:a5:f4:03:11:ba:67:
+                    ae:91:73:bd:d1:c7:96:cd:5a:65:e2:6b:90:10:37:
+                    ba:c8:82:44:b6:25:b3:b8:09:88:39:2f:61:f0:27:
+                    64:53:23:64:de:ba:b1:75:f5:f9:a9:d3:b8:56:8b:
+                    17:31:3b:14:a6:5b:6d:1a:2c:fc:25:bf:e3:06:17:
+                    d1:c5:53:e7:a3:d4:ba:a4:fb:b0:39:67:3e:fc:25:
+                    86:a0:ed:a0:b8:a4:7f:97:39:bf:43:6a:ca:97:15:
+                    51:0b:a4:a1:45:51:9a:95:28:0f:a4:d8:5a:44:a2:
+                    df:a5:ff
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                32:F8:AD:62:BA:E7:90:0A:A2:A7:FF:9B:B6:60:B0:B3:B9:4B:61:01
+            X509v3 Authority Key Identifier: 
+                keyid:2D:11:77:13:29:12:70:BF:F7:76:B5:F8:8F:1B:C9:E7:C3:75:92:5A
+                DirName:/C=US/ST=NV/L=Las Vegas/O=The Lazy Coder/OU=LazyCoder/CN=*.thelazycoder.com/name=LazyCoder/emailAddress=thelazycoder@thelazycoder.com
+                serial:AD:0A:27:C1:45:C3:ED:04
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         8e:71:63:20:40:6d:4a:d1:98:7a:ae:78:af:b3:0a:9b:a0:66:
+         fb:cd:8b:75:be:0d:18:26:e8:ce:a9:92:1d:01:18:27:f7:f3:
+         37:06:f4:71:c1:92:e5:4a:bb:db:26:81:1d:4a:ec:5c:3c:6e:
+         ad:6c:10:48:bf:69:ae:d9:f4:dc:9f:48:ee:1b:2a:0f:ec:6d:
+         e8:d7:6f:0f:0a:8b:88:4b:e2:cb:a6:b6:42:d9:e9:b9:f4:7c:
+         a5:26:29:51:9c:b4:65:c0:21:fb:a3:02:87:a2:18:bf:8e:d6:
+         5f:30:8c:4c:f5:4e:f1:26:90:10:11:19:41:c8:1b:9b:b3:6a:
+         5f:68:d3:38:30:7c:29:37:c7:04:a0:5e:d8:cc:0e:d2:1e:3b:
+         c5:2b:6a:a5:67:6f:89:bc:95:24:bd:00:21:38:d7:e5:8f:9a:
+         3a:d5:71:65:a7:59:b4:64:f4:54:f7:87:91:fb:68:ca:ba:7f:
+         1d:fb:2d:a9:d9:0a:9c:f5:e4:35:b5:0f:e3:93:a9:c5:cb:b7:
+         9f:80:e3:53:82:27:02:06:db:17:6c:d1:e8:1c:dc:90:c1:03:
+         e6:c0:ff:16:09:ab:97:9e:2a:84:ef:11:72:3c:38:01:e8:00:
+         ea:e7:44:26:7f:d4:7f:b0:42:59:2d:95:69:f0:61:0b:6d:42:
+         12:cd:62:11:94:45:df:0a:42:2e:68:9a:5a:54:44:8d:be:c0:
+         0c:28:b4:97:59:07:46:21:5a:c8:b4:e2:c6:ae:31:c7:b6:9a:
+         23:bd:4b:fb:0c:36:fa:ca:a3:39:99:2d:f1:57:69:e5:c4:c2:
+         93:f9:52:c4:73:16:ae:5c:41:24:3c:fb:ac:6b:0c:05:d3:68:
+         1a:9d:5e:d1:77:fb:b9:0e:5b:65:56:c9:d1:61:ea:8d:2a:a2:
+         44:b4:ab:64:f7:e0:27:da:65:32:14:23:cf:eb:2d:d3:99:21:
+         f7:ee:51:99:45:a2:da:13:66:14:66:45:68:55:a1:04:f4:f1:
+         90:04:5f:88:53:54:85:20:e2:b1:af:4a:66:7d:a2:3e:ad:88:
+         d9:e1:14:ee:37:b6:8b:f6:46:94:73:60:9d:b0:b7:6b:c8:a4:
+         08:ad:74:9f:4a:66:96:86:a7:21:2d:a1:25:5e:1c:b5:f4:d0:
+         56:3a:0b:3d:65:88:dd:bb:a1:17:e5:0f:78:71:f8:17:26:b5:
+         a5:ee:cc:97:d2:e5:d2:93:48:9d:2d:58:09:b0:4d:5e:94:4b:
+         0a:cb:8b:58:56:e0:08:cc:f4:35:d4:3d:7a:97:0c:8a:0f:4f:
+         ed:df:32:57:30:98:37:35:ff:31:b0:28:d5:7e:2c:22:0b:c2:
+         a7:43:b9:47:e7:be:ec:c7
+-----BEGIN CERTIFICATE-----
+MIIHVjCCBT6gAwIBAgIBEjANBgkqhkiG9w0BAQsFADCBujELMAkGA1UEBhMCVVMx
+CzAJBgNVBAgTAk5WMRIwEAYDVQQHEwlMYXMgVmVnYXMxFzAVBgNVBAoTDlRoZSBM
+YXp5IENvZGVyMRIwEAYDVQQLEwlMYXp5Q29kZXIxGzAZBgNVBAMUEioudGhlbGF6
+eWNvZGVyLmNvbTESMBAGA1UEKRMJTGF6eUNvZGVyMSwwKgYJKoZIhvcNAQkBFh10
+aGVsYXp5Y29kZXJAdGhlbGF6eWNvZGVyLmNvbTAeFw0xNzExMTAxOTU5NDBaFw0y
+NzExMDgxOTU5NDBaMIGsMQswCQYDVQQGEwJVUzELMAkGA1UECBMCTlYxEjAQBgNV
+BAcTCUxhcyBWZWdhczEXMBUGA1UEChMOVGhlIExhenkgQ29kZXIxEjAQBgNVBAsT
+CUxhenlDb2RlcjENMAsGA1UEAxMEZmlhdDESMBAGA1UEKRMJTGF6eUNvZGVyMSww
+KgYJKoZIhvcNAQkBFh10aGVsYXp5Y29kZXJAdGhlbGF6eWNvZGVyLmNvbTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAO0Nifi0yliI1m/DT6amPbTt++ir
+en0z7thtDmsviwpXcIQoWPOgFIWDbpzBm9xAnrcUpdJtlS+IyY4Ltcu0YCreT5VV
+uSHRyzdxKtBdeZx6JhqL+7akmI15aD23Ns5sMrINQ72wWr3kF44FFlv/WiRnlD60
+NkJaj6r9yh7QmsB6AD2hd23mzwqFkHd+C9KWtcrLWAFx5YBtWoDyZko64OX602f6
+NTXmpKpJKh6uu7uJ/Mo1XgqLEIdBRx3lfsnESFCCIskUFerCNclB0VJDP5Kowv7I
+a5hJLQV6zKDsdXl74y1Pi7qaisPhr0IlGdQZ3CUNs+FESx/Fagi/7CywiDtPcQ0Q
+KxekTEDmmpv2/9WqD0uh3aXI0brmiGWWDf7nr8oZtSILkg6nKxIAV8n0UYgOH3Uk
+7q+cPaj2rN9JdSP9IfXIlrod4EkGCcneHwiZ96unmAA7/iB834sr8H3bHOvy6H1q
+D/g6D9iTJkbUZfjW1G5Qr4OI6tjLfn1AfcHa8K31NpxZ6GZHVv/ueDijpfQDEbpn
+rpFzvdHHls1aZeJrkBA3usiCRLYls7gJiDkvYfAnZFMjZN66sXX1+anTuFaLFzE7
+FKZbbRos/CW/4wYX0cVT56PUuqT7sDlnPvwlhqDtoLikf5c5v0NqypcVUQukoUVR
+mpUoD6TYWkSi36X/AgMBAAGjggFxMIIBbTAJBgNVHRMEAjAAMC0GCWCGSAGG+EIB
+DQQgFh5FYXN5LVJTQSBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFDL4
+rWK655AKoqf/m7ZgsLO5S2EBMIHvBgNVHSMEgecwgeSAFC0RdxMpEnC/93a1+I8b
+yefDdZJaoYHApIG9MIG6MQswCQYDVQQGEwJVUzELMAkGA1UECBMCTlYxEjAQBgNV
+BAcTCUxhcyBWZWdhczEXMBUGA1UEChMOVGhlIExhenkgQ29kZXIxEjAQBgNVBAsT
+CUxhenlDb2RlcjEbMBkGA1UEAxQSKi50aGVsYXp5Y29kZXIuY29tMRIwEAYDVQQp
+EwlMYXp5Q29kZXIxLDAqBgkqhkiG9w0BCQEWHXRoZWxhenljb2RlckB0aGVsYXp5
+Y29kZXIuY29tggkArQonwUXD7QQwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCwYDVR0P
+BAQDAgeAMA0GCSqGSIb3DQEBCwUAA4ICAQCOcWMgQG1K0Zh6rnivswqboGb7zYt1
+vg0YJujOqZIdARgn9/M3BvRxwZLlSrvbJoEdSuxcPG6tbBBIv2mu2fTcn0juGyoP
+7G3o128PCouIS+LLprZC2em59HylJilRnLRlwCH7owKHohi/jtZfMIxM9U7xJpAQ
+ERlByBubs2pfaNM4MHwpN8cEoF7YzA7SHjvFK2qlZ2+JvJUkvQAhONflj5o61XFl
+p1m0ZPRU94eR+2jKun8d+y2p2Qqc9eQ1tQ/jk6nFy7efgONTgicCBtsXbNHoHNyQ
+wQPmwP8WCauXniqE7xFyPDgB6ADq50Qmf9R/sEJZLZVp8GELbUISzWIRlEXfCkIu
+aJpaVESNvsAMKLSXWQdGIVrItOLGrjHHtpojvUv7DDb6yqM5mS3xV2nlxMKT+VLE
+cxauXEEkPPusawwF02ganV7Rd/u5DltlVsnRYeqNKqJEtKtk9+An2mUyFCPP6y3T
+mSH37lGZRaLaE2YUZkVoVaEE9PGQBF+IU1SFIOKxr0pmfaI+rYjZ4RTuN7aL9kaU
+c2CdsLdryKQIrXSfSmaWhqchLaElXhy19NBWOgs9ZYjdu6EX5Q94cfgXJrWl7syX
+0uXSk0idLVgJsE1elEsKy4tYVuAIzPQ11D16lwyKD0/t3zJXMJg3Nf8xsCjVfiwi
+C8KnQ7lH577sxw==
+-----END CERTIFICATE-----

@@ -1,5 +1,3 @@
-var dataServer = require('./dataServer');
-var queue = require('./queue');
 var requestService = require('./requestService');
 
 const commandParser = require('./command-parser');
@@ -13,6 +11,8 @@ module.exports = function () {
   // dataServer(app);
   // queue(app);
   requestService(app);
+
+
   app.use('/command', commandParser({ app }));
 
   app.post('/threeds', function (req, res) {
