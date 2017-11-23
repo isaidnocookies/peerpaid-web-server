@@ -7,6 +7,7 @@ module.exports = function (app) {
   var currencyAccountService = app.service('currency-accounts');
   var userService = app.service('users');
   var bitcoinTransactionService = app.service('bitcoin-transactions');
+  var notificationService = app.service('notifications');
   var requestsService = app.service('requests');
   // var notificationService = app.service('notifications');
 
@@ -96,6 +97,7 @@ module.exports = function (app) {
 
   //   return result;
   // });
+
 
   app.on('channels:exitChannel', (username, channel) => {
     app.channel('authenticated').connections.forEach((connection) => {
