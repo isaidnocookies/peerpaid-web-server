@@ -1,5 +1,13 @@
-var crypt = require('../lib/crypt');
+const crypt = require('../lib/crypt');
+const config = require('config');
 
+const SERVER_TITLE = config.get('serverTitle');
+
+const ADMIN_SERVER = config.get('serverTitles.admin');
+const BTC_SERVER = config.get('serverTitles.btc');
+const DATA_SERVER = config.get('serverTitles.data');
+const FIAT_SERVER = config.get('serverTitles.fiat');
+const WEB_SERVER = config.get('serverTitles.web');
 
 module.exports = function (app) {
 
@@ -13,7 +21,7 @@ module.exports = function (app) {
     else {
       function requestUpdated(request) {
 
-        if (request.token === 'WEB') {
+        if (request.token === SERVER_TITLE && SERVER_TITLE === WEB_SERVER) {
           switch (request.request) {
             case 'CREATE_ENCRYPTED_FIAT_PAYLOAD':
             case 'REQUEST_SEND_BITCOINS':
@@ -24,7 +32,7 @@ module.exports = function (app) {
                 case void 0: // Undefined (Start)
                   requestService.update(request._id, {
                     $set: {
-                      token: 'DATA',
+                      token: DATA_SERVER,
                       updatedAt: Date.now()
                     }
                   }).then((request) => {
