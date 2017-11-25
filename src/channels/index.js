@@ -130,6 +130,10 @@ module.exports = function (app) {
     return app.channel('admins');
   });
 
+  userService.publish('updated', (data, hook) => {
+    return app.channel(`users/${data._id}`);
+  });
+
   requestsService.publish((data, hook) => {
     return app.channel(`users/${data.owner}`);
   });

@@ -1,6 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { restrictToOwner, associateCurrentUser } = require('feathers-authentication-hooks');
+const commonHooks = require('feathers-hooks-common');
+const errors = require('@feathersjs/errors');
 
+
+const { getFirstItem } = require('../../lib/common');
 
 const restrict = [
   authenticate('jwt'),
@@ -20,19 +24,37 @@ const attachMe = [
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
-    find: [],
+    all: [authenticate('jwt')],
+    find: [
+      restrictToUndeleted
+    ],
     get: [],
     create: [...attachMe],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+      markDeleted
+    ]
   },
 
   after: {
-    all: [],
+    all: [
+      commonHooks.iff(
+        hook => hook.method === 'get' && hook.result && hook.result.deleted,
+        hook => {
+          throw new errors.NotFound(`No record found for id '${hook.id}'`);
+        }
+      ),
+      commonHooks.when(
+        hook => hook.params.provider,
+        commonHooks.discard('deleted'),
+      ),
+    ],
     find: [],
-    get: [],
+    get: [
+
+
+    ],
     create: [],
     update: [],
     patch: [],
@@ -49,3 +71,30 @@ module.exports = {
     remove: []
   }
 };
+
+
+function restrictToUndeleted(hook) {
+  if (hook.params.provider) {
+    hook.params.query['deleted'] = { $in: [null, false] };
+  }
+  return hook;
+}
+
+function markDeleted(hook) {
+  return new Promise((resolve, reject) => {
+    // var smallHook = Object.assign({}, hook, { params: Object.assign({}, hook.params, { user: null, payload: null }) });
+
+    // console.log("Hook", smallHook);
+
+    hook.app.service('notifications').update(hook.id, { $set: { "deleted": true } }).then(notificationResults => {
+      var notification = getFirstItem(notificationResults);
+      hook.result = notification || {};
+      console.log("Hook.result:", hook.result)
+      resolve(hook);
+    }).catch(error => {
+      console.log("Error:", error)
+      hook.result = {};
+      resolve(hook);
+    })
+  })
+}
