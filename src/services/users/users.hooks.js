@@ -5,6 +5,8 @@ const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const config = require('config');
 
+const debug = require('../../lib/debug');
+
 const featherClient = require('../../lib/featherClient');
 
 const restrict = [
@@ -49,11 +51,11 @@ module.exports = {
     ],
     update: [
       ...restrict,
-      attachDataServer
+      attachDataServer,
     ],
     patch: [
       ...restrict,
-      attachDataServer
+      attachDataServer,
     ],
     remove: [
       ...restrict,
@@ -102,4 +104,18 @@ function attachDataServer(hook) {
   hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
   return hook;
 
+}
+
+function checkForNotify(hook) {
+  return new Promise((resolve, reject) => {
+    if (hook.params && hook.params.user && !hook.params.user.suppressUserUpdateNotice) {
+      hook.app.service('notification').create({}).then(result => {
+        debug('User was notified about the update');
+        resolve(hook);
+      }).catch(error => {
+        debug('checkForNotify Error:', error);
+        reject(error);
+      });
+    }
+  });
 }
