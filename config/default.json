@@ -1,4 +1,12 @@
 {
+  "serverTitle":"WEB",
+  "serverTitles":{
+    "fiat":"FIAT",
+    "data":"DATA",
+    "web":"WEB",
+    "btc":"BTC",
+    "admin":"ADMIN"
+  },
   "host": "localhost",
   "port": 3001,
   "public": "../public/",
