@@ -80,8 +80,8 @@ module.exports = {
     find: [],
     get: [],
     create: [],
-    update: [checkForNotify],
-    patch: [checkForNotify],
+    update: [],
+    patch: [],
     remove: []
   },
 

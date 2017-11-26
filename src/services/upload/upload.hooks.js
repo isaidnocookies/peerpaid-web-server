@@ -65,7 +65,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      createNotification
+    ],
     update: [],
     patch: [],
     remove: []
@@ -81,3 +83,26 @@ module.exports = {
     remove: []
   }
 };
+
+function createNotification(hook) {
+  // console.log('upload create hook data', hook.data);
+  if (hook.data) {
+    // let payloadKey = Object.keys(hook.data.$set).slice(0, 1);
+    let payloadKey = hook.data.fileName;
+    hook.app.service('notifications').create({
+      notifyType: 'Upload',
+      notifyMessage: `Document uploaded: ${payloadKey}`,
+      infoLink: '/profile/my-documents',
+      owner: hook.params.user._id
+    }).then(result => {
+      // console.log('hook create result:',result);
+      return hook;
+    }).catch(error => {
+      console.log('hook create error', error)
+      return hook;
+    })
+    // console.log('user update hook data key', payloadKey);
+    // console.log('user update hook params', hook.params.user)
+    return hook;
+  }
+}
