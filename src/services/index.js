@@ -17,6 +17,8 @@ const upload = require('./upload/upload.service.js');
 
 const notifications = require('./notifications/notifications.service.js');
 
+const liveData = require('./live-data/live-data.service.js');
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -32,4 +34,5 @@ module.exports = function () {
   app.configure(traderProfile);
   app.configure(upload);
   app.configure(notifications);
+  app.configure(liveData);
 };

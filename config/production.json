@@ -1,9 +1,26 @@
 {
   "host": "peerpaid-web-server-app.feathersjs.com",
-  "port": "PORT",
+  "port": 3001,
   "clientConfig": {
-    "blockchainWalletUrl":"https://live.blockcypher.com/btc/address/#wallet#",
-    "blockchainTransactionUrl":"https://live.blockcypher.com/btc/tx/#txid#",
-    "blockchainBlockhashUrl":"https://live.blockcypher.com/btc/block/#blockhash#"
-  }
+    "blockchainWalletUrl": "https://live.blockcypher.com/btc/address/#wallet#",
+    "blockchainTransactionUrl": "https://live.blockcypher.com/btc/tx/#txid#",
+    "blockchainBlockhashUrl": "https://live.blockcypher.com/btc/block/#blockhash#"
+  },
+  "feathersSync": {
+    "size": 41943040,
+    "max": 50000,
+    "mubsub": {
+      "reconnectTries": 120,
+      "reconnectInterval": 1000,
+      "authSource": "admin",
+      "ssl": true,
+      "sslValidate":false
+    },
+    "collection": "_events",
+    "db": "mongodb://peerpaid:28811916-693E-4F80-88F0-99A135E5BE08@172.31.34.77:27017/peerpaid_web_server?ssl=true"
+  },
+  "mongodb": "mongodb://peerpaid:28811916-693E-4F80-88F0-99A135E5BE08@172.31.34.77:27017/peerpaid_web_server?ssl=true",
+  "mongopublic":"54.77.215.74",
+  "mongoprivate":"172.31.34.77",
+  "mongoCert":"/etc/ssl/certs/mongod.pem"
 }

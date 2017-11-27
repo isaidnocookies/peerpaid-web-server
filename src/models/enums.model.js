@@ -6,7 +6,7 @@ module.exports = function (app) {
   const enums = new Schema({
     // Begin Raw Transaction
     //countries: { type: String, required: true },
-    //currencies: { type: String, required: true },
+    currencies: { type: Object },
   });
 
 
