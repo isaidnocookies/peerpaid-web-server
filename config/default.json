@@ -52,7 +52,7 @@
       "passwordField": "password"
     }
   },
-
+  
   "feathersSync": {
     "size": 41943040, 
     "max": 50000,
@@ -66,6 +66,7 @@
   },
   "mongodb": "mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server",
   "clientConfig": {
+    "tab3DS": true,
     "blockchainWalletUrl":"https://live.blockcypher.com/btc-testnet/address/#wallet#",
     "blockchainTransactionUrl":"https://live.blockcypher.com/btc-testnet/tx/#txid#",
     "blockchainBlockhashUrl":"https://live.blockcypher.com/btc-testnet/block/#blockhash#"
