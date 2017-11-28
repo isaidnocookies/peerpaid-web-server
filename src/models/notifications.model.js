@@ -6,11 +6,12 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const notifications = new Schema({
+    owner: { type: Schema.ObjectId, index: true },
     notifyType: { type: String },
-    newUser: { type: String },
-    newDocument: { type: String },
-    newAvatar: { type: String },
-    owner: { type: Schema.ObjectId },
+    notifyMessage: { type: String },
+    infoLink: { type: String },
+    viewed: { type: Boolean, index: true },
+    deleted: { type: Boolean, index: true }
   }, {
     timestamps: true
   });

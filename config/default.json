@@ -1,11 +1,11 @@
 {
-  "serverTitle":"WEB",
-  "serverTitles":{
-    "fiat":"FIAT",
-    "data":"DATA",
-    "web":"WEB",
-    "btc":"BTC",
-    "admin":"ADMIN"
+  "serverTitle": "WEB",
+  "serverTitles": {
+    "fiat": "FIAT",
+    "data": "DATA",
+    "web": "WEB",
+    "btc": "BTC",
+    "admin": "ADMIN"
   },
   "host": "localhost",
   "port": 3001,
@@ -52,9 +52,8 @@
       "passwordField": "password"
     }
   },
-  
   "feathersSync": {
-    "size": 41943040, 
+    "size": 41943040,
     "max": 50000,
     "mubsub": {
       "reconnectTries": 120,
@@ -62,13 +61,17 @@
       "authSource": "admin"
     },
     "collection": "_events",
-    "db":"mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server"
+    "db": "mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server"
   },
   "mongodb": "mongodb://peerpaid:Pe3rB41dP4sswurd@10.0.0.99:27017/peerpaid_web_server",
   "clientConfig": {
     "tab3DS": true,
-    "blockchainWalletUrl":"https://live.blockcypher.com/btc-testnet/address/#wallet#",
-    "blockchainTransactionUrl":"https://live.blockcypher.com/btc-testnet/tx/#txid#",
-    "blockchainBlockhashUrl":"https://live.blockcypher.com/btc-testnet/block/#blockhash#"
+    "blockchainWalletUrl": "https://live.blockcypher.com/btc-testnet/address/#wallet#",
+    "blockchainTransactionUrl": "https://live.blockcypher.com/btc-testnet/tx/#txid#",
+    "blockchainBlockhashUrl": "https://live.blockcypher.com/btc-testnet/block/#blockhash#"
+  },
+  "cardpay": {
+    "respondWithContent": true,
+    "responseContentFile": "redirector"
   }
 }

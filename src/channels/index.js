@@ -10,7 +10,7 @@ module.exports = function (app) {
   var notificationService = app.service('notifications');
   var requestsService = app.service('requests');
   // var notificationService = app.service('notifications');
-
+  var liveDataService = app.service('live-data');
 
 
   app.on('connection', connection => {
@@ -26,7 +26,7 @@ module.exports = function (app) {
     // real-time connection, e.g. when logging in via REST
     if (connection) {
       user = connection.user;
-      
+
       // The connection is no longer anonymous, remove it
       app.channel('anonymous').leave(connection);
 
@@ -130,9 +130,18 @@ module.exports = function (app) {
     return app.channel('admins');
   });
 
+  userService.publish('updated', (data, hook) => {
+    return app.channel(`users/${data._id}`);
+  });
+
   requestsService.publish((data, hook) => {
     return app.channel(`users/${data.owner}`);
   });
 
+  liveDataService.publish((data, hook) => {
+    var result = app.channel(['authenticated', 'anonymous']);
+    console.log("Publish:", result);
+    return result;
+  })
 
 };

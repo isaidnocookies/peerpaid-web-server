@@ -16,6 +16,8 @@ const notifications = require('./notifications/notifications.service.js');
 const transactions = require("./internal-transactions/internal-transactions.service.js");
 const orders = require("./orders/orders.service.js");
 
+const liveData = require('./live-data/live-data.service.js');
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -33,4 +35,5 @@ module.exports = function () {
   app.configure(notifications);
   app.configure(transactions);
   app.configure(orders);
+  app.configure(liveData);
 };

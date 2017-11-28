@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const favicon = require('serve-favicon');
 const compress = require('compression');
 const cors = require('cors');
@@ -20,6 +21,8 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
+
+const defaults = require('./defaults');
 
 const authentication = require('./authentication');
 
@@ -53,7 +56,21 @@ app.configure(socketio(function (io) {
     });
   });
 }));
-app.configure(feathersSync(config.get('feathersSync')));
+
+
+var feathersSyncConfig = Object.assign({}, config.get('feathersSync'));
+if ((process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'devServer') && config.has('mongoCert')) {
+  var cert = fs.readFileSync(config.get('mongoCert'), 'utf8');
+  var mongoOptions = {};
+  mongoOptions.ssl = true;
+  mongoOptions.sslValidate = false;
+  mongoOptions.sslKey = cert;
+  mongoOptions.sslCert = cert;
+  mongoOptions.sslCA = cert;
+  feathersSyncConfig.mubsub = Object.assign({}, feathersSyncConfig.mubsub, mongoOptions);
+}
+
+app.configure(feathersSync(feathersSyncConfig));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
@@ -63,9 +80,49 @@ app.configure(authentication);
 app.configure(services);
 
 
+app.configure(defaults);
+
+app.configure(function () {
+  var app = this;
+
+  return
+  const liveDataService = app.service('live-data');
+
+  const ba = require('bitcoinaverage');
+
+  var publicKey = 'ZjQxOWM2MjYyNzY3NGIzMThiM2U5MmNjNTgxZmU2ZmY';
+  var secretKey = 'YzA0YzE5ZmMwMTMzNDVkMTlmMWQ1NGY2ZjEzOWI4MjliZTFkZmNmNGEyZjU0OTI1ODQzYTBmZTQ5OTI4MDA2MQ';
+
+  var restClient = ba.restfulClient(publicKey, secretKey);
+  var wsClient = ba.websocketClient(publicKey, secretKey);
 
 
-const requestService = app.service('requests');
+  try {
+    // Here we log the response received by https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD. For custom usage you just need to implement the Anonimous function and do something else instead of console.log(response);.
+    restClient.tickerGlobalPerSymbol('BTCUSD', function (response) {
+      console.log("BTCUSD:", response);
+    });
+
+    var lastLiveData = void 0;
+
+    rootApp.on('connection', connection => {
+      liveDataService.update("abababababababababababab", lastLiveData);
+    })
+
+    // Here we show an example how to connect to one of our websockets and get periodical update for the Global Price Index for 'BTCUSD'. You can use 'local' instead of 'global', or you can change the crypto-fiat pair to something else (example: ETHEUR), depending on your needs.
+    wsClient.connectToTickerWebsocket('global', 'BTCUSD', function (response) {
+      lastLiveData = { "id": "abababababababababababab", name: "BTCUSD", data: response };
+      liveDataService.update("abababababababababababab", lastLiveData);
+    });
+
+
+  }
+  catch (e) {
+    console.log("Error With Api:", e)
+  }
+
+})
+
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
