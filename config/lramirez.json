@@ -10,5 +10,9 @@
     "collection": "_events",
     "db": "mongodb://localhost:27017/peerpaid_web"
   },
+  "cardpay": {
+    "respondWithContent": true,
+    "responseContentFile": "redirector"
+  },
   "mongodb": "mongodb://localhost:27017/peerpaid_web"
 }
