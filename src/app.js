@@ -108,7 +108,7 @@ app.configure(function () {
 
     var lastLiveData = void 0;
 
-    rootApp.on('connection', connection => {
+    app.on('connection', connection => {
       liveDataService.update("abababababababababababab", lastLiveData);
     })
 
