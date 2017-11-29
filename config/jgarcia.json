@@ -10,5 +10,9 @@
     "collection": "_events",
     "db": "mongodb://localhost:27017/peerpaid_web"
   },
-  "mongodb": "mongodb://localhost:27017/peerpaid_web"
+  "mongodb": "mongodb://localhost:27017/peerpaid_web",
+  "bitcoinAverageAPI": {
+    "publicKey": "OTcwMjEzZTlkZjdlNDI2OTlmZjZiYmYwMmQ0MDdmMGQ",
+    "secretKey": "OWRhYWRhZTM4ZWZmNGY0MmJhY2E3MjdhMmJmYWQ4YzZlMmQ3NWU4YWVlZGE0MmRkYWRiNWE5M2Y0NzA3OGVhYQ"
+  }
 }

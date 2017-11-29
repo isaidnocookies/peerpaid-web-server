@@ -85,13 +85,16 @@ app.configure(defaults);
 app.configure(function () {
   var app = this;
 
-  return
   const liveDataService = app.service('live-data');
 
   const ba = require('bitcoinaverage');
 
-  var publicKey = 'ZjQxOWM2MjYyNzY3NGIzMThiM2U5MmNjNTgxZmU2ZmY';
-  var secretKey = 'YzA0YzE5ZmMwMTMzNDVkMTlmMWQ1NGY2ZjEzOWI4MjliZTFkZmNmNGEyZjU0OTI1ODQzYTBmZTQ5OTI4MDA2MQ';
+  if (!config.get('bitcoinAverageAPI')){
+    throw new Error("Bitcoin Average API secret and private keys not defined");
+  } 
+
+  const publicKey = config.get('bitcoinAverageAPI').publicKey;
+  const secretKey = config.get('bitcoinAverageAPI').secretKey;
 
   var restClient = ba.restfulClient(publicKey, secretKey);
   var wsClient = ba.websocketClient(publicKey, secretKey);
@@ -105,7 +108,7 @@ app.configure(function () {
 
     var lastLiveData = void 0;
 
-    rootApp.on('connection', connection => {
+    app.on('connection', connection => {
       liveDataService.update("abababababababababababab", lastLiveData);
     })
 
