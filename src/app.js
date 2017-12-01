@@ -69,7 +69,6 @@ if ((['production','devServer','productionPrep'].indexOf(process.env.NODE_ENV) >
   mongoOptions.sslCA = cert;
   feathersSyncConfig.mubsub = Object.assign({}, feathersSyncConfig.mubsub, mongoOptions);
 }
-
 app.configure(feathersSync(feathersSyncConfig));
 
 // Configure other middleware (see `middleware/index.js`)
