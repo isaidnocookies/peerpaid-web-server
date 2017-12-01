@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { restrictToOwner, associateCurrentUser } = require('feathers-authentication-hooks');
+const featherClient = require('../../lib/featherClient');
+const config = require('config');
 
 const restrict = [
   authenticate('jwt'),
@@ -19,10 +21,10 @@ const attachMe = [
 
 module.exports = {
   before: {
-    all: [ ],
-    find: [],
+    all: [],
+    find: [attachDataServer],
     get: [],
-    create: [...attachMe],
+    create: [...attachMe, attachDataServer],
     update: [...restrict],
     patch: [...restrict],
     remove: []
@@ -30,9 +32,9 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [attachDataServer],
     get: [],
-    create: [],
+    create: [attachDataServer],
     update: [],
     patch: [],
     remove: []
@@ -48,3 +50,11 @@ module.exports = {
     remove: []
   }
 };
+
+function attachDataServer(hook) {
+  var payload = (hook.params && hook.params.payload) || hook.payload || {};
+  var accessToken = payload.accessToken;
+
+  hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
+  return hook;
+}
