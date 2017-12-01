@@ -59,7 +59,7 @@ app.configure(socketio(function (io) {
 
 
 var feathersSyncConfig = Object.assign({}, config.get('feathersSync'));
-if ((process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'devServer') && config.has('mongoCert')) {
+if ((['production','devServer','productionPrep'].indexOf(process.env.NODE_ENV) >= 0) && config.has('mongoCert')) {
   var cert = fs.readFileSync(config.get('mongoCert'), 'utf8');
   var mongoOptions = {};
   mongoOptions.ssl = true;
@@ -90,9 +90,9 @@ app.configure(function () {
 
   const ba = require('bitcoinaverage');
 
-  if (!config.get('bitcoinAverageAPI')){
+  if (!config.get('bitcoinAverageAPI')) {
     throw new Error("Bitcoin Average API secret and private keys not defined");
-  } 
+  }
 
   const publicKey = config.get('bitcoinAverageAPI').publicKey;
   const secretKey = config.get('bitcoinAverageAPI').secretKey;

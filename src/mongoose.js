@@ -13,9 +13,7 @@ module.exports = function () {
     useMongoClient: true,
   };
 
-  
-  
-  if ((process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'devServer') && config.has('mongoCert')) {
+  if ((['production','devServer','productionPrep'].indexOf(process.env.NODE_ENV) >= 0) && config.has('mongoCert')) {
     var cert = fs.readFileSync(config.get("mongoCert"), 'utf8');
     mongoOptions.ssl = true;
     mongoOptions.sslValidate = false;
