@@ -85,6 +85,7 @@ app.configure(defaults);
 app.configure(function () {
   var app = this;
 
+  return;
   const liveDataService = app.service('live-data');
 
   const ba = require('bitcoinaverage');

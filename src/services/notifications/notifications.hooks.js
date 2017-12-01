@@ -79,16 +79,16 @@ function restrictToUndeleted(hook) {
   }
   return hook;
 }
-
+ 
 function markDeleted(hook) {
   return new Promise((resolve, reject) => {
     // var smallHook = Object.assign({}, hook, { params: Object.assign({}, hook.params, { user: null, payload: null }) });
 
     // console.log("Hook", smallHook);
 
-    hook.app.service('notifications').patch(hook.id, { query: hook.params.query, $set: { 'deleted': true } }).then(notificationResults => {
+    hook.app.service('notifications').patch(hook.id, { $set: { 'deleted': true } }, { query: hook.params.query }).then(notificationResults => {
       var notification = getFirstItem(notificationResults);
-      
+
       hook.result = notification || {};
       console.log('Hook.result:', hook.result);
       resolve(hook);
