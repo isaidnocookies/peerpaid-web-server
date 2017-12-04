@@ -59,7 +59,7 @@ app.configure(socketio(function (io) {
 
 
 var feathersSyncConfig = Object.assign({}, config.get('feathersSync'));
-if ((['production','devServer','productionPrep'].indexOf(process.env.NODE_ENV) >= 0) && config.has('mongoCert')) {
+if ((['production', 'devServer', 'productionPrep'].indexOf(process.env.NODE_ENV) >= 0) && config.has('mongoCert')) {
   var cert = fs.readFileSync(config.get('mongoCert'), 'utf8');
   var mongoOptions = {};
   mongoOptions.ssl = true;
@@ -84,44 +84,42 @@ app.configure(defaults);
 app.configure(function () {
   var app = this;
 
-  return;
   const liveDataService = app.service('live-data');
 
   const ba = require('bitcoinaverage');
 
-  if (!config.get('bitcoinAverageAPI')) {
-    throw new Error("Bitcoin Average API secret and private keys not defined");
-  }
+  if (config.get('bitcoinAverageAPI')) {
 
-  const publicKey = config.get('bitcoinAverageAPI').publicKey;
-  const secretKey = config.get('bitcoinAverageAPI').secretKey;
+    const publicKey = config.get('bitcoinAverageAPI').publicKey;
+    const secretKey = config.get('bitcoinAverageAPI').secretKey;
 
-  var restClient = ba.restfulClient(publicKey, secretKey);
-  var wsClient = ba.websocketClient(publicKey, secretKey);
+    var restClient = ba.restfulClient(publicKey, secretKey);
+    var wsClient = ba.websocketClient(publicKey, secretKey);
 
 
-  try {
-    // Here we log the response received by https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD. For custom usage you just need to implement the Anonimous function and do something else instead of console.log(response);.
-    restClient.tickerGlobalPerSymbol('BTCUSD', function (response) {
-      console.log("BTCUSD:", response);
-    });
+    try {
+      // Here we log the response received by https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD. For custom usage you just need to implement the Anonimous function and do something else instead of console.log(response);.
+      restClient.tickerGlobalPerSymbol('BTCUSD', function (response) {
+        console.log("BTCUSD:", response);
+      });
 
-    var lastLiveData = void 0;
+      var lastLiveData = void 0;
 
-    app.on('connection', connection => {
-      liveDataService.update("abababababababababababab", lastLiveData);
-    })
+      app.on('connection', connection => {
+        liveDataService.update("abababababababababababab", lastLiveData);
+      })
 
-    // Here we show an example how to connect to one of our websockets and get periodical update for the Global Price Index for 'BTCUSD'. You can use 'local' instead of 'global', or you can change the crypto-fiat pair to something else (example: ETHEUR), depending on your needs.
-    wsClient.connectToTickerWebsocket('global', 'BTCUSD', function (response) {
-      lastLiveData = { "id": "abababababababababababab", name: "BTCUSD", data: response };
-      liveDataService.update("abababababababababababab", lastLiveData);
-    });
+      // Here we show an example how to connect to one of our websockets and get periodical update for the Global Price Index for 'BTCUSD'. You can use 'local' instead of 'global', or you can change the crypto-fiat pair to something else (example: ETHEUR), depending on your needs.
+      wsClient.connectToTickerWebsocket('global', 'BTCUSD', function (response) {
+        lastLiveData = { "id": "abababababababababababab", name: "BTCUSD", data: response };
+        liveDataService.update("abababababababababababab", lastLiveData);
+      });
 
 
-  }
-  catch (e) {
-    console.log("Error With Api:", e)
+    }
+    catch (e) {
+      console.log("Error With Api:", e)
+    }
   }
 
 })
