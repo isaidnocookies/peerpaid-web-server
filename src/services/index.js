@@ -15,6 +15,8 @@ const upload = require('./upload/upload.service.js');
 const notifications = require('./notifications/notifications.service.js');
 const transactions = require("./internal-transactions/internal-transactions.service.js");
 const orders = require("./orders/orders.service.js");
+const consignments = require("./consignment/consignment.service.js");
+
 
 const liveData = require('./live-data/live-data.service.js');
 
@@ -36,4 +38,6 @@ module.exports = function () {
   app.configure(transactions);
   app.configure(orders);
   app.configure(liveData);
+
+  app.configure(consignments);
 };

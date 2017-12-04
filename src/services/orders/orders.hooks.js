@@ -4,6 +4,9 @@ const config = require('config');
 
 module.exports = {
   before: {
+    create:[
+      attachDataServer
+    ],
     find: [
       attachDataServer
     ],
@@ -13,6 +16,9 @@ module.exports = {
   },
 
   after: {
+    create:[
+      attachDataServer
+    ],
     find: [],
     get: [],
   },
