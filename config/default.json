@@ -73,9 +73,5 @@
   "cardpay": {
     "respondWithContent": true,
     "responseContentFile": "redirector"
-  },
-  "bitcoinAverageAPI": {
-    "publicKey": "ZjQxOWM2MjYyNzY3NGIzMThiM2U5MmNjNTgxZmU2ZmY",
-    "secretKey": "YzA0YzE5ZmMwMTMzNDVkMTlmMWQ1NGY2ZjEzOWI4MjliZTFkZmNmNGEyZjU0OTI1ODQzYTBmZTQ5OTI4MDA2MQ"
   }
 }
