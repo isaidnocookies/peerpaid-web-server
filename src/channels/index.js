@@ -134,6 +134,7 @@ module.exports = function (app) {
   });
 
   notificationService.publish((data, hook) => {
+    if (data.deleted) return null;
     var result = app.channel(`users/${data.owner}`);
     return result;
   });

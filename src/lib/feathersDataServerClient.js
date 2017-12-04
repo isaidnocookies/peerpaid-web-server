@@ -5,7 +5,7 @@ var btckey = require('./btckey');
 
 var featherClient = require('./featherClient');
 
-var dataServer = featherClient.socketio(config.get('dataServer'));
+var dataServer = featherClient(config.get('dataServer'));
 
 var userObject = {
   _id: 'ffaaffaaffaaffaaffaaffaa',
