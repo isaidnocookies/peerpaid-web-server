@@ -84,11 +84,11 @@ app.configure(defaults);
 app.configure(function () {
   var app = this;
 
-  const liveDataService = app.service('live-data');
+  if (config.has('bitcoinAverageAPI')) {
+    const liveDataService = app.service('live-data');
 
-  const ba = require('bitcoinaverage');
+    const ba = require('bitcoinaverage');
 
-  if (config.get('bitcoinAverageAPI')) {
 
     const publicKey = config.get('bitcoinAverageAPI').publicKey;
     const secretKey = config.get('bitcoinAverageAPI').secretKey;

@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
 const { populate } = require('feathers-hooks-common');
@@ -48,6 +50,7 @@ module.exports = {
     ],
     create: [
       attachDataServer,
+      verifyReCaptcha,
     ],
     update: [
       ...restrict,
@@ -118,4 +121,18 @@ function checkForNotify(hook) {
       });
     }
   });
+}
+
+function verifyReCaptcha(hook) {
+  //
+
+  axios.post('https://www.google.com/recaptcha/api/siteverify', {
+    secret: '6Lc6jDsUAAAAALvLJ4SAt5o3nlafGI_Wv5G28M7',
+    response: hook.data.captcha
+  }).then(function (response) {
+    console.log("ReCaptcha:",response);
+  }).catch(function (error) {
+    console.log("ReError:",error);
+  });
+
 }
