@@ -1,11 +1,12 @@
 {
+  "serverTitle": "WEB-01",  
   "host": "0.0.0.0",
   "port": 3001,
   "dataServer": "http://172.31.17.154:8080",
   "clientConfig": {
-    "blockchainWalletUrl": "https://live.blockcypher.com/btc/address/#wallet#",
-    "blockchainTransactionUrl": "https://live.blockcypher.com/btc/tx/#txid#",
-    "blockchainBlockhashUrl": "https://live.blockcypher.com/btc/block/#blockhash#"
+    "blockchainWalletUrl": "https://live.blockcypher.com/btc-testnet/address/#wallet#",
+    "blockchainTransactionUrl": "https://live.blockcypher.com/btc-testnet/tx/#txid#",
+    "blockchainBlockhashUrl": "https://live.blockcypher.com/btc-testnet/block/#blockhash#"
   },
   "feathersSync": {
     "size": 41943040,
