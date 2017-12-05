@@ -44,6 +44,13 @@ module.exports = function (app) {
                   break; // case request.stage
               }
               break;
+              case 'BUY_BITCOINS':
+               switch(request.stage){
+                 case 'COMPLETED':
+                 //TODO a ERROR HANDLING HERE
+                 break;
+               }
+              break;
             default:
               console.log("Unhandled request:", request.request);
               break;// case request.request
