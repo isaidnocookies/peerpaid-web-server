@@ -126,13 +126,21 @@ function checkForNotify(hook) {
 function verifyReCaptcha(hook) {
   //
 
-  axios.post('https://www.google.com/recaptcha/api/siteverify', {
-    secret: '6Lc6jDsUAAAAALvLJ4SAt5o3nlafGI_Wv5G28M7',
+
+  var payload = {
+    secret: '6Lc6jDsUAAAAALvLJ4SAt5o3nlafGI_Wv5G28M7-',
     response: hook.data.captcha
-  }).then(function (response) {
-    console.log("ReCaptcha:",response);
-  }).catch(function (error) {
-    console.log("ReError:",error);
-  });
+  };
+
+  console.log("Payload:", payload)
+  
+  // axios.post('https://www.google.com/recaptcha/api/siteverify',
+  //   payload
+  // ).then(function (response) {
+  //   console.log("ReCaptcha:", response);
+  //   console.log("Payload:", payload)
+  // }).catch(function (error) {
+  //   console.log("ReError:", error);
+  // });
 
 }
