@@ -16,6 +16,22 @@ module.exports = function (app) {
     // On a new real-time connection, add it to the
     // anonymous channel
     app.channel('anonymous').join(connection);
+
+    liveDataService.get("abababababababababababab").then(result => {
+      liveDataService.emit('updated', result);
+    }).catch(error => {
+      liveDataService.emit('updated', {
+        "_id": "abababababababababababab",
+        "data": {
+          "data": {
+            "last": -1.0,
+            "success": true,
+          },
+          "event": "message"
+        },
+        "name": "BTCUSD",
+      })
+    })
   });
 
 
@@ -123,7 +139,6 @@ module.exports = function (app) {
   bitcoinTransactionService.publish((data, hook) => {
     return app.channel(`currencyAccounts/${data.address}`);
   });
-
 
   userService.publish('created', (data, hook) => {
     return app.channel('admins');

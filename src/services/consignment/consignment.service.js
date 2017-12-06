@@ -1,4 +1,3 @@
-// Initializes the `trader-profile` service on path `/trader-profile`
 const createService = require('./consignment.class.js');
 const hooks = require('./consignment.hooks');
 

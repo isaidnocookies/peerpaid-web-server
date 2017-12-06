@@ -17,6 +17,8 @@ const transactions = require("./internal-transactions/internal-transactions.serv
 const consignments = require("./consignment/consignment.service.js");
 
 const orders = require("./orders/orders.service.js");
+const consignments = require("./consignment/consignment.service.js");
+
 
 const liveData = require('./live-data/live-data.service.js');
 
