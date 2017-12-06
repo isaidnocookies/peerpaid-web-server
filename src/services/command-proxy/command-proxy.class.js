@@ -24,7 +24,15 @@ class Service {
       data.notifierOptions = {
         preferredComm: 'emailAddress'
       };
-      console.log(data);
+      // console.log(data);
+      return dataServer.service('authManagement').create(data);
+    }
+
+    else if (data.action === 'resendVerifySignup') {
+      data.notifierOptions = {
+        preferredComm: 'emailAddress'
+      };
+      // console.log('resendVerifySignup data: ', data);
       return dataServer.service('authManagement').create(data);
     }
 
@@ -35,13 +43,13 @@ class Service {
   }
 
 
-  update(id, data, params) {
-    console.log("Data:", data);
-    console.log("params:", params);
-    // if (data.action === 'sendResetPwd') {
-    //   return dataServer.service('authManagement').update(data);
-    // }
-  }
+  // update(id, data, params) {
+  //   console.log("Data:", data);
+  //   console.log("params:", params);
+  //   // if (data.action === 'sendResetPwd') {
+  //   //   return dataServer.service('authManagement').update(data);
+  //   // }
+  // }
 }
 
 
