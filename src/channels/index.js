@@ -113,6 +113,13 @@ module.exports = function (app) {
   //   return result;
   // });
 
+  app.on('channels:joinChannel', (username, channel) => {
+    app.channel('authenticated').connections.forEach((connection) => {
+      if (connection.user.username === username) {
+        app.channel(channel).join(connection);
+      }
+    });
+  });
 
   app.on('channels:exitChannel', (username, channel) => {
     app.channel('authenticated').connections.forEach((connection) => {
