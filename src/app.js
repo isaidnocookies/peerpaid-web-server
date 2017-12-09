@@ -49,7 +49,7 @@ app.configure(socketio(function (io) {
     if (config.has('clientConfig')) {
       setTimeout(() => {
         socket.emit('clientConfig', config.get('clientConfig'));
-      }, 10);
+      }, 1);
     }
     socket.on('set-currencyAccounts', function (currencyAccounts, callback) {
       socket.feathers.currencyAccounts = currencyAccounts;
