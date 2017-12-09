@@ -10,5 +10,6 @@
     "collection": "_events",
     "db": "mongodb://localhost:27017/peerpaid_web"
   },
-  "mongodb": "mongodb://localhost:27017/peerpaid_web"
+  "mongodb": "mongodb://localhost:27017/peerpaid_web",
+  "configFile": "ari"
 }
