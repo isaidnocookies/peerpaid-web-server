@@ -3,7 +3,9 @@ const createService = require('feathers-mongoose');
 const createModel = require('../../models/trade-offers.model');
 const hooks = require('./trade-offers.hooks');
 
-module.exports = function (app) {
+
+module.exports = function () {
+  const app = this;
   const Model = createModel(app);
   const paginate = app.get('paginate');
 
@@ -22,3 +24,4 @@ module.exports = function (app) {
 
   service.hooks(hooks);
 };
+

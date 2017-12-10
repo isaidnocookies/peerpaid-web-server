@@ -15,7 +15,8 @@ module.exports = function (app) {
         'REQUEST_SEND_BITCOINS',
         'CREATE_DEPOSIT_ORDER',
         'CREATE_ENCRYPTED_FIAT_PAYLOAD',
-        'BUY_BITCOINS'
+        'BUY_BITCOINS',
+        'CREATE_TRADE'
       ], required: true
     },
     token: { type: String, default: 'WEB' },
