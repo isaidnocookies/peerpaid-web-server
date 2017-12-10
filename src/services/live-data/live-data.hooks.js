@@ -1,22 +1,16 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const errors = require('@feathersjs/errors');
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [
-      hook => {
-        hook.result = hook.data;
-      }
-    ],
-    update: [
-      hook => {
-        hook.result = hook.data;
-      }
-    ],
-    patch: [],
-    remove: []
+    create: [() => { throw new errors.MethodNotAllowed(); }],
+    update: [() => { throw new errors.MethodNotAllowed(); }],
+    patch: [() => { throw new errors.MethodNotAllowed(); }],
+    remove: [() => { throw new errors.MethodNotAllowed(); }]
   },
 
   after: {

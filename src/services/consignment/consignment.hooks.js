@@ -3,6 +3,8 @@ const { restrictToOwner, associateCurrentUser } = require('feathers-authenticati
 const featherClient = require('../../lib/featherClient');
 const config = require('config');
 
+const errors = require('@feathersjs/errors');
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -22,17 +24,17 @@ const attachMe = [
 module.exports = {
   before: {
     all: [],
-    find: [attachDataServer],
+    find: [],
     get: [],
-    create: [...attachMe, attachDataServer],
-    update: [...restrict],
-    patch: [...restrict],
-    remove: []
+    create: [() => { throw new errors.MethodNotAllowed(); }],
+    update: [() => { throw new errors.MethodNotAllowed(); }],
+    patch: [() => { throw new errors.MethodNotAllowed(); }],
+    remove: [() => { throw new errors.MethodNotAllowed(); }]
   },
 
   after: {
     all: [],
-    find: [attachDataServer],
+    find: [],
     get: [],
     create: [],
     update: [],
@@ -50,11 +52,3 @@ module.exports = {
     remove: []
   }
 };
-
-function attachDataServer(hook) {
-  var payload = (hook.params && hook.params.payload) || hook.payload || {};
-  var accessToken = payload.accessToken;
-
-  hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
-  return hook;
-}
