@@ -1,13 +1,16 @@
 // Initializes the `trader-profile` service on path `/trader-profile`
-const createService = require('./trader-profile.class.js');
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/trader-profile.model');
 const hooks = require('./trader-profile.hooks');
 
 module.exports = function () {
   const app = this;
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
     name: 'trader-profile',
+    Model,
     paginate
   };
 
