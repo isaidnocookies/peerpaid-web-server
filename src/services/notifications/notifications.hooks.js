@@ -30,8 +30,8 @@ module.exports = {
     ],
     get: [],
     create: [...attachMe],
-    update: [],
-    patch: [],
+    update: [() => { throw new errors.MethodNotAllowed(); }],
+    patch: [() => { throw new errors.MethodNotAllowed(); }],
     remove: [
       markDeleted
     ]

@@ -2,22 +2,25 @@
 const featherClient = require('../../lib/featherClient');
 const config = require('config');
 
+const errors = require('@feathersjs/errors');
+
 module.exports = {
   before: {
-    create:[
-      attachDataServer
-    ],
     find: [
-      attachDataServer
+
     ],
     get: [
-      attachDataServer
+
     ],
+    create: [() => { throw new errors.MethodNotAllowed(); }],
+    update: [() => { throw new errors.MethodNotAllowed(); }],
+    patch: [() => { throw new errors.MethodNotAllowed(); }],
+    remove: [() => { throw new errors.MethodNotAllowed(); }]
   },
 
   after: {
-    create:[
-      attachDataServer
+    create: [
+
     ],
     find: [],
     get: [],
@@ -29,13 +32,4 @@ module.exports = {
     get: [],
   }
 };
-
-function attachDataServer(hook) {
-  var payload = (hook.params && hook.params.payload) || hook.payload || {};
-  var accessToken = payload.accessToken;
-
-  hook.params = Object.assign(hook.params || {}, { dataServer: featherClient(config.get('dataServer'), accessToken) }, {});
-  return hook;
-
-}
-
+ 
