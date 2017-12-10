@@ -1,12 +1,15 @@
-const createService = require('./internal-transactions.class.js');
-const hooks = require('./internal-transactions.hooks');
+// Initializes the `internal-transaction` service on path `/internal-transaction`
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/internal-transaction.model');
+const hooks = require('./internal-transaction.hooks');
 
-module.exports = function () {
-  const app = this;
+module.exports = function (app) {
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
     name: 'internal-transaction',
+    Model,
     paginate
   };
 

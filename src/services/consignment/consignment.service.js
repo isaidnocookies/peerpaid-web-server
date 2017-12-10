@@ -1,12 +1,15 @@
-const createService = require('./consignment.class.js');
+// Initializes the `consignment` service on path `/consignment`
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/consignment.model');
 const hooks = require('./consignment.hooks');
 
-module.exports = function () {
-  const app = this;
+module.exports = function (app) {
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
     name: 'consignment',
+    Model,
     paginate
   };
 

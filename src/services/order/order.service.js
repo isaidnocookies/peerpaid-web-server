@@ -1,12 +1,15 @@
-const createService = require('./orders.class.js');
-const hooks = require('./orders.hooks');
+// Initializes the `order` service on path `/order`
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/order.model');
+const hooks = require('./order.hooks');
 
-module.exports = function () {
-  const app = this;
+module.exports = function (app) {
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
     name: 'order',
+    Model,
     paginate
   };
 
