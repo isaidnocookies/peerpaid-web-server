@@ -1,10 +1,10 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const featherClient = require('../../lib/featherClient');
+const config = require('config');
 
 const errors = require('@feathersjs/errors');
 
 module.exports = {
   before: {
-    all: [],
     find: [],
     get: [],
     create: [() => { throw new errors.MethodNotAllowed(); }],
@@ -14,22 +14,13 @@ module.exports = {
   },
 
   after: {
-    all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
   },
-
+ 
   error: {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
   }
 };
