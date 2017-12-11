@@ -11,7 +11,13 @@
     "db": "mongodb://localhost:27017/peerpaid_web"
   },
   "clientConfig": {
-    "debugMode": true
+    // "debugMode": true
+    "debugMode":{
+      "enable":true,
+      "collapsed": true,
+      "x": 0,
+      "y": 80
+    }
   },
   "mongodb": "mongodb://localhost:27017/peerpaid_web"
 }
