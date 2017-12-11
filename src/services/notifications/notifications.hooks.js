@@ -31,7 +31,15 @@ module.exports = {
     get: [],
     create: [...attachMe],
     update: [() => { throw new errors.MethodNotAllowed(); }],
-    patch: [() => { throw new errors.MethodNotAllowed(); }],
+    patch: [
+      (hook) => {
+        if (hook.data && (hook.data.$set.viewed || hook.data.$set.deleted)) {
+          return hook;
+        } else {
+          throw new errors.MethodNotAllowed();
+        }
+      }
+    ],
     remove: [
       markDeleted
     ]
@@ -79,7 +87,7 @@ function restrictToUndeleted(hook) {
   }
   return hook;
 }
- 
+
 function markDeleted(hook) {
   return new Promise((resolve, reject) => {
     // var smallHook = Object.assign({}, hook, { params: Object.assign({}, hook.params, { user: null, payload: null }) });
@@ -90,7 +98,7 @@ function markDeleted(hook) {
       var notification = getFirstItem(notificationResults);
 
       hook.result = notification || {};
-      console.log('Hook.result:', hook.result);
+      // console.log('Hook.result:', hook.result);
       resolve(hook);
     }).catch(error => {
       console.log('Error:', error);
