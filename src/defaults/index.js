@@ -5,10 +5,11 @@ module.exports = function () {
   var app = this;
 
   const enumService = app.service('enums');
+  const paymentMethodsService = app.service('payment-methods');
 
   var enumValue = {
-    "_id": "5a065e0028500eca6acfc091",
-    "countries": {
+    '_id': '5a065e0028500eca6acfc091',
+    'countries': {
       // "AF" : "Afghanistan",
       // "AX" : "Åland Islands",
       // "AL" : "Albania",
@@ -263,21 +264,39 @@ module.exports = function () {
       // "ZM" : "Zambia",
       // "ZW" : "Zimbabwe"
     },
-    "currencies": {
-      "USD": "US Dollar",
-      "EUR": "Euro",
-      "JPY": "Japanese Yen"
+    'currencies': {
+      'USD': 'US Dollar',
+      'EUR': 'Euro',
+      'JPY': 'Japanese Yen'
     }
-  }
-  enumService.get("5a065e0028500eca6acfc091").then(result => {
-    console.log("Enums Exist");
+  };
+  enumService.get('5a065e0028500eca6acfc091').then(result => {
+    console.log('Enums Exist');
   }).catch(error => {
     enumService.create(enumValue).then(result => {
-      console.log("Enums Added")
+      console.log('Enums Added');
     }).catch(error => {
-      console.log("EnumError:", error);
-    })
-  })
+      console.log('EnumError:', error);
+    });
+  });
+
+  var paymentMethod = {
+    '_id': '5a1e56d3ae209c4c254bb081',
+    'method': 'Internal Transaction',
+    'name': 'internal_transaction',
+    'details': 'Send and receive money using PeerPaid.'
+  };
+
+  paymentMethodsService.get('5a1e56d3ae209c4c254bb081').then(paymentMethod => {
+    console.log('Payment Method Exists');
+  }).catch(error => {
+    paymentMethodsService.create(paymentMethod).then(paymentMethodh => {
+      console.log('Payment Method Created');
+    }).catch(error => {
+      console.log('Payment Method Creation Error:',error);
+    });
+  });
 
 
-}
+
+};
