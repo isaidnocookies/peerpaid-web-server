@@ -6,7 +6,7 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const tradeOffer = new Schema({
-    owner: { type: Schema.ObjectId, required: true },
+    owner: { type: Schema.ObjectId },
     type: {
       type: String,
       enum: [
