@@ -7,6 +7,7 @@ module.exports = function (app) {
     // Begin Raw Transaction
     //countries: { type: String, required: true },
     currencies: { type: Object },
+    currencyPrecision: { type: Object },
   });
 
 
