@@ -13,11 +13,22 @@ module.exports = function (app) {
     currencyAccountDestination: {
       type: Schema.ObjectId,
       ref: 'currencyAccounts',
-      required: true
     },
+    walletDestination: { type: String },
     order: {
       type: Schema.ObjectId,
       ref: 'order',
+      required: false
+    },
+    type: {
+      type: String,
+      enum: [
+        'FUNDS_DEPOSIT',
+        'SEND_CURRENCY',
+        'EXCHANGE_CURRENCY',
+        'DEPOSIT_TO_CONSIGNMENT',
+        'WITHDRAW_CURRENCY'
+      ],
       required: false
     },
     amount: { type: Number, required: true },
@@ -25,7 +36,9 @@ module.exports = function (app) {
     status: { type: String, enum: ['SUCCESS', 'FAIL', 'REJECTED', 'PENDING'], required: true },
     details: {
       description: { type: String, required: false },
-      paymentTransactionId: { type: String, required: false }
+      paymentTransactionId: { type: String, required: false },
+      wallet: { type: String, required: false },
+      transactionType: { type: String, required: false },
     }
   }, {
       timestamps: true

@@ -7,7 +7,18 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const order = new Schema({
     stage: { type: String, enum: ['SUCCESS', 'FAIL', 'REJECTED', 'PENDING'], required: true },
-    type: { type: String, enum: ['FUNDS_DEPOSIT', 'SEND_CURRENCY','EXCHANGE_CURRENCY','DEPOSIT_TO_CONSIGNMENT'], required: true },
+    type: {
+      type: String,
+      enum: [
+        'FUNDS_DEPOSIT',
+        'SEND_CURRENCY',
+        'EXCHANGE_CURRENCY',
+        'DEPOSIT_TO_CONSIGNMENT',
+        'WITHDRAW_CURRENCY',
+        'SEND_BITCOINS'
+      ],
+      required: false
+    },
     transactions: [{
       type: Schema.ObjectId,
       ref: 'internalTransaction'
