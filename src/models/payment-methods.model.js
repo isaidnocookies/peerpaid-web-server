@@ -3,8 +3,9 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const paymentMethods = new Schema({
     method: { type: String, required: true, unique: true },
-    currency: [{ type: String, required: false }],
+    name: { type: String, required: false },
     details: { type: String, required: false },
+    currency: [{ type: String, required: false }],
     items: [{ type: String, required: false }],
   });
 
