@@ -268,6 +268,13 @@ module.exports = function () {
       'USD': 'US Dollar',
       'EUR': 'Euro',
       'JPY': 'Japanese Yen'
+    },
+    'currencyPrecision': {
+      'USD': 2,
+      'EUR': 2,
+      'GBP': 2,
+      'BTC': 8,
+      'LTC': 8
     }
   };
   enumService.get('5a065e0028500eca6acfc091').then(result => {
@@ -293,7 +300,7 @@ module.exports = function () {
     paymentMethodsService.create(paymentMethod).then(paymentMethodh => {
       console.log('Payment Method Created');
     }).catch(error => {
-      console.log('Payment Method Creation Error:',error);
+      console.log('Payment Method Creation Error:', error);
     });
   });
 
