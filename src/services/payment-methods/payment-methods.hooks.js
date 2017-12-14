@@ -7,7 +7,15 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [() => { throw new errors.MethodNotAllowed(); }],
+    create: [
+      (hook) => {
+        if (hook.data.method === 'Internal Transaction') {
+          return hook;
+        } else {
+          throw new errors.MethodNotAllowed();
+        }
+      }],
+    // create: [() => { throw new errors.MethodNotAllowed(); }],
     update: [() => { throw new errors.MethodNotAllowed(); }],
     patch: [() => { throw new errors.MethodNotAllowed(); }],
     remove: [() => { throw new errors.MethodNotAllowed(); }]
