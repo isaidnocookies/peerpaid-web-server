@@ -3,14 +3,16 @@ var dataServer = require('../../lib/feathersDataServerClient');
 
 var errors = require('@feathersjs/errors');
 
+var debug = require('../../lib/debug');
+
 class Service {
   constructor(options) {
     this.options = options || {};
   }
 
   create(data, params) {
-    console.log("Data:", data);
-    console.log("params:", params);
+    debug('Data:', data);
+    debug('params:', params);
 
     if (data.action === 'verifySignupLong') {
       return dataServer.service('authManagement').create(data);
@@ -24,7 +26,7 @@ class Service {
       data.notifierOptions = {
         preferredComm: 'emailAddress'
       };
-      // console.log(data);
+      // debug(data);
       return dataServer.service('authManagement').create(data);
     }
 
@@ -32,20 +34,20 @@ class Service {
       data.notifierOptions = {
         preferredComm: 'emailAddress'
       };
-      // console.log('resendVerifySignup data: ', data);
+      // debug('resendVerifySignup data: ', data);
       return dataServer.service('authManagement').create(data);
     }
 
 
     else {
-      return Promise.reject(new errors.BadRequest('Command cannot be performed'))
+      return Promise.reject(new errors.BadRequest('Command cannot be performed'));
     }
   }
 
 
   // update(id, data, params) {
-  //   console.log("Data:", data);
-  //   console.log("params:", params);
+  //   debug("Data:", data);
+  //   debug("params:", params);
   //   // if (data.action === 'sendResetPwd') {
   //   //   return dataServer.service('authManagement').update(data);
   //   // }

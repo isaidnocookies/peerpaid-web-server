@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+
+const debug = require('../../lib/debug');
 const featherClient = require('../../lib/featherClient');
 
 class Service {
@@ -7,7 +9,7 @@ class Service {
   }
 
   find(params) {
-    console.log("Server internal-transactions.class" , JSON.stringify(params.query,null,2));
+    debug('Server internal-transactions.class' , JSON.stringify(params.query,null,2));
     return params.dataServer.service('internal-transaction').find(params);
   }
   get(id,params) {

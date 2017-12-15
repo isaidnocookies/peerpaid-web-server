@@ -56,12 +56,12 @@ var CustomVerifier = function () {
             });
           }
           else {
-            console.log("Invalid Auth Token")
+            debug('Invalid Auth Token');
             done(new errors.NotAuthenticated('Invalid Auth Token'), null, null);
           }
         });
       }).catch((err) => {
-        console.log("Not Authenticated:", err)
+        debug('Not Authenticated:', err);
         done(new errors.NotAuthenticated(err.message), null, null);
       });
 

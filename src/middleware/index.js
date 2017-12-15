@@ -2,6 +2,8 @@ var requestService = require('./requestService');
 
 const commandParser = require('./command-parser');
 
+const debug = require('../lib/debug');
+
 var path = require('path');
 
 const config = require('config');
@@ -53,7 +55,7 @@ module.exports = function () {
         res.sendStatus(400);
       }
     } catch (err) {
-      console.log(err);
+      debug(err);
     }
   });
 };

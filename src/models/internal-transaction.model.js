@@ -41,8 +41,8 @@ module.exports = function (app) {
       transactionType: { type: String, required: false },
     }
   }, {
-      timestamps: true
-    });
+    timestamps: true
+  });
 
   return mongooseClient.model('internalTransaction', internalTransaction);
 };

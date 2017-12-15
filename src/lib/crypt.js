@@ -55,49 +55,13 @@ module.exports = {
   },
   decryptFromBitcoinServer: (value) => {
     try {
-      return getKey('btckey.pub2').decryptPublic(value).toString();;
+      return getKey('btckey.pub2').decryptPublic(value).toString();
     }
     catch (e) {
       return void 0;
     }
 
   },
-
-
-    encryptOnBitcoinServer: (value) => {
-    try {
-      return getKey('btckey.cert').encryptPrivate(value, 'base64');
-    }
-    catch (e) {
-      return void 0;
-    }
-  },
-  decryptOnBitcoinServer: (value) => {
-    try {
-      return getKey('btckey.cert').decrypt(value).toString();
-    }
-    catch (e) {
-      return void 0;
-    }
-  },
-  encryptForBitcoinServer: (value) => {
-    try {
-      return getKey('btckey.pub2').encrypt(value, 'base64');
-    }
-    catch (e) {
-      return void 0;
-    }
-  },
-  decryptFromBitcoinServer: (value) => {
-    try {
-      return getKey('btckey.pub2').decryptPublic(value).toString();;
-    }
-    catch (e) {
-      return void 0;
-    }
-  },
-
-
 
 
 
@@ -127,7 +91,7 @@ module.exports = {
   },
   decryptFromFiatServer: (value) => {
     try {
-      return getKey('fiatkey.pub2').decryptPublic(value).toString();;
+      return getKey('fiatkey.pub2').decryptPublic(value).toString();
     }
     catch (e) {
       return void 0;

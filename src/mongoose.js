@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 const config = require('config');
-const fs = require('fs')
+const fs = require('fs');
 module.exports = function () {
   const app = this;
   const mongoUrl = app.get('mongodb');
@@ -14,7 +14,7 @@ module.exports = function () {
   };
 
   if ((['production','devServer','productionPrep'].indexOf(process.env.NODE_ENV) >= 0) && config.has('mongoCert')) {
-    var cert = fs.readFileSync(config.get("mongoCert"), 'utf8');
+    var cert = fs.readFileSync(config.get('mongoCert'), 'utf8');
     mongoOptions.ssl = true;
     mongoOptions.sslValidate = false;
     mongoOptions.sslKey = cert;

@@ -3,6 +3,7 @@ const { restrictToOwner, associateCurrentUser } = require('feathers-authenticati
 const commonHooks = require('feathers-hooks-common');
 const errors = require('@feathersjs/errors');
 
+const debug = require('../../lib/debug');
 
 const { getFirstItem } = require('../../lib/common');
 
@@ -92,16 +93,16 @@ function markDeleted(hook) {
   return new Promise((resolve, reject) => {
     // var smallHook = Object.assign({}, hook, { params: Object.assign({}, hook.params, { user: null, payload: null }) });
 
-    // console.log("Hook", smallHook);
+    // debug("Hook", smallHook);
 
     hook.app.service('notifications').patch(hook.id, { $set: { 'deleted': true } }, { query: hook.params.query }).then(notificationResults => {
       var notification = getFirstItem(notificationResults);
 
       hook.result = notification || {};
-      // console.log('Hook.result:', hook.result);
+      // debug('Hook.result:', hook.result);
       resolve(hook);
     }).catch(error => {
-      console.log('Error:', error);
+      debug('Error:', error);
       hook.result = {};
       resolve(hook);
     });

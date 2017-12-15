@@ -7,7 +7,7 @@ module.exports = function (newObject, oldObject) {
   if (
     newObject._id && oldObject._id &&
     newObject._id.toString() === oldObject._id.toString()) {
-    debug(`objects have different _id`);
+    debug('objects have different _id');
     equals = false;
   }
   if (equals &&
@@ -21,7 +21,7 @@ module.exports = function (newObject, oldObject) {
       oldUpdatedAt = new Date(oldUpdatedAt);
     }
     if (newUpdatedAt.getTime() === oldUpdatedAt.getTime()) {
-      debug('objects have same time and _id')
+      debug('objects have same time and _id');
       equals = true;
 
     }
@@ -52,4 +52,4 @@ module.exports = function (newObject, oldObject) {
     }
   });
   return equals;
-}
+};

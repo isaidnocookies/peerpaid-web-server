@@ -1,6 +1,8 @@
 const crypt = require('../lib/crypt');
 const config = require('config');
 
+const debug = require('../lib/debug');
+
 const SERVER_TITLE = config.get('serverTitle');
 
 const ADMIN_SERVER = config.get('serverTitles.admin');
@@ -39,36 +41,36 @@ module.exports = function (app) {
                   }).catch(error => debug('Error updating request', error));
                   break; // case request.stage
                 default:
-                  console.log("Unhandled stage :", request.stage);
+                  debug('Unhandled stage :', request.stage);
                   // should not make it here
                   break; // case request.stage
               }
               break;
-              case 'BUY_BITCOINS':
-               switch(request.stage){
-                 case 'COMPLETED':
-                 //TODO a ERROR HANDLING HERE
-                 break;
-               }
+            case 'BUY_BITCOINS':
+              switch(request.stage){
+                case 'COMPLETED':
+                  //TODO a ERROR HANDLING HERE
+                  break;
+              }
               break;
             default:
-              console.log("Unhandled request:", request.request);
+              debug('Unhandled request:', request.request);
               break;// case request.request
           }
         }
       }
 
-      requestService.on("created", (request) => {
+      requestService.on('created', (request) => {
         requestUpdated(request);
       });
-      requestService.on("updated", (request) => {
+      requestService.on('updated', (request) => {
         requestUpdated(request);
       });
-      requestService.on("patched", (request) => {
+      requestService.on('patched', (request) => {
         requestUpdated(request);
       });
 
     }
   }
   init(app);
-}
+};

@@ -1,24 +1,26 @@
 const assert = require('assert');
 const rp = require('request-promise');
 const app = require('../src/app');
+const debug = require('../src/lib/debug');
 
 describe('Feathers application tests', () => {
-  before(function(done) {
+  before(function (done) {
     this.server = app.listen(3030);
     this.server.once('listening', () => done());
   });
 
-  after(function(done) {
+  after(function (done) {
     this.server.close(done);
   });
 
   it('starts and shows the index page', () => {
-    return rp('http://localhost:3030').then(body =>
-      assert.ok(body.indexOf('<html>') !== -1)
+    return rp('http://localhost:3030').then(body => {
+      assert.ok(body.indexOf('<html') !== -1);
+    }
     );
   });
 
-  describe('404', function() {
+  describe('404', function () {
     it('shows a 404 HTML page', () => {
       return rp({
         url: 'http://localhost:3030/path/to/nowhere',

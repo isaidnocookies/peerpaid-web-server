@@ -26,4 +26,4 @@ module.exports = function (newObject, oldObject) {
     isNewer = true;
   }
   return isNewer;
-}
+};

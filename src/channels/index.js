@@ -17,21 +17,21 @@ module.exports = function (app) {
     // anonymous channel
     app.channel('anonymous').join(connection);
 
-    liveDataService.get("abababababababababababab").then(result => {
+    liveDataService.get('abababababababababababab').then(result => {
       liveDataService.emit('updated', result);
     }).catch(error => {
       liveDataService.emit('updated', {
-        "_id": "abababababababababababab",
-        "data": {
-          "data": {
-            "last": -1.0,
-            "success": true,
+        '_id': 'abababababababababababab',
+        'data': {
+          'data': {
+            'last': -1.0,
+            'success': true,
           },
-          "event": "message"
+          'event': 'message'
         },
-        "name": "BTCUSD",
-      })
-    })
+        'name': 'BTCUSD',
+      });
+    });
   });
 
 

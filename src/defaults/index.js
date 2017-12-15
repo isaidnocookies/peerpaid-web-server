@@ -1,4 +1,5 @@
 
+const debug = require('../lib/debug');
 
 
 module.exports = function () {
@@ -278,12 +279,12 @@ module.exports = function () {
     }
   };
   enumService.get('5a065e0028500eca6acfc091').then(result => {
-    console.log('Enums Exist');
+    debug('Enums Exist');
   }).catch(error => {
     enumService.create(enumValue).then(result => {
-      console.log('Enums Added');
+      debug('Enums Added');
     }).catch(error => {
-      console.log('EnumError:', error);
+      debug('EnumError:', error);
     });
   });
 
@@ -295,12 +296,12 @@ module.exports = function () {
   };
 
   paymentMethodsService.get('5a1e56d3ae209c4c254bb081').then(paymentMethod => {
-    console.log('Payment Method Exists');
+    debug('Payment Method Exists');
   }).catch(error => {
     paymentMethodsService.create(paymentMethod).then(paymentMethodh => {
-      console.log('Payment Method Created');
+      debug('Payment Method Created');
     }).catch(error => {
-      console.log('Payment Method Creation Error:', error);
+      debug('Payment Method Creation Error:', error);
     });
   });
 

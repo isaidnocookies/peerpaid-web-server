@@ -60,7 +60,7 @@ var JWTVerifier = function () {
       var dest = {};
       jwtverify.checkToken(dest, token, () => {
         if (dest.jwt === void 0) {
-          console.log("JWTVerifier--")
+          debug('JWTVerifier--');
 
           done(new errors.NotAuthenticated('Invalid Auth Token-ws'), null, {});
         }
@@ -79,7 +79,7 @@ var JWTVerifier = function () {
             done(null, result, Object.assign({}, result, { [`${this.options.entity}Id`]: dest.jwt._id, accessToken: token }));
           }).catch((error) => {
             error.other = 'fail';
-            console.log("JWTVerifier--XX", error);
+            debug('JWTVerifier--XX', error);
 
             debug('userFail', error);
 

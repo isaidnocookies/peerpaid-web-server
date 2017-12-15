@@ -132,7 +132,7 @@ function verifyReCaptcha(hook) {
     response: hook.data.captcha
   };
 
-  console.log("Payload:", payload)
+  debug('Payload:', payload);
   
   // axios.post('https://www.google.com/recaptcha/api/siteverify',
   //   payload

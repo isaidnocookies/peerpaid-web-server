@@ -3,7 +3,7 @@
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 
 
@@ -58,8 +58,7 @@ module.exports = function (app) {
         scriptSig: {
           asm: { type: String, required: false },
           hex: { type: String, required: false }
-        },
-        sequence: { type: Number, required: false }
+        }
       }
     ],
     vout: [

@@ -37,7 +37,7 @@ const encryptPayloadForServers = (hook) => {
     }
   }
   return hook;
-}
+};
 
 module.exports = {
   before: {

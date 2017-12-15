@@ -38,8 +38,8 @@ module.exports = function (app) {
     },
     securityOptions: []
   }, {
-      timestamps: true
-    });
+    timestamps: true
+  });
 
   return mongooseClient.model('trade-offers', tradeOffer);
 };

@@ -1,6 +1,8 @@
 
 
 /* eslint-disable no-unused-vars */
+
+const debug = require('../../lib/debug');
 const featherClient = require('../../lib/featherClient');
 var dataServer = require('../../lib/feathersDataServerClient');
 
@@ -10,7 +12,7 @@ class Service {
   }
 
   find(params) {
-    console.log("Server params within consignment.class", JSON.stringify(params.query, null, 2));
+    debug('Server params within consignment.class', JSON.stringify(params.query, null, 2));
     return dataServer.service('consignment').find(params);
   }
   get(id, params) {

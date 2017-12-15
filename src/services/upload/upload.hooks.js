@@ -5,6 +5,8 @@ const feathersError = require('feathers-errors');
 
 const { getFirstItem } = require('../../lib/common');
 
+const debug = require('../../lib/debug');
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -98,9 +100,9 @@ function createNotification(hook) {
       // console.log('hook create result:',result);
       return hook;
     }).catch(error => {
-      console.log('hook create error', error)
+      debug('hook create error', error);
       return hook;
-    })
+    });
     // console.log('user update hook data key', payloadKey);
     // console.log('user update hook params', hook.params.user)
     return hook;
