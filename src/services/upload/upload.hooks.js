@@ -7,6 +7,8 @@ const { getFirstItem } = require('../../lib/common');
 
 const debug = require('../../lib/debug');
 
+const {markDeleted} = require('../../hooks/markDeleted');
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -32,34 +34,8 @@ module.exports = {
     update: [...restrict],
     patch: [...restrict],
     remove: [
-      hook => {
-        if (!hook.id){
-          return Promise.reject(new feathersError.MethodNotAllowed('Unable to delete all items'));
-        }
-
-        return new Promise((resolve, reject) => {
-          if (hook.id && hook.id.match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{8}/)) {
-            var query = {
-              qquuid: hook.id,
-              $select: ['_id']
-            };
-            hook.app.service('upload').find({ query }).then(result => {
-              var upload = getFirstItem(result);
-              if (upload) {
-                hook.id = upload._id;
-                resolve(hook);
-              }
-              else {
-                reject(new Error('Object Not Found'));
-              }
-            }).catch(reject);
-          }
-          else {
-            resolve(hook);
-          }
-        });
-      },
-      ...restrict
+      ...restrict,
+      markDeleted({serviceName: 'upload'})
     ]
   },
 

@@ -14,7 +14,8 @@ module.exports = function (app) {
     files: { type: Object },
     file: { type: Object },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    deleted: { type: Boolean, index: true }
   });
 
   return mongooseClient.model('upload', upload);
