@@ -21,44 +21,44 @@ AWS.config.update({
 var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // Call S3 to list current buckets
-function buckets() {
-  // Create the parameters for calling createBucket
-  var bucketParams = {
-    Bucket : 'peerpaid-secure-documents'
-  };                    
+// function buckets() {
+//   // Create the parameters for calling createBucket
+//   var bucketParams = {
+//     Bucket : 'peerpaid-secure-documents'
+//   };                    
                                   
-  // // Call S3 to create the bucket
-  // s3.createBucket(bucketParams, function(err, data) {
-  //   if (err) {
-  //     console.log('Error', err);
-  //   } else {
-  //     console.log('Success', data.Location);
-  //   }
-  // });
+// // Call S3 to create the bucket
+// s3.createBucket(bucketParams, function(err, data) {
+//   if (err) {
+//     console.log('Error', err);
+//   } else {
+//     console.log('Success', data.Location);
+//   }
+// });
 
-  s3.listBuckets(function(err, data) {
-    if (err) {
-      console.log('Error', err);
-    } else {
-      console.log('Bucket List', data);
-    }
-  });
+//   s3.listBuckets(function(err, data) {
+//     if (err) {
+//       console.log('Error', err);
+//     } else {
+//       console.log('Bucket List', data);
+//     }
+//   });
 
-  // check if bucket exists
-  s3.headBucket(bucketParams, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log('Bucket exists',data);           // successful response
-  });
+//   // check if bucket exists
+//   s3.headBucket(bucketParams, function(err, data) {
+//     if (err) console.log(err, err.stack); // an error occurred
+//     else     console.log('Bucket exists',data);           // successful response
+//   });
 
-  var listParams = {
-    Bucket : 'peerpaid-secure-documents',
-    MaxKeys: 4
-  };
-  s3.listObjects(listParams, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log('list objects',data);  
-  });
-}
+//   var listParams = {
+//     Bucket : 'peerpaid-secure-documents',
+//     MaxKeys: 4
+//   };
+//   s3.listObjects(listParams, function(err, data) {
+//     if (err) console.log(err, err.stack); // an error occurred
+//     else     console.log('list objects',data);  
+//   });
+// }
 
 
 module.exports = function () {
@@ -91,7 +91,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
 
 
   app.post('/upload',  multerMiddle, function (req, res, next) {
-    buckets();
+    // buckets();
     var uploadService = app.service('upload');
     var userService = app.service('users');
 
@@ -135,7 +135,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
         uploadParams.Key = `${result.owner}/${result._id}`;
         uploadParams.Body = encryptedFile;
 
-        console.log('uploadParams:', uploadParams);
+        // console.log('uploadParams:', uploadParams);
 
         // call S3 to retrieve upload file to specified bucket
         s3.upload (uploadParams, function (err, data) {
