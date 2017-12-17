@@ -2,8 +2,64 @@
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/upload.model');
 const hooks = require('./upload.hooks');
-var multer = require('multer');
-const upload = multer({ dest: '../uploads' });
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ dest: '../uploads', storage: storage });
+const crypt = require('../../lib/crypt');
+const AWS = require('aws-sdk');
+const config = require('config');
+
+const awsKeys = config.get('awsKeys');
+
+AWS.config.update({
+  accessKeyId:  awsKeys.accessKeyId,
+  secretAccessKey: awsKeys.secretAccessKey,
+  region: 'us-west-2'
+});
+
+// Create S3 service object
+var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+
+// Call S3 to list current buckets
+// function buckets() {
+//   // Create the parameters for calling createBucket
+//   var bucketParams = {
+//     Bucket : 'peerpaid-secure-documents'
+//   };                    
+                                  
+// // Call S3 to create the bucket
+// s3.createBucket(bucketParams, function(err, data) {
+//   if (err) {
+//     console.log('Error', err);
+//   } else {
+//     console.log('Success', data.Location);
+//   }
+// });
+
+//   s3.listBuckets(function(err, data) {
+//     if (err) {
+//       console.log('Error', err);
+//     } else {
+//       console.log('Bucket List', data);
+//     }
+//   });
+
+//   // check if bucket exists
+//   s3.headBucket(bucketParams, function(err, data) {
+//     if (err) console.log(err, err.stack); // an error occurred
+//     else     console.log('Bucket exists',data);           // successful response
+//   });
+
+//   var listParams = {
+//     Bucket : 'peerpaid-secure-documents',
+//     MaxKeys: 4
+//   };
+//   s3.listObjects(listParams, function(err, data) {
+//     if (err) console.log(err, err.stack); // an error occurred
+//     else     console.log('list objects',data);  
+//   });
+// }
+
 
 module.exports = function () {
   const app = this;
@@ -35,44 +91,64 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
 
 
   app.post('/upload',  multerMiddle, function (req, res, next) {
-
+    // buckets();
     var uploadService = app.service('upload');
     var userService = app.service('users');
 
     var upload = Object.assign({}, req.body, { files: {} });
 
-
+    // console.log('/upload query: ', req.query);
+    // console.log('/upload req.files: ', req.files);
+    // console.log('upload: ', upload);
     var keys = Object.keys(req.files);
     if (keys.length === 1) {
       var key = keys[0];
       var file = req.files[key];
+      var fileBuffer = file[0].buffer;
+      var encryptedFile = crypt.encryptForFiatServer(fileBuffer, 'buffer');
       
       upload.fileName = req.query.fieldId || key;
 
-      upload.file = file.map((file, index) => {
-        //encrypt file,
-        // place on S3,
-        // Attach S3 location to the body,
-        return Object.assign({}, file, {
-          s3Location: 'location' + index
-        });
-      });
+      // console.log('/upload: ', upload);
+      // console.log('/upload keys: ', keys);
+      // console.log('/upload key: ', key);
+      // console.log('/upload file: ', file);
+      // console.log('/upload file buffer: ', fileBuffer);
+      // console.log('/upload file encrypted buffer: ', encryptedFile);
+      
 
-
-
-
+      // console.log('/upload: ', upload);
+      // console.log('/upload file after: ', upload.file);
 
       uploadService.create(upload, { provider: 'uploader', headers: req.headers }).then(function (result) {
         result.success = true;
         res.json(result);
+        // console.log('/upload then result',result);
 
         // userService.get(result.owner).then(owner => {
         //   owner.documents = {...owner.documents};
         //   owner.documents.
         // });
 
-      }).catch(function (error) {
+        // call S3 to retrieve upload file to specified bucket - AWS-WORKS
+        var uploadParams = {Bucket: awsKeys.Bucket, Key: '', Body: ''};
+        uploadParams.Key = `${result.owner}/${result._id}`;
+        uploadParams.Body = encryptedFile;
 
+        // console.log('uploadParams:', uploadParams);
+
+        // call S3 to retrieve upload file to specified bucket
+        s3.upload (uploadParams, function (err, data) {
+          if (err) {
+            console.log('Error', err);
+          } if (data) {
+            console.log('Document upload Successful, s3 location: ', data.Location);
+          }
+        });
+        //end s3
+
+      }).catch(function (error) {
+        console.log('catch error: ', error);
         res.json({ error: error.message });
       });
     }

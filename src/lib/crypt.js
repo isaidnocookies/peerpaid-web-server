@@ -81,9 +81,9 @@ module.exports = {
       return void 0;
     }
   },
-  encryptForFiatServer: (value) => {
+  encryptForFiatServer: (value,encoding) => {
     try {
-      return getKey('fiatkey.pub2').encrypt(value, 'base64');
+      return getKey('fiatkey.pub2').encrypt(value, encoding || 'base64');
     }
     catch (e) {
       return void 0;
