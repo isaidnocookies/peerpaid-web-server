@@ -38,6 +38,7 @@
     "@feathersjs/feathers": "^3.0.1",
     "@feathersjs/socketio": "^3.0.1",
     "app-root-path": "^2.0.1",
+    "aws-sdk": "^2.170.0",
     "axios": "^0.17.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",

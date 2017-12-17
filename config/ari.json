@@ -18,5 +18,9 @@
       "y": 80
     }
   },
-  "mongodb": "mongodb://localhost:27017/peerpaid_web"
+  "mongodb": "mongodb://localhost:27017/peerpaid_web",
+  "awsKeys": {
+    "accessKeyId": "AKIAJCCTX7ONXMLRHVDQ",
+    "secretAccessKey": "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"
+  }
 }
