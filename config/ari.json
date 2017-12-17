@@ -20,6 +20,7 @@
   },
   "mongodb": "mongodb://localhost:27017/peerpaid_web",
   "awsKeys": {
+    "Bucket": "peerpaid-dev-secure-documents",
     "accessKeyId": "AKIAJCCTX7ONXMLRHVDQ",
     "secretAccessKey": "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"
   }

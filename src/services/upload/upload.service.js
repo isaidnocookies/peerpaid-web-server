@@ -131,7 +131,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
         // });
 
         // call S3 to retrieve upload file to specified bucket - AWS-WORKS
-        var uploadParams = {Bucket: 'peerpaid-dev-secure-documents', Key: '', Body: ''};
+        var uploadParams = {Bucket: awsKeys.Bucket, Key: '', Body: ''};
         uploadParams.Key = `${result.owner}/${result._id}`;
         uploadParams.Body = encryptedFile;
 
