@@ -1,13 +1,15 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { restrictToOwner, associateCurrentUser } = require('feathers-authentication-hooks');
 
-const feathersError = require('feathers-errors');
+// const feathersError = require('feathers-errors');
 
-const { getFirstItem } = require('../../lib/common');
+// const { getFirstItem } = require('../../lib/common');
 
-const debug = require('../../lib/debug');
+// const debug = require('../../lib/debug');
 
-const {markDeleted} = require('../../hooks/markDeleted');
+const { markDeleted } = require('../../hooks/markDeleted');
+const { restrictToUndeleted } = require('../../hooks/restrictToUndeleted');
+const { CreateNotification } = require('../../hooks/CreateNotification');
 
 const restrict = [
   authenticate('jwt'),
@@ -28,14 +30,17 @@ const attachMe = [
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [...restrict],
+    find: [
+      ...restrict,
+      restrictToUndeleted
+    ],
     get: [...restrict],
     create: [...attachMe],
     update: [...restrict],
     patch: [...restrict],
     remove: [
       ...restrict,
-      markDeleted({serviceName: 'upload'})
+      markDeleted({ serviceName: 'upload' })
     ]
   },
 
@@ -44,7 +49,15 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      createNotification
+      CreateNotification({
+        notifyType: 'Upload',
+        notifyMessage: (hook) => {
+          let payloadKey = hook.data.fileName;
+          console.log('created notification');
+          return `Document uploaded: ${payloadKey}`;
+        },
+        infoLink: '/profile/profile-data',
+      })
     ],
     update: [],
     patch: [],
@@ -61,26 +74,3 @@ module.exports = {
     remove: []
   }
 };
-
-function createNotification(hook) {
-  // console.log('upload create hook data', hook.data);
-  if (hook.data) {
-    // let payloadKey = Object.keys(hook.data.$set).slice(0, 1);
-    let payloadKey = hook.data.fileName;
-    hook.app.service('notifications').create({
-      notifyType: 'Upload',
-      notifyMessage: `Document uploaded: ${payloadKey}`,
-      infoLink: '/profile/my-documents',
-      owner: hook.params.user._id
-    }).then(result => {
-      // console.log('hook create result:',result);
-      return hook;
-    }).catch(error => {
-      debug('hook create error', error);
-      return hook;
-    });
-    // console.log('user update hook data key', payloadKey);
-    // console.log('user update hook params', hook.params.user)
-    return hook;
-  }
-}
