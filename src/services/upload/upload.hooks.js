@@ -53,7 +53,6 @@ module.exports = {
         notifyType: 'Upload',
         notifyMessage: (hook) => {
           let payloadKey = hook.data.fileName;
-          console.log('created notification');
           return `Document uploaded: ${payloadKey}`;
         },
         infoLink: '/profile/profile-data',
