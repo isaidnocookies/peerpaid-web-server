@@ -79,5 +79,10 @@
   "cardpay": {
     "respondWithContent": true,
     "responseContentFile": "redirector"
+  },
+  "awsKeys": {
+    "Bucket": "peerpaid-dev-secure-documents",
+    "accessKeyId": "AKIAJCCTX7ONXMLRHVDQ",
+    "secretAccessKey": "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"
   }
 }
