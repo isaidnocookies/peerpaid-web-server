@@ -17,7 +17,10 @@ module.exports = function (app) {
         'CREATE_ENCRYPTED_FIAT_PAYLOAD',
         'BUY_BITCOINS',
         'CREATE_TRADE',
-        'CREATE_PAYOUT_ORDER'
+        'CREATE_PAYOUT_ORDER',
+        'CLOSE_TRADE',
+        'CREATE_TWO_FACTOR_AUTHENTICATION',
+        'UPDATE_TWO_FACTOR_AUTHENTICATION'
       ], required: true
     },
     token: { type: String, default: 'WEB' },

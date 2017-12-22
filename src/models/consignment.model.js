@@ -16,6 +16,7 @@ module.exports = function (app) {
       ref: 'currencyAccounts',
       required: true
     },
+    owner: { type: Schema.ObjectId},    
     availableAmount: { type: Number, required: true },
     orders: [{
       type: Schema.ObjectId,
