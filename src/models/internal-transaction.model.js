@@ -28,7 +28,8 @@ module.exports = function (app) {
         'EXCHANGE_CURRENCY',
         'DEPOSIT_TO_CONSIGNMENT',
         'WITHDRAW_CURRENCY',
-        'CLOSE_TRADE_OFFER'
+        'CLOSE_TRADE_OFFER',
+        'SEND_BITCOINS'
       ],
       required: false
     },
