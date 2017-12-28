@@ -41,6 +41,7 @@ module.exports = function (app) {
       paymentTransactionId: { type: String, required: false },
       wallet: { type: String, required: false },
       transactionType: { type: String, required: false },
+      confirmation: { type: String, required: false },
     }
   }, {
     timestamps: true
