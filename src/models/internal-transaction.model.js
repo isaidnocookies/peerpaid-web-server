@@ -14,6 +14,7 @@ module.exports = function (app) {
       type: Schema.ObjectId,
       ref: 'currencyAccounts',
     },
+    owner: { type: Schema.ObjectId, index: true },
     walletDestination: { type: String },
     order: {
       type: Schema.ObjectId,
@@ -29,7 +30,8 @@ module.exports = function (app) {
         'DEPOSIT_TO_CONSIGNMENT',
         'WITHDRAW_CURRENCY',
         'CLOSE_TRADE_OFFER',
-        'SEND_BITCOINS'
+        'SEND_BITCOINS',
+        'RECEIVE_BITCOINS',
       ],
       required: false
     },
@@ -41,11 +43,14 @@ module.exports = function (app) {
       paymentTransactionId: { type: String, required: false },
       wallet: { type: String, required: false },
       transactionType: { type: String, required: false },
-      confirmation: { type: String, required: false },
+      bitcoinTransaction: {
+        type: Schema.ObjectId,
+        ref: 'bitcoinTransactions', required: false
     }
+  }
   }, {
     timestamps: true
   });
 
-  return mongooseClient.model('internalTransaction', internalTransaction);
+return mongooseClient.model('internaltransactions', internalTransaction);
 };
