@@ -12,7 +12,7 @@
   },
   "clientConfig": {
     "debugMode":{
-      "enable":false,
+      "enable":true,
       "collapsed": true,
       "x": 0,
       "y": 80

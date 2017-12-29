@@ -84,5 +84,6 @@
     "Bucket": "peerpaid-dev-secure-documents",
     "accessKeyId": "AKIAJCCTX7ONXMLRHVDQ",
     "secretAccessKey": "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"
-  }
+  },
+  "chimpKey": "77ffe8c31d60c9375ba6d44f1ed91693-us17"
 }

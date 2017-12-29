@@ -1,7 +1,10 @@
 var Mailchimp = require('mailchimp-api-v3');
 
-var api_key = '77ffe8c31d60c9375ba6d44f1ed91693-us17';
-var mailchimp = new Mailchimp(api_key);
+const config = require('config');
+var chimpKey = config.get('chimpKey');
+
+var mailchimp = new Mailchimp(chimpKey);
+
 
 module.exports = function (options = {}) {
   return function subscribe(req, res, next) {
