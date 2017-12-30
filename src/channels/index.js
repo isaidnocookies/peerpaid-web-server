@@ -8,6 +8,7 @@ module.exports = function (app) {
   var userService = app.service('users');
   var bitcoinTransactionService = app.service('bitcoin-transactions');
   var notificationService = app.service('notifications');
+  var internalTransactionService = app.service('internal-transaction');
   var requestsService = app.service('requests');
   var liveDataService = app.service('live-data');
 
@@ -169,5 +170,11 @@ module.exports = function (app) {
     var result = app.channel(['authenticated', 'anonymous']);
     return result;
   });
+
+  internalTransactionService.publish((data, hook) => {
+    console.log("asdasdadasdasdad adad adasdad ad ad ad ")
+    return app.channel(`users/${data.owner}`);
+  });
+
 
 };
