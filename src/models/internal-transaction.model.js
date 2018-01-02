@@ -14,7 +14,7 @@ module.exports = function (app) {
       type: Schema.ObjectId,
       ref: 'currencyAccounts',
     },
-    owner: { type: Schema.ObjectId, index: true },
+    owner: { type: String },
     walletDestination: { type: String },
     order: {
       type: Schema.ObjectId,
