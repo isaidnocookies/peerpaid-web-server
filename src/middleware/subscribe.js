@@ -1,7 +1,8 @@
 var Mailchimp = require('mailchimp-api-v3');
 
 const config = require('config');
-var chimpKey = config.get('chimpKey');
+var chimpKey = config.get('mailchimpKeys.chimpKey');
+var subscriberList = config.get('mailchimpKeys.subscriberList');
 
 var mailchimp = new Mailchimp(chimpKey);
 
@@ -11,7 +12,7 @@ module.exports = function (options = {}) {
     // console.log('subscribe middleware is running');
     // console.log('req for /subscribe: ', req.body.email);
 
-    mailchimp.post('/lists/886d3802d8/members', {
+    mailchimp.post(`/lists/${subscriberList}/members`, {
       email_address: req.body.email,
       status: 'subscribed'
     })
