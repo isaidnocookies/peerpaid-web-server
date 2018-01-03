@@ -28,7 +28,8 @@ module.exports = function (app) {
         'EXCHANGE_CURRENCY',
         'DEPOSIT_TO_CONSIGNMENT',
         'WITHDRAW_CURRENCY',
-        'CLOSE_TRADE_OFFER'
+        'CLOSE_TRADE_OFFER',
+        'SEND_BITCOINS'
       ],
       required: false
     },
@@ -40,6 +41,7 @@ module.exports = function (app) {
       paymentTransactionId: { type: String, required: false },
       wallet: { type: String, required: false },
       transactionType: { type: String, required: false },
+      confirmation: { type: String, required: false },
     }
   }, {
     timestamps: true
