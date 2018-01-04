@@ -25,9 +25,5 @@
   "mongopublic": "52.51.64.95",
   "mongoprivate": "172.31.34.77",
   "mongoCert": "/Users/thelazycoder/ownCloud.lazycoder/PeerPaid operations/mongo.key"
-  // ,
-  // "bitcoinAverageAPI": {
-  //   "publicKey": "ZjQxOWM2MjYyNzY3NGIzMThiM2U5MmNjNTgxZmU2ZmY",
-  //   "secretKey": "YzA0YzE5ZmMwMTMzNDVkMTlmMWQ1NGY2ZjEzOWI4MjliZTFkZmNmNGEyZjU0OTI1ODQzYTBmZTQ5OTI4MDA2MQ"
-  // }
+ 
 }
