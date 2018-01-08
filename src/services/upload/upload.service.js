@@ -102,12 +102,17 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
     // console.log('upload: ', upload);
     var keys = Object.keys(req.files);
     if (keys.length === 1) {
-      var key = keys[0];
-      var file = req.files[key];
-      var fileBuffer = file[0].buffer;
-      var encryptedFile = crypt.encryptForFiatServer(fileBuffer, 'buffer');
+      let key = keys[0];
+      let file = req.files[key];
+      let fileBuffer = file[0].buffer;
+      let encryptedFile = crypt.encryptForFiatServer(fileBuffer, 'buffer');
+      let mimeType = file[0].mimetype;
+      let originalName = file[0].originalname;
       
       upload.fileName = req.query.fieldId || key;
+      upload.originalName = originalName;
+      upload.mimeType = mimeType;
+      upload.originalName = originalName;
 
       // console.log('/upload: ', upload);
       // console.log('/upload keys: ', keys);
@@ -115,7 +120,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
       // console.log('/upload file: ', file);
       // console.log('/upload file buffer: ', fileBuffer);
       // console.log('/upload file encrypted buffer: ', encryptedFile);
-      
+      // console.log('/upload mimetype: ', mimeType);
 
       // console.log('/upload: ', upload);
       // console.log('/upload file after: ', upload.file);
