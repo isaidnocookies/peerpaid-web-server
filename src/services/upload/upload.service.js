@@ -117,6 +117,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
         const originalName = file[0].originalname;
         
         upload.fileName = req.query.fieldId || key;
+        upload.group = req.query.group || '';
         upload.originalName = originalName;
         upload.mimeType = mimeType;
         upload.originalName = originalName;

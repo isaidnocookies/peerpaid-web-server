@@ -11,6 +11,7 @@ module.exports = function (app) {
     qqtotalfilesize: { type: String },
     qqfile: { type: String },
     fileName: { type: String },
+    group: { type: String },
     mimeType: { type: String },
     originalName: { type: String },
     files: { type: Object },
