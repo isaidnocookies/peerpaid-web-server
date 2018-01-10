@@ -8,17 +8,18 @@ const upload = multer({ dest: '../uploads', storage: storage });
 const crypt = require('../../lib/crypt');
 const AWS = require('aws-sdk');
 const config = require('config');
+const Sharp = require('sharp');
 
 const awsKeys = config.get('awsKeys');
 
 AWS.config.update({
-  accessKeyId:  awsKeys.accessKeyId,
+  accessKeyId: awsKeys.accessKeyId,
   secretAccessKey: awsKeys.secretAccessKey,
   region: 'us-west-2'
 });
 
 // Create S3 service object
-var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+var s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 // Call S3 to list current buckets
 // function buckets() {
@@ -26,7 +27,7 @@ var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 //   var bucketParams = {
 //     Bucket : 'peerpaid-secure-documents'
 //   };                    
-                                  
+
 // // Call S3 to create the bucket
 // s3.createBucket(bucketParams, function(err, data) {
 //   if (err) {
@@ -90,7 +91,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
   ]);
 
 
-  app.post('/upload',  multerMiddle, function (req, res, next) {
+  app.post('/upload', multerMiddle, function (req, res, next) {
     // buckets();
     var uploadService = app.service('upload');
     var userService = app.service('users');
@@ -105,27 +106,24 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
       let key = keys[0];
       let file = req.files[key];
       let fileBuffer = file[0].buffer;
-      let encryptedFile = crypt.encryptForFiatServer(fileBuffer, 'buffer');
-      let mimeType = file[0].mimetype;
-      let originalName = file[0].originalname;
-      
-      upload.fileName = req.query.fieldId || key;
-      upload.originalName = originalName;
-      upload.mimeType = mimeType;
-      upload.originalName = originalName;
 
-      // console.log('/upload: ', upload);
-      // console.log('/upload keys: ', keys);
-      // console.log('/upload key: ', key);
-      // console.log('/upload file: ', file);
-      // console.log('/upload file buffer: ', fileBuffer);
-      // console.log('/upload file encrypted buffer: ', encryptedFile);
-      // console.log('/upload mimetype: ', mimeType);
+      let encryptedSplashFile = null;
+      let encryptedFile = null;
 
-      // console.log('/upload: ', upload);
-      // console.log('/upload file after: ', upload.file);
-
-      uploadService.create(upload, { provider: 'uploader', headers: req.headers }).then(function (result) {
+      Sharp(fileBuffer).resize(300, null).toBuffer().then(splash => {
+        encryptedFile = crypt.encryptForFiatServer(fileBuffer, 'buffer');
+        encryptedSplashFile = crypt.encryptForFiatServer(splash, 'buffer');
+        const mimeType = file[0].mimetype;
+        const originalName = file[0].originalname;
+        
+        upload.fileName = req.query.fieldId || key;
+        upload.originalName = originalName;
+        upload.mimeType = mimeType;
+        upload.originalName = originalName;
+        return upload;
+      }).then(upload => {
+        return uploadService.create(upload, { provider: 'uploader', headers: req.headers });
+      }).then(result => {
         result.success = true;
         res.json(result);
         // console.log('/upload then result',result);
@@ -136,20 +134,50 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
         // });
 
         // call S3 to retrieve upload file to specified bucket - AWS-WORKS
-        var uploadParams = {Bucket: awsKeys.Bucket, Key: '', Body: ''};
-        uploadParams.Key = `${result.owner}/${result._id}`;
-        uploadParams.Body = encryptedFile;
+        var uploadParams = { 
+          Bucket: awsKeys.Bucket,
+          Key: `${result.owner}/${result._id}-splash`,
+          Body: encryptedSplashFile
+        };
+
+        // call S3 to retrieve upload file to specified bucket
+        s3.upload(uploadParams, function (err, data) {
+          if (err) {
+            console.log('Error', err);
+          } if (data) {
+            console.log('Document splash uploaded successfuly. S3 location: ', data.Location);
+          }
+        });
+
+        // call S3 to retrieve upload file to specified bucket - AWS-WORKS
+        uploadParams = {
+          ...uploadParams, 
+          Key: `${result.owner}/${result._id}`,
+          Body: encryptedFile,
+        };
 
         // console.log('uploadParams:', uploadParams);
 
         // call S3 to retrieve upload file to specified bucket
-        s3.upload (uploadParams, function (err, data) {
+        s3.upload(uploadParams, function (err, data) {
           if (err) {
             console.log('Error', err);
           } if (data) {
-            console.log('Document upload Successful, s3 location: ', data.Location);
+            console.log('Document uploaded successfuly. S3 location: ', data.Location);
           }
         });
+
+        // console.log('/upload: ', upload);
+        // console.log('/upload keys: ', keys);
+        // console.log('/upload key: ', key);
+        // console.log('/upload file: ', file);
+        // console.log('/upload file buffer: ', fileBuffer);
+        // console.log('/upload file encrypted buffer: ', encryptedFile);
+        // console.log('/upload mimetype: ', mimeType);
+
+        // console.log('/upload: ', upload);
+        // console.log('/upload file after: ', upload.file);
+
         //end s3
 
       }).catch(function (error) {
@@ -158,6 +186,7 @@ Content-Disposition: form-data; name="qqfile"; filename="Screen Shot 2017-11-14 
       });
     }
   });
+
   app.use('/upload', uploadService);
 
 
