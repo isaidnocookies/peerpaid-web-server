@@ -18,7 +18,12 @@ module.exports = function (app) {
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     deleted: { type: Boolean, index: true },
-    isVerified: { type: Boolean, default: false }
+    status: { type: String, enum: [
+      'PENDING',
+      'VERIFIED',
+      'NON_VERIFIED',
+      'REJECTED',
+    ], required: true, default: 'PENDING' }
   });
 
   return mongooseClient.model('upload', upload);
