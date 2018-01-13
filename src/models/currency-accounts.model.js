@@ -17,8 +17,8 @@ module.exports = function (app) {
         'GBP'
       ], required: true
     },
-    amount: { type: String, default: '0'},
-    tentativeAmount: { type: String, default: '0'},
+    amount: { type: Number, default: 0},
+    tentativeAmount: { type: Number, default: 0},
     txids: [{ type: String }],
     txidsTentative: [{ type: String }],
     createdAt: { type: Date, default: Date.now },
