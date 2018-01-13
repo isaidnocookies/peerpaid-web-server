@@ -88,5 +88,9 @@
   "mailchimpKeys": {
     "chimpKey": "f1fedb6cf20551fe0f01578efce2df36-us17",
     "subscriberList": "497d1e62d5"
+  },
+  "geoipKeys": {
+    "userId": "128410",
+    "licenseKey": "fVmc5fkiEC6w"
   }
 }

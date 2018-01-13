@@ -97,6 +97,7 @@ app.configure(channels);
 app.use(notFound());
 app.use(handler());
 
+app.set('trust proxy', 'loopback');
 app.hooks(appHooks);
 
 module.exports = app;
