@@ -81,7 +81,7 @@ module.exports = function () {
     // var VALID_KEYS = ['algorithms', 'audience', 'issuer', 'ignoreExpiration', 'ignoreNotBefore', 'subject', 'clockTolerance'];
     var settings = Object.assign({}, options.jwt);
     var secret = options.secret;
-    console.log('auth index secret:84', secret);
+    // console.log('auth index secret:84', secret);
 
     // normalize algorithm to array
 

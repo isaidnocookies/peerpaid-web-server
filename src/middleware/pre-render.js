@@ -1,12 +1,16 @@
 var config = require('config');
 var featherClient = require('../lib/featherClient');
 var webServer = featherClient.socketio(config.get('webServer'));
+const geoip = require('../lib/geoip');
 
 module.exports = function (options = {}) {
+
+  this.app = options.app;
+
   return function preRender(req, res, next) {
     console.log('pre-render middleware is running');
     // console.log('options', options);
-    // console.log('options', req.body);
+    console.log('req.body', req.body);
     // console.log('req.body.jwt', req.body.jwt);
     // console.log('query', req.query);
     // console.log('app.passport', app.passport);
@@ -14,50 +18,82 @@ module.exports = function (options = {}) {
     console.log('typeof webServer.passport.verifyJWT:', typeof webServer.passport.verifyJWT);
 
     let userJwt = req.body.jwt;
-    var app = options.app;
+
+    var result = {};
+
+    this.finish = () => {
+      res.send(result);
+    };
 
     function renderPage(userData) {
       let resultPayload = {};
       if (userData) {
-        // Gather User information
-        // Add to result
-        // resultPayload = Object.assign({}, userData);
-        console.log('renderPage userData:', userData);
-        resultPayload = {...userData};
+        // console.log('renderPage userData:', userData);
+        resultPayload = { ...userData };
       }
-      // get generic stuff.
-      // Including GEOIP
-      var test = { test: 'test'};
-      resultPayload = Object.assign({},resultPayload, test);
-      console.log('resultPayload after:', resultPayload);
-      res.send({ success: true, result: resultPayload });
+      var test = { test: 'test' };
+      resultPayload = Object.assign({}, resultPayload, test);
+      // console.log('resultPayload after:', resultPayload);
+      result.userResult = { ...resultPayload };
+      this.finish();
+      console.log('passed user data to response!');
     }
 
-    function verifyComplete(user) {
+    this.verifyComplete = (user) => {
       if (user) {
-        console.log('user:', user);
-        app.service('users').get(user._id, {payload: {accessToken: userJwt}}).then(userData => {
-          console.log('userData after user get:', userData);
+        // console.log('user:', user);
+        this.app.service('users').get(user._id, { payload: { accessToken: userJwt } }).then(userData => {
+          // console.log('userData after user get:', userData);
+          console.log('retrieved user data!');
           renderPage(userData);
         }).catch((err) => {
-          console.log('error in users get');
+          console.log('error in users get:', err);
         });
       }
       else {
         renderPage();
       }
-    }
-    app.passport.verifyJWT(userJwt).then((userData) => {
-    // webServer.passport.verifyJWT(userJwt).then((userData) => {
-      console.log('passport userData:', userData);
-      console.log('passport userData._id:', userData._id);
-      verifyComplete(userData);
-    }).catch((err) => {
-      console.log('error in passport err:', err);
-      verifyComplete();
-    });
-    // app.service('/geoip').create(data)
+    };
+    function verifyJWT(jwt) {
 
+      this.app.passport.verifyJWT(jwt).then((userData) => {
+        // webServer.passport.verifyJWT(userJwt).then((userData) => {
+        // console.log('passport userData:', userData);
+        console.log('passport userData._id:', userData._id);
+        this.verifyComplete(userData);
+      }).catch((err) => {
+        console.log('error in passport err - pre-render:56', err);
+        res.send({ noLogin: 'user did not attempt to log in' });
+      });
+      // app.service('/geoip').create(data)
+    }
+
+    this.checkJwt = (jwt) => {
+      if (jwt) {
+        console.log('jwt exists');
+        verifyJWT(jwt);
+      } else {
+        console.log('jwt does not exist');
+        this.finish();
+      }
+    };
+
+    function getIpInfo() {
+      console.log('send req to geoip and perform ip check');
+      geoip(req).then((data) => {
+        console.log('after geoip data: ', data);
+        if (data.state === 'Nevada') {
+          // result = {idCheck: 'Tribe'};
+          result.ipCheck = 'Tribe';
+          this.checkJwt(userJwt);
+          // this.finish();
+        } else {
+          this.finish();
+        }
+      });
+    }
+
+    getIpInfo();
     // next();
   };
 };

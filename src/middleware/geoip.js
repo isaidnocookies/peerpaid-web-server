@@ -19,8 +19,8 @@ module.exports = function (options = {}) {
     console.log('geoip req.ips: ', req.ips);
     console.log('geoip req.body: ', req.body);
 
-    // let ip = '24.234.113.55';
-    let ip = '67.77.104.113';
+    let ip = '24.234.113.55';
+    // let ip = '67.77.104.113';
 
     function callback(err, data) {
       if (err) {
