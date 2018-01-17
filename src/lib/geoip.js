@@ -28,13 +28,25 @@ module.exports = function (req) {
         console.log(err);
       } else {
         console.log('response from geoip', data);
+        console.log('response from geoip continent', data.continent.names.en);
+        console.log('response from geoip country', data.country.names.en);
+        console.log('response from geoip postal', data.postal.code);
         console.log('response from geoip state', data.most_specific_subdivision.names.en);
         console.log('data.city.name.en', data.city.names.en);
         console.log('id check complete!!');
 
+        let continent = data.continent.names.en;
+        let country = data.country.names.en;
+        let postal = data.postal.code;
         let state = data.most_specific_subdivision.names.en;
         let city = data.city.names.en;
-        geoipData = { state: state, city: city };
+        geoipData = {
+          continent: continent,
+          country: country,
+          state: state,
+          city: city,
+          postal: postal,
+        };
         resolve(geoipData);
         // res.send({ tribe: true });
       }

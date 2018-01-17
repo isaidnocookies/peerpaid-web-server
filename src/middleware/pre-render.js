@@ -23,6 +23,7 @@ module.exports = function (options = {}) {
 
     this.finish = () => {
       res.send(result);
+      console.log('end result: ', result);
     };
 
     function renderPage(userData) {
@@ -78,6 +79,7 @@ module.exports = function (options = {}) {
       }
     };
 
+    //working with State as check before checking jwt
     function getIpInfo() {
       console.log('send req to geoip and perform ip check');
       geoip(req).then((data) => {
@@ -86,14 +88,51 @@ module.exports = function (options = {}) {
           // result = {idCheck: 'Tribe'};
           result.ipCheck = 'Tribe';
           this.checkJwt(userJwt);
-          // this.finish();
+          // this.finish();`
         } else {
           this.finish();
         }
       });
     }
 
-    getIpInfo();
+    function createExceptionDocs() {
+      this.app.service('geoip-exceptions').create({ country: 'United States', state: 'Nevada', priority: 0 }).then((data) => {
+        console.log('return create data for geoip-ex:', data);
+      });
+    }
+
+    function checkIpStatus() {
+      console.log('send req to geoip and perform ip check');
+      geoip(req).then((geoIpData) => {
+        console.log('after geoip data: ', geoIpData);
+        // get and check fields in database for exceptions 
+        this.app.service('geoip-exceptions').find({
+          query: {
+            $or: [
+              // {state: 'Nevada'},
+              // { state : { $in: ['Nevada', 'California'] }},
+              { country: 'United States' }
+            ],
+            $sort: { priority: -1 }
+          }
+        }).then((exceptionsData) => {
+          console.log('return find data for geoip-ex:', exceptionsData);
+          if (exceptionsData) {
+            result.ipCheck = 'Tribe';
+            this.finish();
+          } else {
+            this.finish();
+          }
+        });
+
+        //return 
+        // this.finish();
+      });
+    }
+
+    // getIpInfo();
+    checkIpStatus();
+    // createExceptionDocs();
     // next();
   };
 };
