@@ -26,7 +26,6 @@ module.exports = function (app) {
         if (request.token === SERVER_TITLE && SERVER_TITLE === WEB_SERVER) {
           switch (request.request) {
             case 'CREATE_ENCRYPTED_FIAT_PAYLOAD':
-            case 'REQUEST_SEND_BITCOINS':
             case 'REQUEST_BITCOIN_WALLET':
             case 'GET_BITCOIN_WALLET':
             case 'CREATE_DEPOSIT_ORDER':
@@ -46,8 +45,25 @@ module.exports = function (app) {
                   break; // case request.stage
               }
               break;
+            case 'REQUEST_SEND_BITCOINS':
+              switch (request.stage) {
+                case 'REQUESTED':
+                  requestService.update(request._id, {
+                    $set: {
+                      token: DATA_SERVER,
+                      updatedAt: Date.now()
+                    }
+                  }).then((request) => {
+                  }).catch(error => debug('Error updating request', error));
+                  break; // case request.stage
+                default:
+                  debug('Unhandled stage :', request.stage);
+                  // should not make it here
+                  break; // case request.stage
+              }
+              break;
             case 'BUY_BITCOINS':
-              switch(request.stage){
+              switch (request.stage) {
                 case 'COMPLETED':
                   //TODO a ERROR HANDLING HERE
                   break;

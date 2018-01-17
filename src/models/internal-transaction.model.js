@@ -15,6 +15,7 @@ module.exports = function (app) {
       ref: 'currencyAccounts',
     },
     owner: { type: Schema.ObjectId },
+    blockchainTransaction: { type: String }, 
     walletDestination: { type: String },
     order: {
       type: Schema.ObjectId,
@@ -43,14 +44,11 @@ module.exports = function (app) {
       paymentTransactionId: { type: String, required: false },
       wallet: { type: String, required: false },
       transactionType: { type: String, required: false },
-      bitcoinTransaction: {
-        type: Schema.ObjectId,
-        ref: 'bitcoinTransactions', required: false
+      confirmations: { type: Number, required: false },
     }
-  }
   }, {
-    timestamps: true
-  });
+      timestamps: true
+    });
 
-return mongooseClient.model('internaltransactions', internalTransaction);
+  return mongooseClient.model('internaltransactions', internalTransaction);
 };
