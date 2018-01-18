@@ -25,7 +25,7 @@ module.exports = function (options = {}) {
 
     this.finish = () => {
       res.send(result);
-      console.log('pre-render & geoip check ipCheck result: ', result.ipCheck);
+      console.log('Geoip:: pre-render & geoip check ipCheck result: ', result.ipCheck);
     };
 
     function renderPage(userData) {
@@ -65,10 +65,10 @@ module.exports = function (options = {}) {
 
     this.checkJwt = (jwt) => {
       if (jwt) {
-        console.log('jwt exists');
+        console.log('Geoip:: jwt exists');
         verifyJWT(jwt);
       } else {
-        console.log('jwt does not exist');
+        console.log('Geoip:: jwt does not exist');
         this.verifyComplete();
       }
     };
@@ -81,9 +81,9 @@ module.exports = function (options = {}) {
     // }
 
     function checkIpStatus() {
-      console.log('sent req to geoip to perform ip check');
+      console.log('Geoip:: sent req to geoip to perform ip check');
       geoip(req).then((geoIpData) => {
-        console.log('geoip check complete with ip: ', geoIpData.ipAddress);
+        console.log('Geoip:: geoip check complete with ip: ', geoIpData.ipAddress);
         // console.log('after geoip data: ', geoIpData);
         // get and check fields in database for exceptions 
         this.app.service('geoip-exceptions').find({

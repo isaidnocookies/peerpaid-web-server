@@ -8,7 +8,7 @@ var licenseKey = config.get('geoipKeys.licenseKey');
 const insights = new geoip2ws(userId, licenseKey, 'insights');
 
 module.exports = function (req) {
-  console.log('geoip is running');
+  console.log('Geoip:: geoip is running');
   // console.log('geoip req: ', req);
   // console.log('geoip req.protocol. ', req.protocol);
   // console.log('geoip req.hostname ', req.hostname);
@@ -19,9 +19,11 @@ module.exports = function (req) {
   // console.log('geoip req.body: ', req.body);
 
   let ip = req.headers['x-forwarded-for'] || req.ip;
-  if (process.env.NODE_ENV === 'ari'){
+  if (ip === '127.0.0.1'){
+    let staticIp = '24.234.113.55';
+    console.log(`Geoip:: ip:127.0.0.1 will switch to static ip: `, staticIp);
     // ip = '8.8.8.8';
-    ip = '24.234.113.55';
+    ip = staticIp;
     // ip = '99.203.10.168';
   }
   return new Promise((resolve, reject) => {

@@ -9,18 +9,25 @@ const insights = new geoip2ws(userId, licenseKey, 'insights');
 
 module.exports = function (options = {}) {
   return function geoip(req, res, next) {
-    console.log('geoip middleware is running');
+    console.log('Geoip:: geoip is running');
     // console.log('geoip req: ', req);
-    console.log(`geoip req.protocol. `, req.protocol);
-    console.log(`geoip req.hostname `, req.hostname);
-    console.log(`geoip req.headers['x-forwarded-for'] `, req.headers['x-forwarded-for']);
-    console.log(`geoip req.connection.remoteAddress `, req.connection.remoteAddress);
-    console.log('geoip req.ip: ', req.ip);
-    console.log('geoip req.ips: ', req.ips);
-    console.log('geoip req.body: ', req.body);
+    // console.log(`geoip req.protocol. `, req.protocol);
+    // console.log(`geoip req.hostname `, req.hostname);
+    // console.log(`geoip req.headers['x-forwarded-for'] `, req.headers['x-forwarded-for']);
+    // console.log(`geoip req.connection.remoteAddress `, req.connection.remoteAddress);
+    // console.log('geoip req.ip: ', req.ip);
+    // console.log('geoip req.ips: ', req.ips);
+    // console.log('geoip req.body: ', req.body);
 
-    let ip = '24.234.113.55';
-    // let ip = '67.77.104.113';
+
+    let ip = req.headers['x-forwarded-for'] || req.ip;
+    if (ip === '127.0.0.1'){
+      let staticIp = '24.234.113.55';
+      console.log('Geoip:: ip:127.0.0.1 will switch to static ip: ', staticIp);
+      // ip = '8.8.8.8';
+      ip = staticIp;
+      // ip = '99.203.10.168';
+    }
     let geoipData = {};
     function callback(err, data) {
       if (err) {
@@ -50,9 +57,6 @@ module.exports = function (options = {}) {
           ipAddress: ipAddress
         };
 
-        console.log('response from geoip', data);
-        console.log('response from geoip state', data.most_specific_subdivision.names.en);
-        console.log('data.city.name.en', data.city.names.en);
         res.send({ geoipData: geoipData });
       }
     }

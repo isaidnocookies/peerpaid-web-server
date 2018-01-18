@@ -3,25 +3,8 @@ var requestService = require('./requestService');
 const commandParser = require('./command-parser');
 const subscribe = require('./subscribe');
 const threeds = require('./threeds');
-
-
-
-
-
-
 const geoip = require('./geoip');
-
-
-
-
-
-
 const preRender = require('./pre-render');
-
-
-
-
-
 
 module.exports = function () {
   // Add your custom middleware here. Remember, that
