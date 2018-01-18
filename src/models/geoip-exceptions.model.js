@@ -7,21 +7,22 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const geoipExceptions = new Schema({
     userId: { type: Schema.ObjectId },
+    ipAddress: { type: String },
     continent: { type: String },
     country: { type: String, required: true },
-    state: {
-      type: String,
-      enum: [
-        'Nevada',
-        'California',
-        'New York',
-        'Michigan'
-      ], 
-      // required: true
-    },
+    state: { type: String },
     city: { type: String },
     postal: { type: String },
-    priority: { type: Number, required: true},
+    priority: { type: Number, required: true },
+    status: {
+      type: String,
+      enum: [
+        'Tribe',
+        'None',
+        'Open'
+      ],
+      required: true
+    },
     expires: Date
     // expires: { type: Date, default: Date.now, expires: 5 }//auto remove document
   }, {

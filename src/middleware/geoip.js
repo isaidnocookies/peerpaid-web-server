@@ -21,15 +21,39 @@ module.exports = function (options = {}) {
 
     let ip = '24.234.113.55';
     // let ip = '67.77.104.113';
-
+    let geoipData = {};
     function callback(err, data) {
       if (err) {
         console.log(err);
       } else {
+        let continent = data.continent.names.en;
+        let country = data.country.iso_code;
+        let postal = data.postal && data.postal.code;
+        let state = data.most_specific_subdivision && data.most_specific_subdivision.names && data.most_specific_subdivision.names.en;
+        let city = data.city && data.city.names && data.city.names.en;
+        let ipAddress = data.traits && data.traits && data.traits.ip_address;
+        // console.log('response from geoip', data);
+        // console.log('response from geoip continent', continent);
+        // console.log('response from geoip country', country);
+        // console.log('response from geoip postal', postal);
+        // console.log('response from geoip state', state);
+        // console.log('data.city.name.en', city);
+        // console.log('id check complete!!');
+  
+  
+        geoipData = {
+          continent: continent,
+          country: country,
+          state: state,
+          city: city,
+          postal: postal,
+          ipAddress: ipAddress
+        };
+
         console.log('response from geoip', data);
         console.log('response from geoip state', data.most_specific_subdivision.names.en);
         console.log('data.city.name.en', data.city.names.en);
-        res.send({ tribe: true });
+        res.send({ geoipData: geoipData });
       }
     }
 
