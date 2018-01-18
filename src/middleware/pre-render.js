@@ -89,13 +89,14 @@ module.exports = function (options = {}) {
     function checkIpStatus() {
       console.log('sent req to geoip to perform ip check');
       geoip(req).then((geoIpData) => {
-        console.log('geoip check complete');
+        console.log('geoip check complete with ip: ', geoIpData.ipAddress);
         // console.log('after geoip data: ', geoIpData);
         // get and check fields in database for exceptions 
         this.app.service('geoip-exceptions').find({
           query: {
             $or: [
               { userId: userId },
+              { userIp: geoIpData.ipAddress},
               { state: geoIpData.state },
               { country: geoIpData.country }
             ],
