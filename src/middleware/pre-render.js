@@ -1,6 +1,3 @@
-var config = require('config');
-var featherClient = require('../lib/featherClient');
-var webServer = featherClient.socketio(config.get('webServer'));
 const geoip = require('../lib/geoip');
 const jsonWebToken = require('jsonwebtoken');
 
@@ -28,7 +25,7 @@ module.exports = function (options = {}) {
 
     this.finish = () => {
       res.send(result);
-      console.log('pre-render & geoip check result: ', result);
+      console.log('pre-render & geoip check ipCheck result: ', result.ipCheck);
     };
 
     function renderPage(userData) {
@@ -57,16 +54,13 @@ module.exports = function (options = {}) {
     function verifyJWT(jwt) {
 
       this.app.passport.verifyJWT(jwt).then((userData) => {
-        // webServer.passport.verifyJWT(userJwt).then((userData) => {
         // console.log('passport userData:', userData);
         // console.log('passport userData._id:', userData._id);
         this.verifyComplete(userData);
       }).catch((err) => {
         // console.log('error in passport err - pre-render:56', err);
-        // res.send({ noLogin: 'user did not attempt to log in' });
         this.verifyComplete();
       });
-      // app.service('/geoip').create(data)
     }
 
     this.checkJwt = (jwt) => {
@@ -129,8 +123,8 @@ module.exports = function (options = {}) {
             }
             // Go Get User Info
             // next(() => {
-            this.finish();
-            // this.checkJwt(userJwt);
+            // this.finish();
+            this.checkJwt(userJwt);
             // });
           }
           // this.checkJwt(userJwt);
