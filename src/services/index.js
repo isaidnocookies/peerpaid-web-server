@@ -19,6 +19,8 @@ const consignments = require('./consignment/consignment.service.js');
 
 const liveData = require('./live-data/live-data.service.js');
 
+const geoipExceptions = require('./geoip-exceptions/geoip-exceptions.service.js');
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(users);
@@ -38,4 +40,5 @@ module.exports = function () {
   app.configure(liveData);
 
   app.configure(consignments);
+  app.configure(geoipExceptions);
 };

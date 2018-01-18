@@ -77,10 +77,11 @@ module.exports = function () {
 
 
   function verifyJWT(token) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {secret: ' '};
     // var VALID_KEYS = ['algorithms', 'audience', 'issuer', 'ignoreExpiration', 'ignoreNotBefore', 'subject', 'clockTolerance'];
     var settings = Object.assign({}, options.jwt);
     var secret = options.secret;
+    // console.log('auth index secret:84', secret);
 
     // normalize algorithm to array
 
