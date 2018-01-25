@@ -19,7 +19,7 @@ module.exports = function (req) {
   // console.log('geoip req.body: ', req.body);
 
   let ip = req.headers['x-forwarded-for'] || req.ip;
-  if (ip === '127.0.0.1'){
+  if (ip === '127.0.0.1' || ip === '::1'){
     let staticIp = '24.234.113.55';
     console.log(`Geoip:: ip:127.0.0.1 will switch to static ip: `, staticIp);
     // ip = '8.8.8.8';
