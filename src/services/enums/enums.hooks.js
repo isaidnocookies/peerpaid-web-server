@@ -5,13 +5,17 @@ const commonHooks = require('feathers-hooks-common');
 module.exports = {
   before: {
     all: [
-      authenticate('jwt'),
-      hook => {
-        if (!hook.params.provider || (hook.params.user.permissions && hook.params.user.permissions.isAdmin)){
-          return hook;
+      commonHooks.iff(hook => {
+        return !['get','find'].some((element) => {return element === hook.method;});
+      }, [
+        authenticate('jwt'),
+        hook => {
+          if (!hook.params.provider || (hook.params.user.permissions && hook.params.user.permissions.isAdmin)) {
+            return hook;
+          }
+          block(hook);
         }
-        block(hook);
-      }
+      ])
     ],
     find: [],
     get: [],
