@@ -1,28 +1,30 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-
-const errors = require('@feathersjs/errors');
+const Errors = require('@feathersjs/errors');
+const commonHooks = require('feathers-hooks-common');
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+      authenticate('jwt'),
+      hook => {
+        if (!hook.params.provider || (hook.params.user.permissions && hook.params.user.permissions.isAdmin)){
+          return hook;
+        }
+        block(hook);
+      }
+    ],
     find: [],
     get: [],
-    create: [
-      (hook) => {
-        if (hook.data.method === 'Internal Transaction') {
-          return hook;
-        } else {
-          throw new errors.MethodNotAllowed();
-        }
-      }],
-    // create: [() => { throw new errors.MethodNotAllowed(); }],
-    update: [() => { throw new errors.MethodNotAllowed(); }],
-    patch: [() => { throw new errors.MethodNotAllowed(); }],
-    remove: [() => { throw new errors.MethodNotAllowed(); }]
+    create: [],
+    update: [],
+    patch: [],
+    remove: []
   },
 
   after: {
-    all: [],
+    all: [
+
+    ],
     find: [],
     get: [],
     create: [],
@@ -41,3 +43,7 @@ module.exports = {
     remove: []
   }
 };
+
+function block() {
+  throw new Errors.Forbidden('Operation not allowed');
+}
