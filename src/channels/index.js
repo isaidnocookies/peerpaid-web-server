@@ -172,7 +172,6 @@ module.exports = function (app) {
   });
 
   internalTransactionService.publish((data, hook) => {
-    console.log("asdasdadasdasdad adad adasdad ad ad ad ")
     return app.channel(`users/${data.owner}`);
   });
 
