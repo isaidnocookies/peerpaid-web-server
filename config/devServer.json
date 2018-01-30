@@ -7,7 +7,7 @@
     "blockchainWalletUrl": "https://live.blockcypher.com/btc-testnet/address/#wallet#",
     "blockchainTransactionUrl": "https://live.blockcypher.com/btc-testnet/tx/#txid#",
     "blockchainBlockhashUrl": "https://live.blockcypher.com/btc-testnet/block/#blockhash#",
-    "enableRegistration":true
+    "enableRegistration":false
   },
   "feathersSync": {
     "size": 41943040,
