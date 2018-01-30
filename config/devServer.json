@@ -25,5 +25,5 @@
   "mongodb": "mongodb://peerpaid:28811916-693E-4F80-88F0-99A135E5BE08@172.31.34.77:27017/peerpaid_web_server?ssl=true",
   "mongopublic": "52.51.64.95",
   "mongoprivate": "172.31.34.77",
-  "mongoCert": "/etc/ssl/certs/mongod.pem",
+  "mongoCert": "/etc/ssl/certs/mongod.pem"
 }
