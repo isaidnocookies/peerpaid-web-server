@@ -1,6 +1,6 @@
 {
   "feathersSync": {
-    "size": 41943040, //40 * 1024 * 1024 = 40megs
+    "size": 41943040,
     "max": 50000,
     "mubsub": {
       "reconnectTries": 120,
