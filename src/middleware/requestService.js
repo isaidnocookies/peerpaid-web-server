@@ -22,13 +22,14 @@ module.exports = function (app) {
     }
     else {
       function requestUpdated(request) {
-
+        
         if (request.token === SERVER_TITLE && SERVER_TITLE === WEB_SERVER) {
           switch (request.request) {
             case 'CREATE_ENCRYPTED_FIAT_PAYLOAD':
             case 'REQUEST_BITCOIN_WALLET':
             case 'GET_BITCOIN_WALLET':
             case 'CREATE_DEPOSIT_ORDER':
+            case 'CREATE_PAYOUT_ORDER':
               switch (request.stage) {
                 case void 0: // Undefined (Start)
                   requestService.update(request._id, {
