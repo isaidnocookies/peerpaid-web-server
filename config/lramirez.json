@@ -5,14 +5,14 @@
     "mubsub": {
       "reconnectTries": 120,
       "reconnectInterval": 1000,
-      "authSource": null
+      "authSource": "admin"
     },
     "collection": "_events",
-    "db": "mongodb://localhost:27017/peerpaid_web"
+    "db": "mongodb://lramirez:lramirez@10.1.1.90:27017/lramirez_peerpaid_web"
   },
   "cardpay": {
     "respondWithContent": true,
     "responseContentFile": "redirector"
   },
-  "mongodb": "mongodb://localhost:27017/peerpaid_web"
+  "mongodb": "mongodb://lramirez:lramirez@10.1.1.90:27017/lramirez_peerpaid_web"
 }
